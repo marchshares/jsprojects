@@ -1,0 +1,245 @@
+<script type="text/javascript">
+    let yaCounter44688592;
+
+    const freeDeliveryCost = 3000;
+    const paidDeliveryCost = 300;
+
+    let adminMode = false;
+
+    let changeDuration = 400;
+
+    let checkedDelivery;
+
+    let deliveryAddressDiv;
+    let deliveryAddressInput;
+
+    let cityDiv;
+    let cityInput;
+
+    let deliveryIntervalDiv;
+    let deliveryIntervalInput;
+
+    let h1Text;
+
+    $(document).ready(function(){
+        setGlobalVariables();
+
+        setMetrikaGoals();
+        setCartPopUpFields();
+
+        setLastBreadCrumbName();
+
+        setPointNavigationProductName();
+
+        setAdminElements();
+        waitVar(() => window.tcart_initted, fixDeliveryPrice());
+    });
+
+    function setAdminElements() {
+        let sendSmsCheckbox = $('input:checkbox[name=SendSmsAboutOrder]');
+        let sendSmsDiv = sendSmsCheckbox
+            .parent()	// class="t-checkbox__control t-text t-text_xs"
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_cb"
+
+        if (adminMode) {
+            sendSmsDiv.show();
+        } else {
+            sendSmsDiv.hide();
+        }
+
+    }
+
+    function setPointNavigationProductName() {
+        $('a[href="#product"] > .t607__tooltip').text(h1Text)
+    }
+
+    function setLastBreadCrumbName() {
+        $('.t758__link-item_active').text(h1Text);
+    }
+
+    function setMetrikaGoals() {
+        $("[href='#order']").click(function() {
+            console.log('Goal: OpenCartPopUp by #order');
+
+            console.log("send to yaCounter44688592");
+            if (yaCounter44688592 !== undefined) {
+                yaCounter44688592.reachGoal('OpenCartPopUp');
+            } else {
+                console.log("yaCounter44688592 is undefined")
+            }
+
+            console.log("send to fbq AddToCart");
+            fbq('track', 'AddToCart');
+        });
+
+        $('.t706__carticon').click(function(){
+            console.log('Goal: OpenCartPopUp by .t706__carticon');
+
+            console.log("send to yaCounter44688592");
+            if (yaCounter44688592 !== undefined) {
+                yaCounter44688592.reachGoal('OpenCartPopUp');
+            } else {
+                console.log("yaCounter44688592 is undefined")
+            }
+
+            console.log("send to fbq InitiateCheckout");
+            fbq('track', 'InitiateCheckout');
+        });
+    }
+
+    function fixDeliveryPrice() {
+        setInterval(function () {
+            let prodamount = window.tcart.prodamount;
+            let amount = window.tcart.amount;
+            if (prodamount !== undefined && amount !== undefined) {
+                let shouldPaid = !isSamovivoz(checkedDelivery) && prodamount < freeDeliveryCost && amount === prodamount;
+                let shouldFree = (isSamovivoz(checkedDelivery) || prodamount >= freeDeliveryCost) && amount !== prodamount;
+
+                if (shouldPaid || shouldFree) {
+
+                    if (shouldPaid) {
+                        checkedDelivery.attr("data-delivery-price", paidDeliveryCost);
+                    }
+
+                    if (shouldFree) {
+                        checkedDelivery.attr("data-delivery-price", 0);
+                    }
+
+                    window.tcart.delivery = {};
+                    window.tcart.delivery.name = checkedDelivery.val();
+                    window.tcart.delivery.price = checkedDelivery.attr("data-delivery-price");
+
+                    tcart__updateTotalProductsinCartObj(),
+                        tcart__reDrawTotal();
+                }
+            }
+        }, 200)
+    }
+
+
+    function setCartPopUpFields() {
+        checkedDelivery = $("input:radio[name='deliveryType']")
+            .filter(function(){return this.value.toLowerCase().indexOf("москв") > -1 });
+
+        checkedDelivery.prop("checked", true);
+        setDefaultMoscow();
+
+        $('input:radio[name=deliveryType]').change(function(){
+            checkedDelivery = $("input:radio[name='deliveryType']:checked");
+
+            if (isSamovivoz(checkedDelivery)) {
+                setDefaultSamovivoz();
+
+            } else if (isMoscow(checkedDelivery)) {
+                setDefaultMoscow();
+
+            } else if (isRussia(checkedDelivery)) {
+                setDefaultRussia();
+            }
+        });
+    }
+
+    function isSamovivoz(checkedDelivery) {
+        return checkedDelivery.val().toLowerCase().indexOf("самовывоз") > -1;
+    }
+
+    function isMoscow(checkedDelivery) {
+        return checkedDelivery.val().toLowerCase().indexOf("москв") > -1;
+    }
+
+    function isRussia(checkedDelivery) {
+        return checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
+    }
+
+    function setDefaultSamovivoz() {
+        cityDiv
+            .hide(changeDuration);
+        deliveryAddressDiv
+            .hide(changeDuration);
+        deliveryIntervalDiv
+            .hide(changeDuration);
+
+        if (deliveryAddressInput.val() === "") {
+            deliveryAddressInput.val("Самовывоз");
+        }
+
+        if (cityInput.val() === "") {
+            cityInput.val("Москва");
+        }
+    }
+
+    function setDefaultMoscow() {
+        cityDiv
+            .hide(changeDuration);
+        deliveryAddressDiv
+            .show(changeDuration);
+        deliveryIntervalDiv
+            .show(changeDuration);
+
+        if (deliveryAddressInput.val() === "Самовывоз") {
+            deliveryAddressInput.val("");
+        }
+
+        if (cityInput.val() === "") {
+            cityInput.val("Москва");
+        }
+    }
+
+    function setDefaultRussia() {
+        cityDiv
+            .show(changeDuration);
+        deliveryAddressDiv
+            .show(changeDuration);
+        deliveryIntervalDiv
+            .hide(changeDuration);
+
+        if (deliveryAddressInput.val() === "Самовывоз") {
+            deliveryAddressInput.val("");
+        }
+
+        if (cityInput.val() === "Москва") {
+            cityInput.val("");
+        }
+    }
+
+
+    function setGlobalVariables() {
+        if (document.URL.indexOf("admin") !== -1) {
+            adminMode = true;
+        }
+
+        deliveryAddressInput = $('input:text[name=deliveryAddress]');
+        deliveryAddressDiv = deliveryAddressInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        cityInput = $('input:text[name=city]');
+        cityDiv = cityInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        deliveryIntervalInput = $('input[name=deliveryInterval]');
+        deliveryIntervalDiv = deliveryIntervalInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        h1Text = $('h1').text();
+    }
+
+    function waitVar(variable, callback) {
+        let maxCount = 10;
+        let interval = setInterval(function () {
+            try {
+                if (maxCount < 0 || (variable() !== undefined && interval !== undefined) ) {
+                    clearInterval(interval);
+                    callback();
+                }
+            } catch (e) {
+                //ignore
+            };
+            maxCount--;
+        }, 1000);
+    }
+
+</script>
