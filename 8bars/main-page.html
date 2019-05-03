@@ -1,0 +1,218 @@
+<style>
+    .t778__bgimg {
+        width: 300px;
+        margin: auto;
+        -webkit-transition:  1s ease;
+        -o-transition:  1s ease;
+        -moz-transition:  1s ease;
+        transition:  1s ease;
+    }
+
+    .t778__bgimg:hover {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+        opacity:0.6;
+    }
+
+    .t778__textwrapper t778__paddingsmall {
+        padding-top:0px;
+    }
+
+    div#rec78535263 {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript">
+
+
+    /* jshint jquery: true */
+
+    var transitianCssEffect = { "transition" : "background 0.5s ease" };
+
+
+    var bundleDiscountPer = 10;
+
+    var priceNanopresso = 5990;
+    var priceNsAdapter = 1890;
+    var priceBaristaKit = 2490;
+    var priceCase = 1490;
+    var priceNanovessel = 1990;
+
+    var bundleBlock;
+    var bundleColorSelect;
+    var bundleAccessorySelect;
+    var bundleCaseSelect;
+    var bundleOldPrice;
+    var bundlePrice;
+
+    $(document).ready(function(){
+        bundleBlock = $('#rec82457134');
+
+        setTimeout(function() {
+            fixBundleBlock();
+        }, 2000);
+    });
+
+    function fixBundleBlock() {
+        bundleColorSelect = bundleBlock.find($('select.t-product__option-select')).eq(0);
+        bundleAccessorySelect = bundleBlock.find($('select.t-product__option-select')).eq(1);
+        bundleCaseSelect = bundleBlock.find($('select.t-product__option-select')).eq(2);
+
+        bundleOldPrice = bundleBlock.find($('div.t744__price-value[field="price_old"]'));
+        bundlePrice = bundleBlock.find($('div.t744__price-value[field="price"]'));
+
+
+        setDefaultSelect();
+
+        bundleColorSelect.change( changeBundleSelectHandler );
+        bundleAccessorySelect.change( changeBundleSelectHandler );
+        bundleCaseSelect.change( changeBundleSelectHandler );
+
+        changeBundleSelectHandler();
+    }
+
+    function setDefaultSelect () {
+        selectByContains(bundleColorSelect, "Желтый");
+        selectByEquals(bundleAccessorySelect, "NS-адаптер\n");
+        selectByContains(bundleCaseSelect, "M-");
+
+        function selectByContains(bundleSelect, contains) {
+            var option = bundleSelect.find($("select.t-product__option-select option:contains(\"" + contains + "\")"));
+            option.prop('selected', true);
+        }
+
+        function selectByEquals(bundleSelect, equals) {
+            var option = bundleSelect.find($("select.t-product__option-select option[value=\"" + equals + "\"]"));
+            option.prop('selected', true);
+        }
+    }
+
+    function setRandomDefaultSelect () {
+        selectRandom(bundleColorSelect);
+        selectRandom(bundleAccessorySelect);
+        selectRandom(bundleCaseSelect);
+
+        function selectRandom(bundleSelect) {
+            var options = bundleColorSelect.find($('select.t-product__option-select option'));
+            options.eq(getRandomBefore(options.size())).prop('selected', true);
+        }
+    }
+
+    var changeBundleSelectHandler = function () {
+        console.log('changeBundleSelectHandler');
+        var selectedColor = bundleColorSelect.find($('select.t-product__option-select option:selected'));
+        var selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
+        var selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
+
+        var selectedColorText = selectedColor.text();
+        var selectedAccessoryText = selectedAccessory.text();
+        var selectedCaseText = selectedCase.text();
+
+        var hasNsAdapter = selectedAccessoryText.indexOf("NS-адаптер") > -1;
+        var hasBaristaKit = selectedAccessoryText.indexOf("Barista Kit") > -1;
+        var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
+        var hasCase = selectedCaseText !== "Нет";
+
+        var oldPrice = priceNanopresso;
+        if ( hasNsAdapter)   { oldPrice += priceNsAdapter; }
+        if ( hasBaristaKit)  { oldPrice += priceBaristaKit; }
+        if ( hasNanovessel)  { oldPrice += priceNanovessel; }
+        if ( hasCase)        { oldPrice += priceCase; }
+
+        var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasCase);
+
+        bundleBlock.find($('div.t-slds__bgimg')).each(function (idx) {
+            $(this).attr("data-original", imgUrl);
+            $(this).css({ "background-image" : to_background_image_prop(imgUrl) });
+            $(this).css(transitianCssEffect);
+
+            $(this).parent().attr("data-img-zoom-url", imgUrl);
+        });
+
+        bundleOldPrice.text(oldPrice);
+        if (oldPrice !== priceNanopresso) {
+            var res = Math.floor(oldPrice*(1 - bundleDiscountPer/100));
+            res = res - (res % 10);
+            bundlePrice.text(res);
+            console.log("Result bundle price: " + res);
+        }
+    };
+
+    function getBundleImage(color, hasNsAdapter, hasBaristaKit, hasCase) {
+        switch (color) {
+            default:
+            case "Черный":
+                if ( hasCase) {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3533-6535-4964-b561-396161316333/NPPB_ALL.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3231-6262-4535-b765-636633623337/NPPB_BK_CS.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3161-6463-4536-b138-333233386135/NPPB_NA_CS.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3830-3636-4263-b935-643938353761/NPPB_CS.jpg";
+                } else {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3836-6662-4333-b763-633938643139/NPPB_BK_NA.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild6539-6631-4333-b338-373266386333/NPPB_BK.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3736-3531-4961-b266-333038646536/NPPB_NA.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6633-3562-4166-b038-356433343336/NPPB.jpg";
+                }
+
+            case "Оранжевый":
+                if ( hasCase) {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild6337-6362-4265-b537-663866396262/NPPO_ALL.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3837-6264-4532-a561-653263636132/NPPO_BK_CS.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6330-3965-4237-b964-626532626430/NPPO_NA_CS.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6463-6463-4238-a265-336330333636/NPPO_CS.jpg";
+                } else {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild6135-6538-4430-b233-656134623735/NPPO_BK_NA.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3730-3363-4862-a364-633431323032/NPPO_BK.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3366-3330-4133-b566-373439306362/NPPO_NA.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3530-3339-4161-b532-333838663664/NPPO.jpg";
+                }
+
+            case "Красный":
+                if ( hasCase) {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3334-3636-4933-b364-373466653832/NPPR_ALL.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild6135-6361-4164-a334-323032613939/NPPR_BK_CS.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3134-3763-4036-b131-323630656632/NPPR_NA_CS.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3632-3333-4562-b865-633536306462/NPPR_CS.jpg";
+                } else {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3336-3637-4131-a539-333065643932/NPPR_BK_NA.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild6437-3064-4562-b738-643935356165/NPPR_BK.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild3735-3930-4063-b465-373533616635/NPPR_NA.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6562-3338-4831-b962-636233343064/NPPR.jpg";
+                }
+
+            case "Желтый":
+                if ( hasCase) {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3935-3632-4230-b333-663263393765/NPPY_ALL.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3662-3362-4033-b662-623564363131/NPPY_BK_CS.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6134-6430-4562-b335-653035366238/NPPY_NA_CS.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6232-3535-4534-a361-363765376264/NPPY_CS.jpg";
+                } else {
+                    if ( hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3862-3233-4266-b537-626435623962/NPPY_BK_NA.jpg";
+                    if (!hasNsAdapter &&  hasBaristaKit) return "https://static.tildacdn.com/tild3665-3138-4637-a130-623261383933/NPPY_BK.jpg";
+                    if ( hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6466-3462-4039-b537-636539326433/NPPY_NA.jpg";
+                    if (!hasNsAdapter && !hasBaristaKit) return "https://static.tildacdn.com/tild6438-3734-4139-b434-326532623665/NPPY.jpg";
+                }
+        }
+    }
+
+    function reachYMetrikaGoal(goalName) {
+        console.log("Goal: " + goalName);
+
+        console.log("send to yaCounter44688592");
+        if (yaCounter44688592 !== undefined) {
+            yaCounter44688592.reachGoal(goalName);
+        } else {
+            console.log("yaCounter44688592 is undefined");
+        }
+    }
+
+    function to_background_image_prop(imgUrl) {
+        return "url(\"" + imgUrl + "\")";
+    }
+
+    function getRandomBefore(num) {
+        return Math.floor(Math.random() * num);
+    }
+
+</script>
