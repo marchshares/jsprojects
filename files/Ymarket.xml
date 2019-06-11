@@ -94,7 +94,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -117,7 +116,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -140,7 +138,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -151,7 +148,9 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="7" available="true">
+                <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso NS-Адаптер для капсул Nespresso</name>
+
                 <description>NS-адаптер позволяет использовать кофемашины Nanopresso для приготовления эспрессо из капсул Nespresso. При приготовлении кофе в капсулах практически невозможно совершить ошибку. Также после приготовления кофе из капсулы кофемашину проще мыть, и в ней остается меньше мусора. Адаптер устанавливается в верхнюю часть Nanopresso вместо чашечки для молотого кофе.</description>
                 <url>https://8bars.ru/ns-adapter-nanopresso</url>
                 <picture>https://static.tildacdn.com/tild6265-6630-4766-a565-323535393865/NanopressoNSAdapter.jpg</picture>
@@ -161,7 +160,6 @@
                 <param name="тип используемого кофе">капсулы</param>
                 <param name="тип капсул">Nespresso</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -172,7 +170,9 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="8" available="true">
+                <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso Barista Kit</name>
+
                 <description>Nanopresso Barista Kit - набор дополнительных аксессуаров, которые помогут усовершенствовать вашу карманную кофемашину Nanopresso. Благодаря увеличенной емкости для горячей воды (на 140 мл) вы сможете приготовить лунго, а с помощью удвоенной корзинки для кофе (на 16 гр.) у вас получится приготовить двойной эспрессо.</description>
                 <url>https://8bars.ru/barista-kit-nanopresso</url>
                 <picture>https://static.tildacdn.com/tild6366-3337-4466-b636-623337356538/NanopressoBaristaKit.jpg</picture>
@@ -181,7 +181,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -192,14 +191,15 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="9" available="true">
+                <vendor>Wacaco</vendor>
                 <name>Wacaco Чехол для Minipresso и Nanopresso (S, M, L)</name>
+
                 <description>Данный чехол изготовлен из плотной ткани, что позволит уберечь вашу кофемашину от падений, царапин и пыли. Размеры: - S (маленький) - для Nanopresso стандартной комплектации - M (средний) - для Minipresso или Nanopresso с NS-адаптером - L (большой) - Nanopresso с Barista Kit</description>
                 <url>https://8bars.ru/nanopresso-minipresso-case</url>
                 <picture>https://static.tildacdn.com/tild3130-3635-4361-b564-323330326363/NanoMiniCase.jpg</picture>
                 <price>1490</price>
                 <param name="цвет">black</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -222,7 +222,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -245,7 +244,6 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
@@ -255,15 +253,17 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="12" available="true">
-                <name>Термос Wacaco Nanovessel для Nanopresso</name>
+            <offer id="12" type="vendor.model" available="true">
+                <typePrefix>Термос</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanovessel для Nanopresso</model>
+
                 <description>Nanovessel - долгожданный стальной термос от компании Wacaco, который сохранит воду горячей на несколько часов. Он полностью совместим с кофемашиной Nanopresso (а также с Minipresso!), что позволяет вам не тратить время на переливание горячей воды в чашку от кофемашины. Nanovessel прикручивается к нижней части Nanopresso вместо стандартной чашки. Его объема (210 мл) хватит на 2-3 чашечки кофе. Также вы можете использовать Nanovessel как тумблер для горячих или холодных напитков. Он оснащен сеточкой-фильтром, что позволяет заваривать в нем чай.</description>
                 <url>https://8bars.ru/nanovessel</url>
                 <picture>https://static.tildacdn.com/tild3436-6466-4936-b566-313936306430/Nanovessel_YM.jpg</picture>
                 <price>1990</price>
                 <param name="цвет">silver</param>
 
-                <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
                 <store>false</store>
