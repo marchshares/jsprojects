@@ -23,7 +23,7 @@
                 <url>https://8bars.ru/minipresso-gr</url>
                 <picture>https://static.tildacdn.com/tild6432-6134-4638-b937-343033353133/MinipressoGR.jpg</picture>
                 <price>4790</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -45,7 +45,7 @@
                 <url>https://8bars.ru/minipresso-ns</url>
                 <picture>https://static.tildacdn.com/tild3931-3665-4037-b164-643037326430/MinipressoNS.jpg</picture>
                 <price>4790</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">капсулы</param>
                 <param name="тип капсул">Nespresso</param>
@@ -68,7 +68,7 @@
                 <url>https://8bars.ru/nanopresso</url>
                 <picture>https://static.tildacdn.com/tild3833-3463-4631-b533-626566613030/003_720x.jpg</picture>
                 <price>5990</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -81,13 +81,16 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="4" available="true">
-                <name>Кофеварка Wacaco Nanopresso Patrol (Orange)</name>
+            <offer id="4" type="vendor.model" available="true">
+                <typePrefix>Кофеварка</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Orange patrol)</model>
+
                 <description>Nanopresso Patrol Orange – оранжевая версия карманная кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild6233-3538-4336-b331-396237663735/NanopressoOrange.jpg</picture>
                 <price>5990</price>
-                <param name="цвет">оранжевый</param>
+                <param name="цвет">Orange patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -101,13 +104,16 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="5" available="true">
-                <name>Кофеварка Wacaco Nanopresso Patrol (Yellow)</name>
+            <offer id="5" type="vendor.model" available="true">
+                <typePrefix>Кофеварка</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Yellow patrol)</model>
+
                 <description>Nanopresso Patrol Yellow – желтая версия карманная кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild3062-3536-4466-a364-343037643834/NanopressoYellow.jpg</picture>
                 <price>5990</price>
-                <param name="цвет">желтый</param>
+                <param name="цвет">Yellow patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -121,13 +127,16 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="6" available="true">
-                <name>Кофеварка Wacaco Nanopresso Patrol (Red)</name>
+            <offer id="6" type="vendor.model" available="true">
+                <typePrefix>Кофеварка</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Red patrol)</model>
+
                 <description>Nanopresso Patrol Red – красная версия карманная кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild3562-3261-4236-b861-666333336632/NanopressoRed.jpg</picture>
                 <price>5990</price>
-                <param name="цвет">красный</param>
+                <param name="цвет">Red patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -147,7 +156,7 @@
                 <url>https://8bars.ru/ns-adapter-nanopresso</url>
                 <picture>https://static.tildacdn.com/tild6265-6630-4766-a565-323535393865/NanopressoNSAdapter.jpg</picture>
                 <price>1890</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">капсулы</param>
                 <param name="тип капсул">Nespresso</param>
@@ -168,7 +177,7 @@
                 <url>https://8bars.ru/barista-kit-nanopresso</url>
                 <picture>https://static.tildacdn.com/tild6366-3337-4466-b636-623337356538/NanopressoBaristaKit.jpg</picture>
                 <price>2490</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -188,7 +197,7 @@
                 <url>https://8bars.ru/nanopresso-minipresso-case</url>
                 <picture>https://static.tildacdn.com/tild3130-3635-4361-b564-323330326363/NanoMiniCase.jpg</picture>
                 <price>1490</price>
-                <param name="цвет">черный</param>
+                <param name="цвет">black</param>
 
                 <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
@@ -200,13 +209,16 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="10" available="true">
-                <name>Кофеварка Wacaco Nanopresso Tattoo (Orange) + Чехол</name>
+            <offer id="10" type="vendor.model" available="true">
+                <typePrefix>Кофеварка</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Orange Tattoo) + Чехол</model>
+
                 <description>Nanopresso Tattoo Orange – оранжевая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3938-6433-4663-b632-356537636436/NanopressoTattooOran.jpg</picture>
                 <price>6500</price>
-                <param name="цвет">оранжевый</param>
+                <param name="цвет">Orange tattoo</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -220,13 +232,16 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="11" available="true">
-                <name>Кофеварка Wacaco Nanopresso Tattoo (Yellow) + Чехол</name>
+            <offer id="11" type="vendor.model" available="true">
+                <typePrefix>Кофеварка</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Yellow Tattoo) + Чехол</model>
+
                 <description>Nanopresso Tattoo Yellow – желтая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3761-3863-4635-b466-313838373863/NanopressoTattooYell.jpg</picture>
                 <price>6500</price>
-                <param name="цвет">желтый</param>
+                <param name="цвет">Yellow patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
@@ -246,7 +261,7 @@
                 <url>https://8bars.ru/nanovessel</url>
                 <picture>https://static.tildacdn.com/tild3436-6466-4936-b566-313936306430/Nanovessel_YM.jpg</picture>
                 <price>1990</price>
-                <param name="цвет">стальной</param>
+                <param name="цвет">silver</param>
 
                 <vendor>Wacaco</vendor>
                 <currencyId>RUR</currencyId>
