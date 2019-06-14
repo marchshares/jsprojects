@@ -1,0 +1,240 @@
+<script type="text/javascript">
+
+    var transitianCssEffect = { "transition" : "background 0.5s ease" };
+
+    let bundleRecNum = '#rec82457134';
+
+    var bundleBlock;
+    var bundleColorSelect;
+    var bundleAccessorySelect;
+    var bundleCaseSelect;
+    var bundleOldPrice;
+    var bundlePrice;
+
+    $(document).ready(function(){
+        bundleBlock = $(bundleRecNum);
+
+        setTimeout(function() {
+            fixBundleBlock();
+        }, 2000);
+    });
+
+    function fixBundleBlock() {
+        bundleColorSelect = bundleBlock.find($('select.t-product__option-select')).eq(0);
+        bundleAccessorySelect = bundleBlock.find($('select.t-product__option-select')).eq(1);
+        bundleCaseSelect = bundleBlock.find($('select.t-product__option-select')).eq(2);
+
+        bundleOldPrice = bundleBlock.find($('div.t744__price-value[field="price_old"]'));
+        bundlePrice = bundleBlock.find($('div.t744__price-value[field="price"]'));
+
+
+        setDefaultSelect();
+
+        bundleColorSelect.change( changeBundleSelectHandler );
+        bundleAccessorySelect.change( changeBundleSelectHandler );
+        bundleCaseSelect.change( changeBundleSelectHandler );
+
+        changeBundleSelectHandler();
+    }
+
+    function setDefaultSelect () {
+        selectByContains(bundleColorSelect, "Желтый");
+        selectByEquals(bundleAccessorySelect, "NS-адаптер\n");
+        selectByContains(bundleCaseSelect, "M-");
+
+        function selectByContains(bundleSelect, contains) {
+            var option = bundleSelect.find($("select.t-product__option-select option:contains(\"" + contains + "\")"));
+            option.prop('selected', true);
+        }
+
+        function selectByEquals(bundleSelect, equals) {
+            var option = bundleSelect.find($("select.t-product__option-select option[value=\"" + equals + "\"]"));
+            option.prop('selected', true);
+        }
+    }
+
+    function setRandomDefaultSelect () {
+        selectRandom(bundleColorSelect);
+        selectRandom(bundleAccessorySelect);
+        selectRandom(bundleCaseSelect);
+
+        function selectRandom(bundleSelect) {
+            var options = bundleColorSelect.find($('select.t-product__option-select option'));
+            options.eq(getRandomBefore(options.size())).prop('selected', true);
+        }
+    }
+
+    var changeBundleSelectHandler = function () {
+        console.log('changeBundleSelectHandler');
+        var selectedColor = bundleColorSelect.find($('select.t-product__option-select option:selected'));
+        var selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
+        var selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
+
+        var selectedColorText = selectedColor.text();
+        var selectedAccessoryText = selectedAccessory.text();
+        var selectedCaseText = selectedCase.text();
+
+        var hasNsAdapter = selectedAccessoryText.indexOf("NS-адаптер") > -1;
+        var hasBaristaKit = selectedAccessoryText.indexOf("Barista Kit") > -1;
+        var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
+        var hasCase = selectedCaseText !== "Нет";
+
+        var oldPrice = priceNanopresso;
+
+        if ( hasNsAdapter)   { oldPrice += priceNsAdapter; }
+        if ( hasBaristaKit)  { oldPrice += priceBaristaKit; }
+        if ( hasNanovessel)  { oldPrice += priceNanovessel; }
+        if ( hasCase)        { oldPrice += priceCase; }
+
+        var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
+
+        bundleBlock.find($('div.t-slds__bgimg')).each(function (idx) {
+            $(this).attr("data-original", imgUrl);
+            $(this).css({ "background-image" : to_background_image_prop(imgUrl) });
+            $(this).css(transitianCssEffect);
+
+            $(this).parent().attr("data-img-zoom-url", imgUrl);
+        });
+
+        bundleOldPrice.text(oldPrice);
+        if (oldPrice !== priceNanopresso) {
+            var res = Math.floor(oldPrice*(1 - bundleDiscountPer/100));
+            res = res - (res % 10);
+            bundlePrice.text(res);
+            console.log("Result bundle price: " + res);
+        }
+    };
+
+    function getBundleImage(color, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase) {
+        let imageName;
+        switch (color) {
+            default:
+            case "Черный":
+                imageName = "Black";
+                break;
+
+            case "Оранжевый":
+                imageName = "Orange";
+                break;
+
+            case "Красный":
+                imageName = "Red";
+                break;
+
+            case "Желтый":
+                imageName = "Yellow";
+                break;
+        }
+
+        imageName += "_";
+        imageName += getLetter(hasNsAdapter);
+        imageName += getLetter(hasBaristaKit);
+        imageName += getLetter(hasNanovessel);
+        imageName += getLetter(hasCase);
+
+        let imageLink = mapOfSetImages[imageName];
+
+        if (imageLink === undefined) {
+            imageLink = mapOfSetImages["Black_OOOO"];
+        }
+
+        return imageLink;
+    }
+
+    function getLetter(hasAccessory) {
+        if (hasAccessory) {
+            return "O";
+        } else {
+            return "X";
+        }
+    }
+
+    function reachYMetrikaGoal(goalName) {
+        console.log("Goal: " + goalName);
+
+        console.log("send to yaCounter44688592");
+        if (yaCounter44688592 !== undefined) {
+            yaCounter44688592.reachGoal(goalName);
+        } else {
+            console.log("yaCounter44688592 is undefined");
+        }
+    }
+
+    function to_background_image_prop(imgUrl) {
+        return "url(\"" + imgUrl + "\")";
+    }
+
+    function getRandomBefore(num) {
+        return Math.floor(Math.random() * num);
+    }
+
+    let mapOfSetImages = {
+        "Black_OOOO" : "https://static.tildacdn.com/tild6232-3536-4839-b131-373066653734/Black_OOOO.jpg",
+        "Black_OOOX" : "https://static.tildacdn.com/tild6230-6531-4537-a231-393336323935/Black_OOOX.jpg",
+        "Black_OOXO" : "https://static.tildacdn.com/tild3666-3565-4936-b931-626466303539/Black_OOXO.jpg",
+        "Black_OOXX" : "https://static.tildacdn.com/tild6136-3862-4962-b135-653162616337/Black_OOXX.jpg",
+        "Black_OXOO" : "https://static.tildacdn.com/tild3432-3339-4763-b865-363462343436/Black_OXOO.jpg",
+        "Black_OXOX" : "https://static.tildacdn.com/tild3330-3832-4461-a533-653465653464/Black_OXOX.jpg",
+        "Black_OXXO" : "https://static.tildacdn.com/tild3665-6232-4466-b861-613731363630/Black_OXXO.jpg",
+        "Black_OXXX" : "https://static.tildacdn.com/tild6236-3662-4636-b866-376532613037/Black_OXXX.jpg",
+        "Black_XOOO" : "https://static.tildacdn.com/tild3534-3035-4232-b562-313461393564/Black_XOOO.jpg",
+        "Black_XOOX" : "https://static.tildacdn.com/tild3036-3531-4532-b638-636463353834/Black_XOOX.jpg",
+        "Black_XOXO" : "https://static.tildacdn.com/tild6132-3562-4465-a265-666132383662/Black_XOXO.jpg",
+        "Black_XOXX" : "https://static.tildacdn.com/tild3630-3065-4433-a439-356638366333/Black_XOXX.jpg",
+        "Black_XXOO" : "https://static.tildacdn.com/tild3165-6639-4662-b666-613739313735/Black_XXOO.jpg",
+        "Black_XXOX" : "https://static.tildacdn.com/tild3336-6130-4261-b166-643866643762/Black_XXOX.jpg",
+        "Black_XXXO" : "https://static.tildacdn.com/tild6565-3633-4366-b832-663833313563/Black_XXXO.jpg",
+        "Black_XXXX" : "https://static.tildacdn.com/tild3134-6236-4265-a434-333731616339/Black_XXXX.jpg",
+
+        "Orange_OOOO" : "https://static.tildacdn.com/tild3230-3835-4137-b834-323234313761/Orange_OOOO.jpg",
+        "Orange_OOOX" : "https://static.tildacdn.com/tild3061-3334-4135-a137-633632303537/Orange_OOOX.jpg",
+        "Orange_OOXO" : "https://static.tildacdn.com/tild3034-3237-4638-a632-666463633830/Orange_OOXO.jpg",
+        "Orange_OOXX" : "https://static.tildacdn.com/tild3432-3661-4431-a133-363336373430/Orange_OOXX.jpg",
+        "Orange_OXOO" : "https://static.tildacdn.com/tild3661-6633-4533-b561-663030666132/Orange_OXOO.jpg",
+        "Orange_OXOX" : "https://static.tildacdn.com/tild3332-3733-4964-b132-363732393064/Orange_OXOX.jpg",
+        "Orange_OXXO" : "https://static.tildacdn.com/tild3132-6337-4561-b831-393937633961/Orange_OXXO.jpg",
+        "Orange_OXXX" : "https://static.tildacdn.com/tild3539-3139-4465-b730-386563626634/Orange_OXXX.jpg",
+        "Orange_XOOO" : "https://static.tildacdn.com/tild3162-6461-4563-b330-646533396236/Orange_XOOO.jpg",
+        "Orange_XOOX" : "https://static.tildacdn.com/tild3734-6436-4564-b939-313136333739/Orange_XOOX.jpg",
+        "Orange_XOXO" : "https://static.tildacdn.com/tild6332-3063-4137-b766-643632373465/Orange_XOXO.jpg",
+        "Orange_XOXX" : "https://static.tildacdn.com/tild3361-6163-4661-b632-633438373434/Orange_XOXX.jpg",
+        "Orange_XXOO" : "https://static.tildacdn.com/tild6130-6162-4430-a434-616365396138/Orange_XXOO.jpg",
+        "Orange_XXOX" : "https://static.tildacdn.com/tild3132-3637-4163-a534-613332306137/Orange_XXOX.jpg",
+        "Orange_XXXO" : "https://static.tildacdn.com/tild3865-3161-4430-b831-663161376161/Orange_XXXO.jpg",
+        "Orange_XXXX" : "https://static.tildacdn.com/tild3339-3163-4563-b130-356138636133/Orange_XXXX.jpg",
+
+        "Red_OOOO" : "https://static.tildacdn.com/tild3566-3638-4165-b762-383737353666/Red_OOOO.jpg",
+        "Red_OOOX" : "https://static.tildacdn.com/tild3536-3930-4637-b536-626136366537/Red_OOOX.jpg",
+        "Red_OOXO" : "https://static.tildacdn.com/tild3438-3166-4239-a539-386664636465/Red_OOXO.jpg",
+        "Red_OOXX" : "https://static.tildacdn.com/tild3066-6236-4637-b138-623738613265/Red_OOXX.jpg",
+        "Red_OXOO" : "https://static.tildacdn.com/tild3364-3264-4131-a530-303337353236/Red_OXOO.jpg",
+        "Red_OXOX" : "https://static.tildacdn.com/tild6362-6662-4561-a134-343634666665/Red_OXOX.jpg",
+        "Red_OXXO" : "https://static.tildacdn.com/tild3235-3636-4866-b865-333732386661/Red_OXXO.jpg",
+        "Red_OXXX" : "https://static.tildacdn.com/tild6337-3832-4539-a236-356163663430/Red_OXXX.jpg",
+        "Red_XOOO" : "https://static.tildacdn.com/tild3337-6161-4565-b162-303839626531/Red_XOOO.jpg",
+        "Red_XOOX" : "https://static.tildacdn.com/tild3932-3938-4234-a233-613731363036/Red_XOOX.jpg",
+        "Red_XOXO" : "https://static.tildacdn.com/tild6130-6564-4031-b231-336338323739/Red_XOXO.jpg",
+        "Red_XOXX" : "https://static.tildacdn.com/tild3261-3662-4037-a563-633431646538/Red_XOXX.jpg",
+        "Red_XXOO" : "https://static.tildacdn.com/tild3030-3332-4738-a464-653164653638/Red_XXOO.jpg",
+        "Red_XXOX" : "https://static.tildacdn.com/tild3331-3263-4135-b737-303364613836/Red_XXOX.jpg",
+        "Red_XXXO" : "https://static.tildacdn.com/tild3864-6137-4639-a630-313838353766/Red_XXXO.jpg",
+        "Red_XXXX" : "https://static.tildacdn.com/tild6231-6437-4630-a433-323731663739/Red_XXXX.jpg",
+
+        "Yellow_OOOO" : "https://static.tildacdn.com/tild6337-3734-4533-b162-323665356230/Yellow_OOOO.jpg",
+        "Yellow_OOOX" : "https://static.tildacdn.com/tild3631-3736-4134-b134-366436666235/Yellow_OOOX.jpg",
+        "Yellow_OOXO" : "https://static.tildacdn.com/tild3038-6264-4464-a561-633364313761/Yellow_OOXO.jpg",
+        "Yellow_OOXX" : "https://static.tildacdn.com/tild3565-6566-4431-b838-353364373662/Yellow_OOXX.jpg",
+        "Yellow_OXOO" : "https://static.tildacdn.com/tild3262-3739-4765-a335-376133653438/Yellow_OXOO.jpg",
+        "Yellow_OXOX" : "https://static.tildacdn.com/tild6662-3736-4632-b836-376433653836/Yellow_OXOX.jpg",
+        "Yellow_OXXO" : "https://static.tildacdn.com/tild3436-3334-4230-a633-656439623139/Yellow_OXXO.jpg",
+        "Yellow_OXXX" : "https://static.tildacdn.com/tild3664-3034-4238-a138-306563326538/Yellow_OXXX.jpg",
+        "Yellow_XOOO" : "https://static.tildacdn.com/tild6439-3064-4533-b039-366137646539/Yellow_XOOO.jpg",
+        "Yellow_XOOX" : "https://static.tildacdn.com/tild6566-3431-4537-b161-323965643334/Yellow_XOOX.jpg",
+        "Yellow_XOXO" : "https://static.tildacdn.com/tild6433-3839-4039-b331-396438343163/Yellow_XOXO.jpg",
+        "Yellow_XOXX" : "https://static.tildacdn.com/tild6432-3537-4763-b731-396538643462/Yellow_XOXX.jpg",
+        "Yellow_XXOO" : "https://static.tildacdn.com/tild3661-3235-4663-b034-623762363630/Yellow_XXOO.jpg",
+        "Yellow_XXOX" : "https://static.tildacdn.com/tild3730-6537-4465-b663-353932653064/Yellow_XXOX.jpg",
+        "Yellow_XXXO" : "https://static.tildacdn.com/tild3964-3134-4732-b161-393661626236/Yellow_XXXO.jpg",
+        "Yellow_XXXX" : "https://static.tildacdn.com/tild3461-3930-4938-b035-353936363261/Yellow_XXXX.jpg",
+    }
+</script>
