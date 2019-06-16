@@ -9,7 +9,8 @@
     var bundleAccessorySelect;
     var bundleCaseSelect;
     var bundleOldPrice;
-    var bundlePrice;
+    var bundleOldPriceValue;
+    var bundlePriceValue;
 
     $(document).ready(function(){
         bundleBlock = $(bundleRecNum);
@@ -24,8 +25,9 @@
         bundleAccessorySelect = bundleBlock.find($('select.t-product__option-select')).eq(1);
         bundleCaseSelect = bundleBlock.find($('select.t-product__option-select')).eq(2);
 
-        bundleOldPrice = bundleBlock.find($('div.t744__price-value[field="price_old"]'));
-        bundlePrice = bundleBlock.find($('div.t744__price-value[field="price"]'));
+        bundleOldPrice = bundleBlock.find($('div.t744__price_old'));
+        bundleOldPriceValue = bundleBlock.find($('div.t744__price-value[field="price_old"]'));
+        bundlePriceValue = bundleBlock.find($('div.t744__price-value[field="price"]'));
 
 
         setDefaultSelect();
@@ -79,12 +81,13 @@
         var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
         var hasCase = selectedCaseText !== "Нет";
 
-        var oldPrice = priceNanopresso;
+        var currentPrice = priceNanopresso.cur;
+        var oldPrice = priceNanopresso.cur;
 
-        if ( hasNsAdapter)   { oldPrice += priceNsAdapter; }
-        if ( hasBaristaKit)  { oldPrice += priceBaristaKit; }
-        if ( hasNanovessel)  { oldPrice += priceNanovessel; }
-        if ( hasCase)        { oldPrice += priceCase; }
+        if ( hasNsAdapter)   { oldPrice += priceNsAdapter.cur; }
+        if ( hasBaristaKit)  { oldPrice += priceBaristaKit.cur; }
+        if ( hasNanovessel)  { oldPrice += priceNanovessel.cur; }
+        if ( hasCase)        { oldPrice += priceCase.cur; }
 
         var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
 
@@ -96,13 +99,16 @@
             $(this).parent().attr("data-img-zoom-url", imgUrl);
         });
 
-        bundleOldPrice.text(oldPrice);
-        if (oldPrice !== priceNanopresso) {
-            var res = Math.floor(oldPrice*(1 - bundleDiscountPer/100));
-            res = res - (res % 10);
-            bundlePrice.text(res);
-            console.log("Result bundle price: " + res);
+        bundleOldPriceValue.text(oldPrice);
+        if (currentPrice !== oldPrice) {
+            currentPrice = getDiscountPrice(oldPrice, bundleDiscountPer);
+            bundleOldPrice.show();
+        } else {
+            bundleOldPrice.hide();
         }
+
+        bundlePriceValue.text(currentPrice);
+        console.log("Result bundle price: " + currentPrice);
     };
 
     function getBundleImage(color, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase) {
@@ -167,6 +173,11 @@
     function getRandomBefore(num) {
         return Math.floor(Math.random() * num);
     }
+
+    // function getPriceWithDiscount(oldPrice, discountPer) {
+    //     let res = Math.floor(oldPrice * (1 - discountPer / 100));
+    //     return res - (res % 10);
+    // }
 
     let mapOfSetImages = {
         "Black_OOOO" : "https://static.tildacdn.com/tild6232-3536-4839-b131-373066653734/Black_OOOO.jpg",

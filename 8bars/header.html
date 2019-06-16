@@ -1,15 +1,25 @@
 <script type="text/javascript">
 
     // Shop parameters
-    let priceMinipresso = 4790 - 1000;
-    let priceNanopresso = 5990 - 1000;
-    let priceNanopressoTatto = 6500 - 1000;
+    let priceMinipresso;
+    let priceNanopresso;
+    let priceNanopressoTattoo;
+    let priceNsAdapter;
+    let priceBaristaKit;
+    let priceCase;
+    let priceNanovessel;
+    function setPricesVariables() {
+        priceMinipresso = getPriceWithDiscount(4790);
+        priceNanopresso = getPriceWithDiscount(5990);
+        priceNanopressoTattoo = getPriceWithDiscount(6500);
 
-    let priceNsAdapter = 1890;
-    let priceBaristaKit = 2490;
-    let priceCase = 1490;
-    let priceNanovessel = 1990;
+        priceNsAdapter = new Price(1890);
+        priceBaristaKit = new Price(2490);
+        priceCase = new Price(1490);
+        priceNanovessel = new Price(1990);
+    }
 
+    let productDiscount = 1000;
     let bundleDiscountPer = 10;
 
     let freeDeliveryCost = 3000;
@@ -61,10 +71,14 @@
 
     $(document).ready(function(){
         setGlobalVariables();
+        setPricesVariables();
+
         setAdminElements();
 
         setMetrikaGoals();
         setCartWindowFields();
+
+        setPrices();
 
         if (isProductPage) {
             setLastBreadCrumbName();
@@ -81,7 +95,7 @@
             isProductPage = PRODUCTS_PAGES.indexOf(page.toLowerCase()) !== -1;
         }
 
-        if (page.indexOf("admin") !== -1) {
+        if (page.indexOf("admin") > -1) {
             adminMode = true;
         }
 
@@ -281,8 +295,106 @@
         }
     }
 
-    //Utils functions
+    // Price objects
+    {
+        function setPrices() {
 
+            $('.t744__title.js-product-name').each(function (idx) {
+                let productName = $(this).text();
+
+                //skip sets
+                if (productName.toLowerCase().indexOf("set") > -1) {
+                    return;
+                }
+
+                let priceWrapperDiv = $(this)
+                    .parent() // t744__title-wrapper
+                    .parent() // t744__textwrapper
+                    .find('.t744__price-wrapper');
+
+                let currentPriceDiv = priceWrapperDiv.find('.js-product-price');
+                let oldPriceDiv = priceWrapperDiv.find('.t744__price_old');
+                let oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
+
+                setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
+            });
+
+            $('.t778__title.js-product-name').each(function (idx) {
+                let productName = $(this).text();
+
+                let priceWrapperDiv = $(this)
+                                        .parent() // t778__textwrapper t778__paddingsmall
+                                        .find('.t778__price-wrapper');
+
+                let currentPriceDiv = priceWrapperDiv.find('.js-product-price');
+                let oldPriceDiv = priceWrapperDiv.find('.t778__price_old');
+                let oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
+
+                setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
+            });
+
+            function setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv) {
+                let productPrice = getPriceByProductName(productName);
+
+                if (productPrice === undefined) {
+                    console.error("Couldn't find price for: " + productName);
+                    return;
+                }
+
+                currentPriceDiv.text(productPrice.cur);
+
+                if (productPrice.old === undefined) {
+                    oldPriceDiv.hide();
+                } else {
+                    oldPriceDiv.show();
+                    oldPriceValueDiv.text(productPrice.old);
+                }
+            }
+
+            function getPriceByProductName(productName) {
+                if (productName === undefined) {
+                    return undefined;
+                }
+
+                productName = productName.toLowerCase();
+
+                if (productName.indexOf("ns-адаптер") > -1) return priceNsAdapter;
+                if (productName.indexOf("barista") > -1) return priceBaristaKit;
+                if (productName.indexOf("чехол") > -1) return priceCase;
+                if (productName.indexOf("nanovessel") > -1) return priceNanovessel;
+
+                if (productName.indexOf("minipresso") > -1) return priceMinipresso;
+
+                if (productName.indexOf("tattoo") > -1) return priceNanopressoTattoo;
+
+                if (productName.indexOf("patrol") > -1) return priceNanopresso;
+                if (productName.indexOf("set") > -1) return priceNanopresso;
+                if (productName.indexOf("nanopresso") > -1) return priceNanopresso;
+
+                return undefined;
+            }
+        }
+
+        function Price(cur, old) {
+            this.cur = cur;
+
+            if (cur >= old) {
+                this.old = undefined;
+            } else {
+                this.old = old;
+            }
+        }
+
+        function getPriceWithDiscount(old) {
+            let current = productDiscount <= 100
+                ? getDiscountPrice(old, productDiscount)
+                : old - productDiscount;
+
+            return new Price(current, old);
+        }
+    }
+
+    //Utils functions
     {
         function isSamovivoz(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("самовывоз") > -1;
@@ -294,6 +406,11 @@
 
         function isRussia(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
+        }
+
+        function getDiscountPrice(oldPrice, discountPer) {
+            let res = Math.floor(oldPrice * (1 - discountPer / 100));
+            return res - (res % 10);
         }
 
     }
