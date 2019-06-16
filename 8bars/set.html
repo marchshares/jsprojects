@@ -82,12 +82,12 @@
         var hasCase = selectedCaseText !== "Нет";
 
         var currentPrice = priceNanopresso.cur;
-        var oldPrice = priceNanopresso.cur;
+        var oldPrice = priceNanopresso.getPriceWithoutDiscount();
 
-        if ( hasNsAdapter)   { oldPrice += priceNsAdapter.cur; }
-        if ( hasBaristaKit)  { oldPrice += priceBaristaKit.cur; }
-        if ( hasNanovessel)  { oldPrice += priceNanovessel.cur; }
-        if ( hasCase)        { oldPrice += priceCase.cur; }
+        if ( hasNsAdapter)   { oldPrice += priceNsAdapter.getPriceWithoutDiscount(); }
+        if ( hasBaristaKit)  { oldPrice += priceBaristaKit.getPriceWithoutDiscount(); }
+        if ( hasNanovessel)  { oldPrice += priceNanovessel.getPriceWithoutDiscount(); }
+        if ( hasCase)        { oldPrice += priceCase.getPriceWithoutDiscount(); }
 
         var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
 
@@ -99,10 +99,13 @@
             $(this).parent().attr("data-img-zoom-url", imgUrl);
         });
 
-        bundleOldPriceValue.text(oldPrice);
-        if (currentPrice !== oldPrice) {
+        if (oldPrice !== priceNanopresso.getPriceWithoutDiscount()) {
             currentPrice = getDiscountPrice(oldPrice, bundleDiscountPer);
+        }
+
+        if (currentPrice !== oldPrice) {
             bundleOldPrice.show();
+            bundleOldPriceValue.text(oldPrice);
         } else {
             bundleOldPrice.hide();
         }

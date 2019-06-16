@@ -383,6 +383,10 @@
             } else {
                 this.old = old;
             }
+
+            this.getPriceWithoutDiscount = function () {
+                return old !== undefined ? this.old : this.cur;
+            }
         }
 
         function getPriceWithDiscount(old) {
