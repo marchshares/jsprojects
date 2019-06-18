@@ -85,7 +85,7 @@
             setPointNavigationProductName();
         }
 
-        waitVar(() => window.tcart_initted, fixDeliveryPriceFunc);
+        waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
     });
 
     function setGlobalVariables() {
