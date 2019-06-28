@@ -9,9 +9,13 @@
     let priceCase;
     let priceNanovessel;
     function setPricesVariables() {
-        priceMinipresso = getPriceWithDiscount(4790);
-        priceNanopresso = getPriceWithDiscount(5990);
-        priceNanopressoTattoo = getPriceWithDiscount(6500);
+        priceMinipresso = new Price(4790);
+        priceNanopresso = new Price(5990);
+        priceNanopressoTattoo = new Price(6500);
+
+        //priceMinipresso = getPriceWithDiscount(4790);
+        //priceNanopresso = getPriceWithDiscount(5990);
+        //priceNanopressoTattoo = getPriceWithDiscount(6500);
 
         priceNsAdapter = new Price(1890);
         priceBaristaKit = new Price(2490);
@@ -147,9 +151,6 @@
             } else {
                 console.log("yaCounter44688592 is undefined")
             }
-
-            console.log("send to fbq AddToCart");
-            fbq('track', 'AddToCart');
         });
 
         $('.t706__carticon').click(function(){
@@ -161,9 +162,6 @@
             } else {
                 console.log("yaCounter44688592 is undefined")
             }
-
-            console.log("send to fbq InitiateCheckout");
-            fbq('track', 'InitiateCheckout');
         });
     }
 

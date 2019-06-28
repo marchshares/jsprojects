@@ -23,8 +23,8 @@
                 <url>https://8bars.ru/minipresso-gr</url>
                 <picture>https://static.tildacdn.com/tild6432-6134-4638-b937-343033353133/MinipressoGR.jpg</picture>
 
-                <price>3790</price>
-<oldprice>4790</oldprice>
+                <price>4790</price>
+<!--<oldprice>4790</oldprice>-->
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -48,8 +48,8 @@
                 <url>https://8bars.ru/minipresso-ns</url>
                 <picture>https://static.tildacdn.com/tild3931-3665-4037-b164-643037326430/MinipressoNS.jpg</picture>
 
-                <price>3790</price>
-<oldprice>4790</oldprice>
+                <price>4790</price>
+<!--<oldprice>4790</oldprice>-->
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -74,8 +74,8 @@
                 <url>https://8bars.ru/nanopresso</url>
                 <picture>https://static.tildacdn.com/tild3833-3463-4631-b533-626566613030/003_720x.jpg</picture>
 
-                <price>4990</price>
-<oldprice>5990</oldprice>
+                <price>5990</price>
+<!--<oldprice>5990</oldprice>-->
                 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -99,8 +99,8 @@
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild6233-3538-4336-b331-396237663735/NanopressoOrange.jpg</picture>
 
-                <price>4990</price>
-<oldprice>5990</oldprice>
+                <price>5990</price>
+<!--<oldprice>5990</oldprice>-->
                 
                 <param name="цвет">Orange patrol</param>
                 <param name="тип">эспрессо</param>
@@ -124,8 +124,8 @@
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild3062-3536-4466-a364-343037643834/NanopressoYellow.jpg</picture>
 
-                <price>4990</price>
-<oldprice>5990</oldprice>
+                <price>5990</price>
+<!--<oldprice>5990</oldprice>-->
                 
                 <param name="цвет">Yellow patrol</param>
                 <param name="тип">эспрессо</param>
@@ -149,8 +149,8 @@
                 <url>https://8bars.ru/nanopresso-patrol</url>
                 <picture>https://static.tildacdn.com/tild3562-3261-4236-b861-666333336632/NanopressoRed.jpg</picture>
 
-                <price>4990</price>
-<oldprice>5990</oldprice>
+                <price>5990</price>
+<!--<oldprice>5990</oldprice>-->
                 
                 <param name="цвет">Red patrol</param>
                 <param name="тип">эспрессо</param>
@@ -242,8 +242,8 @@
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3938-6433-4663-b632-356537636436/NanopressoTattooOran.jpg</picture>
                 
-                <price>5500</price>
-                <oldprice>6500</oldprice>
+                <price>6500</price>
+                <!--<oldprice>6500</oldprice>-->
                 
                 <param name="цвет">Orange tattoo</param>
                 <param name="тип">эспрессо</param>
@@ -267,8 +267,8 @@
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3761-3863-4635-b466-313838373863/NanopressoTattooYell.jpg</picture>
 
-                <price>5500</price>
-                <oldprice>6500</oldprice>
+                <price>6500</price>
+                <!--<oldprice>6500</oldprice>-->
                 
                 <param name="цвет">Yellow patrol</param>
                 <param name="тип">эспрессо</param>
