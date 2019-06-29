@@ -1,49 +1,7 @@
 <script type="text/javascript">
 
-    // Shop parameters
-    let priceMinipresso;
-    let priceNanopresso;
-    let priceNanopressoTattoo;
-    let priceNsAdapter;
-    let priceBaristaKit;
-    let priceCase;
-    let priceNanovessel;
-    function setPricesVariables() {
-        priceMinipresso = new Price(4790);
-        priceNanopresso = new Price(5990);
-        priceNanopressoTattoo = new Price(6500);
-
-        //priceMinipresso = getPriceWithDiscount(4790);
-        //priceNanopresso = getPriceWithDiscount(5990);
-        //priceNanopressoTattoo = getPriceWithDiscount(6500);
-
-        priceNsAdapter = new Price(1890);
-        priceBaristaKit = new Price(2490);
-        priceCase = new Price(1490);
-        priceNanovessel = new Price(1990);
-    }
-
-    let productDiscount = 1000;
-    let bundleDiscountPer = 10;
-
-    let freeDeliveryCost = 3000;
-    let paidDeliveryCost = 300;
-
-    // Defaults
-    const MAIN_PAGE = "/";
-    const PRODUCTS_PAGES = [
-        "/minipresso-gr",
-        "/minipresso-ns",
-        "/nanopresso",
-        "/nanopresso-patrol",
-        "/ns-adapter-nanopresso",
-        "/barista-kit-nanopresso",
-        "/nanopresso-minipresso-case",
-        "/nanopresso-tattoo",
-        "/nanovessel"
-    ];
-
-    let page = MAIN_PAGE;
+    let page;
+    let productInfo = new ProductInfo();
     let isProductPage = false;
     let adminMode = false;
 
@@ -52,8 +10,6 @@
     const changeDuration = 400;
 
     // HTML elements
-    //let yaCounter44688592;
-
     let deliveryAddressDiv;
     let deliveryAddressInput;
 
@@ -75,7 +31,6 @@
 
     $(document).ready(function(){
         setGlobalVariables();
-        setPricesVariables();
 
         setAdminElements();
 
@@ -87,6 +42,7 @@
         if (isProductPage) {
             setLastBreadCrumbName();
             setPointNavigationProductName();
+            setFbTrack();
         }
 
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
@@ -94,10 +50,10 @@
 
     function setGlobalVariables() {
         let location = document.location;
-        if (location !== undefined) {
-            page = location.pathname;
-            isProductPage = PRODUCTS_PAGES.indexOf(page.toLowerCase()) !== -1;
-        }
+        page = location.pathname;
+
+        productInfo = getProductInfoByPagePath(page);
+        isProductPage = productInfo !== undefined;
 
         if (page.indexOf("admin") > -1) {
             adminMode = true;
@@ -245,6 +201,15 @@
         function setPointNavigationProductName() {
             $('a[href="#product"] > .t607__tooltip').text(h1Text)
         }
+
+        function setFbTrack() {
+            fbq('track', 'ViewContent', {
+                value: productInfo.price,
+                currency: 'RUB',
+                content_ids: productInfo.id,
+                content_type: 'product',
+            });
+        }
     }
 
     function fixDeliveryPriceFunc() {
@@ -297,6 +262,7 @@
     {
         function setPrices() {
 
+            // block with 1 product
             $('.t744__title.js-product-name').each(function (idx) {
                 let productName = $(this).text();
 
@@ -317,6 +283,7 @@
                 setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
             });
 
+            // block with several products
             $('.t778__title.js-product-name').each(function (idx) {
                 let productName = $(this).text();
 
@@ -332,67 +299,86 @@
             });
 
             function setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv) {
-                let productPrice = getPriceByProductName(productName);
+                let productInfo = getProductInfoByProductName(productName);
 
-                if (productPrice === undefined) {
-                    console.error("Couldn't find price for: " + productName);
+                if (productInfo === undefined) {
+                    console.error("Couldn't find info for: " + productName);
                     return;
                 }
 
-                currentPriceDiv.text(productPrice.cur);
+                currentPriceDiv.text(productInfo.price);
 
-                if (productPrice.old === undefined) {
+                if (productInfo.oldPrice === undefined) {
                     oldPriceDiv.hide();
                 } else {
                     oldPriceDiv.show();
-                    oldPriceValueDiv.text(productPrice.old);
+                    oldPriceValueDiv.text(productInfo.oldPrice);
                 }
             }
+        }
 
-            function getPriceByProductName(productName) {
-                if (productName === undefined) {
-                    return undefined;
-                }
-
-                productName = productName.toLowerCase();
-
-                if (productName.indexOf("ns-адаптер") > -1) return priceNsAdapter;
-                if (productName.indexOf("barista") > -1) return priceBaristaKit;
-                if (productName.indexOf("чехол") > -1) return priceCase;
-                if (productName.indexOf("nanovessel") > -1) return priceNanovessel;
-
-                if (productName.indexOf("minipresso") > -1) return priceMinipresso;
-
-                if (productName.indexOf("tattoo") > -1) return priceNanopressoTattoo;
-
-                if (productName.indexOf("patrol") > -1) return priceNanopresso;
-                if (productName.indexOf("set") > -1) return priceNanopresso;
-                if (productName.indexOf("nanopresso") > -1) return priceNanopresso;
-
+        /**
+         * @param {string} pagePath The string
+         * @return {ProductInfo}
+         */
+        function getProductInfoByPagePath(pagePath) {
+            if (pagePath === undefined || pagePath === "" || pagePath === MAIN_PAGE) {
                 return undefined;
             }
-        }
 
-        function Price(cur, old) {
-            this.cur = cur;
+            pagePath = pagePath.toLowerCase();
 
-            if (cur >= old) {
-                this.old = undefined;
-            } else {
-                this.old = old;
+            // replace "/page/" -> "/page"
+            if (pagePath.charAt(pagePath.length-1) === '/') {
+                pagePath = pagePath.substr(0, pagePath.length-1);
             }
 
-            this.getPriceWithoutDiscount = function () {
-                return old !== undefined ? this.old : this.cur;
+            for (let idx in PRODUCTS_INFO) {
+                let productInfo = PRODUCTS_INFO[idx];
+
+                if (productInfo.hasOwnProperty("path") && productInfo.path === pagePath) {
+                    return productInfo;
+                }
             }
+
+            console.log("productInfo not found by pagePath");
+            return undefined;
         }
 
-        function getPriceWithDiscount(old) {
-            let current = productDiscount <= 100
-                ? getDiscountPrice(old, productDiscount)
-                : old - productDiscount;
+        /**
+         * @param {string} productName The string
+         * @return {ProductInfo}
+         */
+        function getProductInfoByProductName(productName) {
+            if (productName === undefined) {
+                return undefined;
+            }
 
-            return new Price(current, old);
+            productName = productName.toLowerCase();
+
+            if (productName.indexOf("ns-адаптер") > -1) return infoNsAdapter;
+            if (productName.indexOf("barista") > -1)    return infoBaristaKit;
+            if (productName.indexOf("чехол") > -1)      return infoCase;
+            if (productName.indexOf("nanovessel") > -1) return infoNanovessel;
+
+            if (productName.indexOf("minipresso") > -1) {
+                if (productName.indexOf("ns") > -1) {
+                    return infoMinipressoNs;
+                } else {
+                    return infoMinipressoGr;
+                }
+            }
+
+            if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
+
+            if (productName.indexOf("patrol") > -1)     return infoNanopresso;
+            if (productName.indexOf("set") > -1)        return infoNanopresso;
+            if (productName.indexOf("nanopresso") > -1) return infoNanopresso;
+
+            if (productName.indexOf("тест") > -1)       return infoTest;
+
+            console.log("productInfo not found by productName");
+            return undefined;
         }
     }
 
@@ -409,12 +395,6 @@
         function isRussia(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
         }
-
-        function getDiscountPrice(oldPrice, discountPer) {
-            let res = Math.floor(oldPrice * (1 - discountPer / 100));
-            return res - (res % 10);
-        }
-
     }
 
     function waitVar(variable, callback) {

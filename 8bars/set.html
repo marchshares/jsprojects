@@ -81,13 +81,13 @@
         var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
         var hasCase = selectedCaseText !== "Нет";
 
-        var currentPrice = priceNanopresso.cur;
-        var oldPrice = priceNanopresso.getPriceWithoutDiscount();
+        var currentPrice = infoNanopresso.price;
+        var oldPrice = infoNanopresso.getPriceWithoutDiscount();
 
-        if ( hasNsAdapter)   { oldPrice += priceNsAdapter.getPriceWithoutDiscount(); }
-        if ( hasBaristaKit)  { oldPrice += priceBaristaKit.getPriceWithoutDiscount(); }
-        if ( hasNanovessel)  { oldPrice += priceNanovessel.getPriceWithoutDiscount(); }
-        if ( hasCase)        { oldPrice += priceCase.getPriceWithoutDiscount(); }
+        if ( hasNsAdapter)   { oldPrice += infoNsAdapter.getPriceWithoutDiscount(); }
+        if ( hasBaristaKit)  { oldPrice += infoBaristaKit.getPriceWithoutDiscount(); }
+        if ( hasCase)        { oldPrice += infoCase.getPriceWithoutDiscount(); }
+        if ( hasNanovessel)  { oldPrice += infoNanovessel.getPriceWithoutDiscount(); }
 
         var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
 
@@ -99,7 +99,7 @@
             $(this).parent().attr("data-img-zoom-url", imgUrl);
         });
 
-        if (oldPrice !== priceNanopresso.getPriceWithoutDiscount()) {
+        if (oldPrice !== infoNanopresso.getPriceWithoutDiscount()) {
             currentPrice = getDiscountPrice(oldPrice, bundleDiscountPer);
         }
 
