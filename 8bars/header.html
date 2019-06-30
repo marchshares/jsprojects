@@ -37,12 +37,15 @@
         setMetrikaGoals();
         setCartWindowFields();
 
-        setPrices();
+        fixProductCarts();
+        setFbTrackInitiateCheckout();
+        setFbTrackPurchase();
 
         if (isProductPage) {
+            fixProductPageCart();
             setLastBreadCrumbName();
             setPointNavigationProductName();
-            setFbTrack();
+            setFbTrackViewContent();
         }
 
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
@@ -201,15 +204,6 @@
         function setPointNavigationProductName() {
             $('a[href="#product"] > .t607__tooltip').text(h1Text)
         }
-
-        function setFbTrack() {
-            fbq('track', 'ViewContent', {
-                value: productInfo.price,
-                currency: 'RUB',
-                content_ids: productInfo.id,
-                content_type: 'product',
-            });
-        }
     }
 
     function fixDeliveryPriceFunc() {
@@ -258,9 +252,9 @@
         }
     }
 
-    // Price objects
+    // fixProduct functions
     {
-        function setPrices() {
+        function fixProductPageCart() {
 
             // block with 1 product
             $('.t744__title.js-product-name').each(function (idx) {
@@ -271,34 +265,42 @@
                     return;
                 }
 
-                let priceWrapperDiv = $(this)
+                let textWrapperDiv = $(this)
                     .parent() // t744__title-wrapper
-                    .parent() // t744__textwrapper
-                    .find('.t744__price-wrapper');
+                    .parent(); // t744__textwrapper
 
-                let currentPriceDiv = priceWrapperDiv.find('.js-product-price');
-                let oldPriceDiv = priceWrapperDiv.find('.t744__price_old');
+                let currentPriceDiv = textWrapperDiv.find('.js-product-price');
+                let oldPriceDiv = textWrapperDiv.find('.t744__price_old');
                 let oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
 
-                setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
+                setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
+
+                let buyButton = textWrapperDiv.find("[href='#order']");
+                buyButton.click(function () {
+                    setFbTrackAddToCart(productInfo);
+                });
             });
+        }
+
+        function fixProductCarts() {
 
             // block with several products
             $('.t778__title.js-product-name').each(function (idx) {
                 let productName = $(this).text();
 
-                let priceWrapperDiv = $(this)
-                                        .parent() // t778__textwrapper t778__paddingsmall
-                                        .find('.t778__price-wrapper');
+                //skip sets
+                if (productName.toLowerCase().indexOf("set") > -1) {
+                    return;
+                }
 
-                let currentPriceDiv = priceWrapperDiv.find('.js-product-price');
-                let oldPriceDiv = priceWrapperDiv.find('.t778__price_old');
+                let productWrapperDiv = $(this)
+                    .parents("div.t778__wrapper");
+
+
+                let currentPriceDiv = productWrapperDiv.find('.js-product-price');
+                let oldPriceDiv = productWrapperDiv.find('.t778__price_old');
                 let oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
 
-                setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
-            });
-
-            function setPrices0(productName, currentPriceDiv, oldPriceDiv, oldPriceValueDiv) {
                 let productInfo = getProductInfoByProductName(productName);
 
                 if (productInfo === undefined) {
@@ -306,14 +308,26 @@
                     return;
                 }
 
-                currentPriceDiv.text(productInfo.price);
+                setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
 
-                if (productInfo.oldPrice === undefined) {
-                    oldPriceDiv.hide();
-                } else {
-                    oldPriceDiv.show();
-                    oldPriceValueDiv.text(productInfo.oldPrice);
-                }
+                let buyButton = productWrapperDiv.find("[href='#order']");
+                buyButton.click(function () {
+                    setFbTrackAddToCart(productInfo);
+                });
+            });
+        }
+
+        /**
+         * @param {ProductInfo} productInfo
+         */
+        function setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv) {
+            currentPriceDiv.text(productInfo.price);
+
+            if (productInfo.oldPrice === undefined) {
+                oldPriceDiv.hide();
+            } else {
+                oldPriceDiv.show();
+                oldPriceValueDiv.text(productInfo.oldPrice);
             }
         }
 
@@ -371,14 +385,72 @@
 
             if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
 
-            if (productName.indexOf("patrol") > -1)     return infoNanopresso;
-            if (productName.indexOf("set") > -1)        return infoNanopresso;
+            if (productName.indexOf("patrol") > -1)     return infoNanopressoPatrol;
+            if (productName.indexOf("set") > -1)        return infoSet;
             if (productName.indexOf("nanopresso") > -1) return infoNanopresso;
 
             if (productName.indexOf("тест") > -1)       return infoTest;
 
             console.log("productInfo not found by productName");
             return undefined;
+        }
+    }
+
+    // FB functions
+    {
+        function setFbTrackViewContent() {
+            fbq('track', 'ViewContent', {
+                value: productInfo.price,
+                currency: 'RUB',
+                content_ids: productInfo.id,
+                content_type: 'product',
+            });
+        }
+
+        /**
+         * @param {ProductInfo} productInfo
+         */
+        function setFbTrackAddToCart(productInfo) {
+            fbq('track', 'AddToCart', {
+                value: productInfo.price,
+                currency: 'RUB',
+                content_ids: productInfo.id,
+                content_type: 'product',
+            });
+        }
+
+        function setFbTrackInitiateCheckout() {
+            let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
+
+            $phoneInput.one("input", function(){
+                fbq('track', 'InitiateCheckout', {
+                    value: tcart.prodamount,
+                    currency: 'RUB'
+                    //content_ids: productInfo.id,
+                    //content_type: 'product',
+                });
+            });
+        }
+
+        function setFbTrackPurchase() {
+            let $makeOrderButton = $('div.t-form__submit > button');
+
+            $makeOrderButton.one("click", function(){
+                let content_idsArr = [];
+                for (let idx in tcart.products) {
+                    let productName = tcart.products[idx].name;
+                    let productInfo = getProductInfoByProductName(productName);
+
+                    content_idsArr.push(productInfo.id);
+                }
+
+                fbq('track', 'Purchase', {
+                    value: tcart.prodamount,
+                    currency: 'RUB',
+                    content_ids: content_idsArr,
+                    content_type: 'product',
+                });
+            });
         }
     }
 
