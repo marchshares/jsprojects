@@ -81,7 +81,6 @@
         var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
         var hasCase = selectedCaseText !== "Нет";
 
-        var currentPrice = infoNanopresso.price;
         var oldPrice = infoNanopresso.getPriceWithoutDiscount();
 
         if ( hasNsAdapter)   { oldPrice += infoNsAdapter.getPriceWithoutDiscount(); }
@@ -99,6 +98,7 @@
             $(this).parent().attr("data-img-zoom-url", imgUrl);
         });
 
+        var currentPrice = infoNanopresso.price;
         if (oldPrice !== infoNanopresso.getPriceWithoutDiscount()) {
             currentPrice = getDiscountPrice(oldPrice, bundleDiscountPer);
         }
@@ -110,6 +110,7 @@
             bundleOldPrice.hide();
         }
 
+        infoSet.price = currentPrice;
         bundlePriceValue.text(currentPrice);
         console.log("Result bundle price: " + currentPrice);
     };

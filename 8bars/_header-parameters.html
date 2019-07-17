@@ -39,8 +39,8 @@
         infoCase             = new ProductInfo(1490, 8, "/nanopresso-minipresso-case");
         infoNanovessel       = new ProductInfo(1990, 9, "/nanovessel");
 
-        infoSet              = new ProductInfo(1, 100, "/");
-        infoTest             = new ProductInfo(3000, 999, "/test-product");
+        infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
+        infoTest             = new ProductInfo(3000, 999, "/test-order");
 
         if (productDiscount > 0) {
             infoMinipressoGr.addDiscount(productDiscount);

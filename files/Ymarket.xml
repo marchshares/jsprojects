@@ -8,14 +8,13 @@
             <currency id="RUR" rate="1" />
         </currencies>
         <categories>
-            <category id="1">Все товары/Товары для дома/Посуда и кухонные принадлежности/Приготовление напитков/Турки, кофеварки, кофемолки</category>
-            <category id="2">Кофеварки и кофемашины</category>
-            <category id="3">Все товары/Товары для дома/Посуда и кухонные принадлежности/Приготовление напитков/Аксессуары</category>
-            <category id="4">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление блюд/Аксессуары для техники/Прочие аксессуары</category>
+            <category id="1">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Кофеварки и кофемашины</category>
+            <category id="2">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Аксессуары для кофемашин и кофеварок</category>
+            <category id="3">Все товары/Товары для дома/Посуда и кухонные принадлежности/Термосы и термокружки</category>
         </categories>
         <offers>
             <offer id="1" type="vendor.model" available="true">
-				<typePrefix>Кофеварка</typePrefix>
+				<typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
 				<model>Minipresso GR</model>
                 
@@ -30,8 +29,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -40,7 +40,7 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="2" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
 				<model>Minipresso NS</model>
 				
@@ -56,8 +56,9 @@
                 <param name="тип используемого кофе">капсулы</param>
                 <param name="тип капсул">Nespresso</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -66,7 +67,7 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="3" type="vendor.model" available="true">
-			    <typePrefix>Кофеварка</typePrefix>
+			    <typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
 				<model>Nanopresso</model>
 				
@@ -81,8 +82,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -91,7 +93,7 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="4" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
                 <model>Nanopresso (Orange patrol)</model>
 
@@ -106,8 +108,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -116,7 +119,7 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="5" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
                 <model>Nanopresso (Yellow patrol)</model>
 
@@ -131,8 +134,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -141,7 +145,7 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="6" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
                 <model>Nanopresso (Red patrol)</model>
 
@@ -156,8 +160,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -167,7 +172,7 @@
             </offer>
             <offer id="7" available="true">
                 <vendor>Wacaco</vendor>
-                <name>Wacaco Nanopresso NS-Адаптер для капсул Nespresso</name>
+                <name>Wacaco Nanopresso NS-Адаптер для капсул</name>
 
                 <description>NS-адаптер позволяет использовать кофемашины Nanopresso для приготовления эспрессо из капсул Nespresso. При приготовлении кофе в капсулах практически невозможно совершить ошибку. Также после приготовления кофе из капсулы кофемашину проще мыть, и в ней остается меньше мусора. Адаптер устанавливается в верхнюю часть Nanopresso вместо чашечки для молотого кофе.</description>
                 <url>https://8bars.ru/ns-adapter-nanopresso</url>
@@ -180,8 +185,9 @@
                 <param name="тип используемого кофе">капсулы</param>
                 <param name="тип капсул">Nespresso</param>
 
+                <categoryId>2</categoryId>
+
                 <currencyId>RUR</currencyId>
-                <categoryId>1</categoryId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -203,8 +209,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
+                <categoryId>2</categoryId>
+
                 <currencyId>RUR</currencyId>
-                <categoryId>1</categoryId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -224,8 +231,9 @@
 
                 <param name="цвет">black</param>
 
+                <categoryId>2</categoryId>
+
                 <currencyId>RUR</currencyId>
-                <categoryId>1</categoryId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -234,9 +242,9 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="10" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
-                <model>Nanopresso (Orange Tattoo) + Чехол</model>
+                <model>Nanopresso c жёстким чехлом</model>
 
                 <description>Nanopresso Tattoo Orange – оранжевая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-tattoo</url>
@@ -249,8 +257,9 @@
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -259,9 +268,9 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
             <offer id="11" type="vendor.model" available="true">
-                <typePrefix>Кофеварка</typePrefix>
+                <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
-                <model>Nanopresso (Yellow Tattoo) + Чехол</model>
+                <model>Nanopresso c жёстким чехлом</model>
 
                 <description>Nanopresso Tattoo Yellow – желтая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-tattoo</url>
@@ -270,12 +279,13 @@
                 <price>6500</price>
                 <!--<oldprice>6500</oldprice>-->
                 
-                <param name="цвет">Yellow patrol</param>
+                <param name="цвет">Yellow tattoo</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <currencyId>RUR</currencyId>
                 <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>
@@ -294,8 +304,9 @@
                 <price>1990</price>
                 <param name="цвет">silver</param>
 
+                <categoryId>3</categoryId>
+
                 <currencyId>RUR</currencyId>
-                <categoryId>1</categoryId>
                 <store>false</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>

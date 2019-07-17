@@ -22,6 +22,7 @@
     let h1Text;
 
     //JQuery objects
+    let $cartForm;
     let $cartWindow;
     let $deliveryDescription;
     let $deliveryTypeRadios;
@@ -42,7 +43,6 @@
         setFbTrackPurchase();
 
         if (isProductPage) {
-            fixProductPageCart();
             setLastBreadCrumbName();
             setPointNavigationProductName();
             setFbTrackViewContent();
@@ -62,6 +62,7 @@
             adminMode = true;
         }
 
+        $cartForm = $('.t706 form');
         $cartWindow = $(".t706__cartwin");
         $deliveryDescription = $('.t-input-subtitle.t-descr');
         $deliveryTypeRadios = $("input:radio[name='deliveryType']");
@@ -254,52 +255,25 @@
 
     // fixProduct functions
     {
-        function fixProductPageCart() {
-
-            // block with 1 product
-            $('.t744__title.js-product-name').each(function (idx) {
-                let productName = $(this).text();
-
-                //skip sets
-                if (productName.toLowerCase().indexOf("set") > -1) {
-                    return;
-                }
-
-                let textWrapperDiv = $(this)
-                    .parent() // t744__title-wrapper
-                    .parent(); // t744__textwrapper
-
-                let currentPriceDiv = textWrapperDiv.find('.js-product-price');
-                let oldPriceDiv = textWrapperDiv.find('.t744__price_old');
-                let oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
-
-                setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
-
-                let buyButton = textWrapperDiv.find("[href='#order']");
-                buyButton.click(function () {
-                    setFbTrackAddToCart(productInfo);
-                });
-            });
-        }
-
         function fixProductCarts() {
 
-            // block with several products
-            $('.t778__title.js-product-name').each(function (idx) {
-                let productName = $(this).text();
+            $('div.t744, div.t778__wrapper').each(function (idx) {
+                let prod = $(this);
 
-                //skip sets
-                if (productName.toLowerCase().indexOf("set") > -1) {
-                    return;
+                let oldPriceDiv;
+                let oldPriceValueDiv;
+                let productName = prod.find(".js-product-name").text();
+                let currentPriceValueDiv = prod.find('.js-product-price');
+                let buyButton = prod.find("[href='#order']");
+
+                let prodClass = $(this).attr("class");
+                if (prodClass.indexOf("t778") !== -1) {
+                    oldPriceDiv = prod.find('.t778__price_old');
+                    oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
+                } else {
+                    oldPriceDiv = prod.find('.t744__price_old');
+                    oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
                 }
-
-                let productWrapperDiv = $(this)
-                    .parents("div.t778__wrapper");
-
-
-                let currentPriceDiv = productWrapperDiv.find('.js-product-price');
-                let oldPriceDiv = productWrapperDiv.find('.t778__price_old');
-                let oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
 
                 let productInfo = getProductInfoByProductName(productName);
 
@@ -308,20 +282,26 @@
                     return;
                 }
 
-                setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv);
+                if (productName.toLowerCase().indexOf("set") === -1) {
+                    setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv);
 
-                let buyButton = productWrapperDiv.find("[href='#order']");
-                buyButton.click(function () {
-                    setFbTrackAddToCart(productInfo);
-                });
+                    buyButton.click(function () {
+                        setFbTrackAddToCart(productInfo);
+                    });
+                } else {
+                    buyButton.click(function () {
+                        setFbTrackAddToCart(infoSet);
+                    });
+                }
             });
+
         }
 
         /**
          * @param {ProductInfo} productInfo
          */
-        function setPrices(productInfo, currentPriceDiv, oldPriceDiv, oldPriceValueDiv) {
-            currentPriceDiv.text(productInfo.price);
+        function setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv) {
+            currentPriceValueDiv.text(productInfo.price);
 
             if (productInfo.oldPrice === undefined) {
                 oldPriceDiv.hide();
@@ -329,6 +309,8 @@
                 oldPriceDiv.show();
                 oldPriceValueDiv.text(productInfo.oldPrice);
             }
+
+            console.log(productName +": cur=" + currentPriceValueDiv.text() + ", old=" + oldPriceValueDiv.text());
         }
 
         /**
@@ -355,7 +337,7 @@
                 }
             }
 
-            console.log("productInfo not found by pagePath");
+            console.log("productInfo not found by pagePath: " + pagePath);
             return undefined;
         }
 
@@ -433,9 +415,7 @@
         }
 
         function setFbTrackPurchase() {
-            let $makeOrderButton = $('div.t-form__submit > button');
-
-            $makeOrderButton.one("click", function(){
+            window.myAfterSendedFunction= function($form){
                 let content_idsArr = [];
                 for (let idx in tcart.products) {
                     let productName = tcart.products[idx].name;
@@ -450,6 +430,10 @@
                     content_ids: content_idsArr,
                     content_type: 'product',
                 });
+            };
+
+            $cartForm.each(function(){
+                $(this).data('formsended-callback', 'window.myAfterSendedFunction');
             });
         }
     }
