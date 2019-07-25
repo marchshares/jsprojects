@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
     let page;
+    let fbq2;
     let productInfo = new ProductInfo();
     let isProductPage = false;
     let adminMode = false;
@@ -54,6 +55,7 @@
     function setGlobalVariables() {
         let location = document.location;
         page = location.pathname;
+        fbq2 = fbq;
 
         productInfo = getProductInfoByPagePath(page);
         isProductPage = productInfo !== undefined;
@@ -381,7 +383,7 @@
     // FB functions
     {
         function setFbTrackViewContent() {
-            fbq('track', 'ViewContent', {
+            fbq2('track', 'ViewContent', {
                 value: productInfo.price,
                 currency: 'RUB',
                 content_ids: productInfo.id,
@@ -393,7 +395,7 @@
          * @param {ProductInfo} productInfo
          */
         function setFbTrackAddToCart(productInfo) {
-            fbq('track', 'AddToCart', {
+            fbq2('track', 'AddToCart', {
                 value: productInfo.price,
                 currency: 'RUB',
                 content_ids: productInfo.id,
@@ -405,7 +407,7 @@
             let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
 
             $phoneInput.one("input", function(){
-                fbq('track', 'InitiateCheckout', {
+                fbq2('track', 'InitiateCheckout', {
                     value: tcart.prodamount,
                     currency: 'RUB'
                     //content_ids: productInfo.id,
@@ -415,7 +417,7 @@
         }
 
         function setFbTrackPurchase() {
-            window.myAfterSendedFunction= function($form){
+            window.myAfterSendedFunction = function($form){
                 let content_idsArr = [];
                 for (let idx in tcart.products) {
                     let productName = tcart.products[idx].name;
@@ -424,12 +426,30 @@
                     content_idsArr.push(productInfo.id);
                 }
 
-                fbq('track', 'Purchase', {
+                let paymentId = getPaymentId(tildaForm.orderIdForStat);
+
+                fbq2('track', 'Purchase', {
                     value: tcart.prodamount,
                     currency: 'RUB',
                     content_ids: content_idsArr,
                     content_type: 'product',
+                    paymentId: paymentId
                 });
+
+                /**
+                 * @param {string} orderIdForStat
+                 * e.g. "T201907-1837361908"
+                 */
+                function getPaymentId(orderIdForStat) {
+                    if (orderIdForStat === undefined || orderIdForStat === "") {
+                        return "";
+                    }
+
+                    let start = orderIdForStat.indexOf("-") + 1;
+                    let end = orderIdForStat.length - 1;
+
+                    return orderIdForStat.substr(start, end);
+                }
             };
 
             $cartForm.each(function(){
