@@ -40,7 +40,7 @@
         setCartWindowFields();
 
         fixProductCarts();
-        setFbTrackInitiateCheckout();
+        setInitiateCheckout();
         setFbTrackPurchase();
 
         if (isProductPage) {
@@ -106,25 +106,22 @@
     function setMetrikaGoals() {
         $("[href='#order']").click(function() {
             console.log('Goal: OpenCartPopUp by #order');
-
-            console.log("send to yaCounter44688592");
-            if (yaCounter44688592 !== undefined) {
-                yaCounter44688592.reachGoal('OpenCartPopUp');
-            } else {
-                console.log("yaCounter44688592 is undefined")
-            }
+            reachMetrikaGoalSafe("OpenCartPopUp");
         });
 
         $('.t706__carticon').click(function(){
             console.log('Goal: OpenCartPopUp by .t706__carticon');
-
-            console.log("send to yaCounter44688592");
-            if (yaCounter44688592 !== undefined) {
-                yaCounter44688592.reachGoal('OpenCartPopUp');
-            } else {
-                console.log("yaCounter44688592 is undefined")
-            }
+            reachMetrikaGoalSafe("OpenCartPopUp");
         });
+    }
+
+    function reachMetrikaGoalSafe(goalName) {
+        if (yaCounter44688592 !== undefined) {
+            console.log("send " + goalName + " to yaCounter44688592");
+            yaCounter44688592.reachGoal(goalName);
+        } else {
+            console.log("yaCounter44688592 is undefined")
+        }
     }
 
     function setCartWindowFields() {
@@ -403,7 +400,7 @@
             });
         }
 
-        function setFbTrackInitiateCheckout() {
+        function setInitiateCheckout() {
             let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
 
             $phoneInput.one("input", function(){
@@ -413,6 +410,8 @@
                     //content_ids: productInfo.id,
                     //content_type: 'product',
                 });
+
+                reachMetrikaGoalSafe("InitiateCheckout");
             });
         }
 
