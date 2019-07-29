@@ -404,7 +404,7 @@
             let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
 
             $phoneInput.one("input", function(){
-                fbq2('track', 'InitiateCheckout', {
+                fbq2('keyup', 'InitiateCheckout', {
                     value: tcart.prodamount,
                     currency: 'RUB'
                     //content_ids: productInfo.id,
