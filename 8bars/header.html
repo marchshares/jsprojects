@@ -1,10 +1,12 @@
 <script type="text/javascript">
 
     let page;
-    let fbq2;
     let productInfo = new ProductInfo();
     let isProductPage = false;
     let adminMode = false;
+
+    // Wrapper for FB pixel
+    let fbq2;
 
     // Configuration
     const fixDeliveryPriceCheckInterval = 500;
@@ -40,13 +42,13 @@
         setCartWindowFields();
 
         fixProductCarts();
-        setInitiateCheckout();
-        setFbTrackPurchase();
+        initInitiateCheckoutFunction();
+        initMyAfterSendedFunction();
 
         if (isProductPage) {
             setLastBreadCrumbName();
             setPointNavigationProductName();
-            setFbTrackViewContent();
+            setFbTrackViewContent(productInfo.price, productInfo.id);
         }
 
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
@@ -55,7 +57,13 @@
     function setGlobalVariables() {
         let location = document.location;
         page = location.pathname;
-        fbq2 = fbq;
+        
+        if (fbq !== undefined) {
+            fbq2 = fbq;
+        } else {
+            fbq2 = undefinedFbq2Func;
+        }
+        
 
         productInfo = getProductInfoByPagePath(page);
         isProductPage = productInfo !== undefined;
@@ -103,24 +111,50 @@
 
     }
 
-    function setMetrikaGoals() {
-        $("[href='#order']").click(function() {
-            console.log('Goal: OpenCartPopUp by #order');
-            reachMetrikaGoalSafe("OpenCartPopUp");
-        });
+    // Events function
+    {
+        function initInitiateCheckoutFunction() {
+            let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
 
-        $('.t706__carticon').click(function(){
-            console.log('Goal: OpenCartPopUp by .t706__carticon');
-            reachMetrikaGoalSafe("OpenCartPopUp");
-        });
-    }
+            $phoneInput.one("keyup", function () {
+                setFbTracktInitiateCheckout(tcart.prodamount);
+                reachMetrikaGoalSafe("InitiateCheckout");
+            });
+        }
 
-    function reachMetrikaGoalSafe(goalName) {
-        if (yaCounter44688592 !== undefined) {
-            console.log("send " + goalName + " to yaCounter44688592");
-            yaCounter44688592.reachGoal(goalName);
-        } else {
-            console.log("yaCounter44688592 is undefined")
+        function initMyAfterSendedFunction() {
+            window.myAfterSendedFunction = function ($form) {
+                let content_idsArr = [];
+                for (let idx in tcart.products) {
+                    let productName = tcart.products[idx].name;
+                    let productInfo = getProductInfoByProductName(productName);
+
+                    content_idsArr.push(productInfo.id);
+                }
+
+                let paymentId = getPaymentId(tildaForm.orderIdForStat);
+
+                setFbTrackPurchase(tcart.prodamount, content_idsArr, paymentId);
+
+                /**
+                 * @param {string} orderIdForStat
+                 * e.g. "T201907-1837361908"
+                 */
+                function getPaymentId(orderIdForStat) {
+                    if (orderIdForStat === undefined || orderIdForStat === "") {
+                        return "";
+                    }
+
+                    let start = orderIdForStat.indexOf("-") + 1;
+                    let end = orderIdForStat.length - 1;
+
+                    return orderIdForStat.substr(start, end);
+                }
+            };
+
+            $cartForm.each(function () {
+                $(this).data('formsended-callback', 'window.myAfterSendedFunction');
+            });
         }
     }
 
@@ -377,17 +411,8 @@
         }
     }
 
-    // FB functions
+    // Stats functions
     {
-        function setFbTrackViewContent() {
-            fbq2('track', 'ViewContent', {
-                value: productInfo.price,
-                currency: 'RUB',
-                content_ids: productInfo.id,
-                content_type: 'product',
-            });
-        }
-
         /**
          * @param {ProductInfo} productInfo
          */
@@ -400,64 +425,59 @@
             });
         }
 
-        function setInitiateCheckout() {
-            let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
-
-            $phoneInput.one("keyup", function(){
-                fbq2('track', 'InitiateCheckout', {
-                    value: tcart.prodamount,
-                    currency: 'RUB'
-                    //content_ids: productInfo.id,
-                    //content_type: 'product',
-                });
-
-                reachMetrikaGoalSafe("InitiateCheckout");
+        function setFbTrackViewContent(value, content_ids) {
+            fbq2('track', 'ViewContent', {
+                value: value,
+                currency: 'RUB',
+                content_ids: content_ids,
+                content_type: 'product',
             });
         }
 
-        function setFbTrackPurchase() {
-            window.myAfterSendedFunction = function($form){
-                let content_idsArr = [];
-                for (let idx in tcart.products) {
-                    let productName = tcart.products[idx].name;
-                    let productInfo = getProductInfoByProductName(productName);
-
-                    content_idsArr.push(productInfo.id);
-                }
-
-                let paymentId = getPaymentId(tildaForm.orderIdForStat);
-
-                fbq2('track', 'Purchase', {
-                    value: tcart.prodamount,
-                    currency: 'RUB',
-                    content_ids: content_idsArr,
-                    content_type: 'product',
-                    paymentId: paymentId
-                });
-
-                /**
-                 * @param {string} orderIdForStat
-                 * e.g. "T201907-1837361908"
-                 */
-                function getPaymentId(orderIdForStat) {
-                    if (orderIdForStat === undefined || orderIdForStat === "") {
-                        return "";
-                    }
-
-                    let start = orderIdForStat.indexOf("-") + 1;
-                    let end = orderIdForStat.length - 1;
-
-                    return orderIdForStat.substr(start, end);
-                }
-            };
-
-            $cartForm.each(function(){
-                $(this).data('formsended-callback', 'window.myAfterSendedFunction');
+        function setFbTracktInitiateCheckout(value) {
+            fbq2('track', 'InitiateCheckout', {
+                value: value,
+                currency: 'RUB'
             });
+        }
+
+        function setFbTrackPurchase(value, content_ids, paymentId) {
+            fbq2('track', 'Purchase', {
+                value: value,
+                currency: 'RUB',
+                content_ids: content_ids,
+                content_type: 'product',
+                paymentId: paymentId
+            });
+        }
+
+        function undefinedFbq2Func() {
+            console.log("fbq2 is undefined, args: [" + arguments[0]+", " + arguments[1]+"]");
+        }
+
+        function setMetrikaGoals() {
+            $("[href='#order']").click(function() {
+                console.log('Goal: OpenCartPopUp by #order');
+                reachMetrikaGoalSafe("OpenCartPopUp");
+            });
+
+            $('.t706__carticon').click(function(){
+                console.log('Goal: OpenCartPopUp by .t706__carticon');
+                reachMetrikaGoalSafe("OpenCartPopUp");
+            });
+        }
+
+        function reachMetrikaGoalSafe(goalName) {
+            if (yaCounter44688592 !== undefined) {
+                console.log("send " + goalName + " to yaCounter44688592");
+                yaCounter44688592.reachGoal(goalName);
+            } else {
+                console.log("yaCounter44688592 is undefined")
+            }
         }
     }
 
-    //Utils functions
+    // Utils functions
     {
         function isSamovivoz(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("самовывоз") > -1;
@@ -470,21 +490,23 @@
         function isRussia(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
         }
+
+        function waitVar(variable, callback) {
+            let maxCount = 10;
+            let interval = setInterval(function () {
+                try {
+                    if (maxCount < 0 || (variable() !== undefined && interval !== undefined) ) {
+                        clearInterval(interval);
+                        callback();
+                    }
+                } catch (e) {
+                    //ignore
+                };
+                maxCount--;
+            }, 1000);
+        }
     }
 
-    function waitVar(variable, callback) {
-        let maxCount = 10;
-        let interval = setInterval(function () {
-            try {
-                if (maxCount < 0 || (variable() !== undefined && interval !== undefined) ) {
-                    clearInterval(interval);
-                    callback();
-                }
-            } catch (e) {
-                //ignore
-            };
-            maxCount--;
-        }, 1000);
-    }
+
 
 </script>
