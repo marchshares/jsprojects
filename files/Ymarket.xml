@@ -7,6 +7,7 @@
         <currencies>
             <currency id="RUR" rate="1" />
         </currencies>
+
         <categories>
             <category id="1">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Кофеварки и кофемашины</category>
             <category id="2">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Аксессуары для кофемашин и кофеварок</category>
@@ -170,7 +171,7 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="7" available="true">
+            <offer id="7" available="false">
                 <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso NS-Адаптер для капсул</name>
 
@@ -241,7 +242,7 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="10" type="vendor.model" available="true">
+            <offer id="10" type="vendor.model" available="false">
                 <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
                 <model>Nanopresso c жёстким чехлом</model>
@@ -315,5 +316,16 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
         </offers>
+        <promos>
+            <promo id="Promo500" type="promo code">
+                <start-date>2019-08-01</start-date>
+                <end-date>2019-08-08</end-date>
+                <promo-code>MARKET500</promo-code>
+                <discount unit="currency" currency="RUR">500</discount>
+                <purchase>
+                    <product category-id="1"/>
+                </purchase>
+            </promo>
+        </promos>
     </shop>
 </yml_catalog>
