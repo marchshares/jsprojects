@@ -58,12 +58,10 @@
         let location = document.location;
         page = location.pathname;
         
-        if (fbq !== undefined) {
-            fbq2 = fbq;
-        } else {
-            fbq2 = undefinedFbq2Func;
+        fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
+        if (ym === undefined) {
+            ym = undefinedYmFunc;
         }
-        
 
         productInfo = getProductInfoByPagePath(page);
         isProductPage = productInfo !== undefined;
@@ -118,7 +116,7 @@
 
             $phoneInput.one("keyup", function () {
                 setFbTracktInitiateCheckout(tcart.prodamount);
-                reachMetrikaGoalSafe("InitiateCheckout");
+                reachMetrikaGoal("InitiateCheckout");
             });
         }
 
@@ -135,6 +133,7 @@
                 let paymentId = getPaymentId(tildaForm.orderIdForStat);
 
                 setFbTrackPurchase(tcart.prodamount, content_idsArr, paymentId);
+                reachMetrikaGoal("Purchase");
 
                 /**
                  * @param {string} orderIdForStat
@@ -452,28 +451,26 @@
         }
 
         function undefinedFbq2Func() {
-            console.log("fbq2 is undefined, args: [" + arguments[0]+", " + arguments[1]+"]");
+            console.log("fbq2 is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
+        }
+
+        function undefinedYmFunc() {
+            console.log("ym is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
         }
 
         function setMetrikaGoals() {
             $("[href='#order']").click(function() {
-                console.log('Goal: OpenCartPopUp by #order');
-                reachMetrikaGoalSafe("OpenCartPopUp");
+                reachMetrikaGoal("OpenCartPopUp");
             });
 
             $('.t706__carticon').click(function(){
-                console.log('Goal: OpenCartPopUp by .t706__carticon');
-                reachMetrikaGoalSafe("OpenCartPopUp");
+                reachMetrikaGoal("OpenCartPopUp");
             });
         }
 
-        function reachMetrikaGoalSafe(goalName) {
-            if (yaCounter44688592 !== undefined) {
-                console.log("send " + goalName + " to yaCounter44688592");
-                yaCounter44688592.reachGoal(goalName);
-            } else {
-                console.log("yaCounter44688592 is undefined")
-            }
+        function reachMetrikaGoal(goalName) {
+            console.log("send " + goalName + " to yaMetrika");
+            ym(ymCounterNum, 'reachGoal', goalName);
         }
     }
 

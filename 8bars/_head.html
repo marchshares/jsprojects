@@ -62,6 +62,8 @@
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
+    const ymCounterNum = 44688592;
+
     if (pageNotInBlackList()) {
         (function (m, e, t, r, i, k, a) {
             m[i] = m[i] || function () {
@@ -70,7 +72,7 @@
             m[i].l = 1 * new Date();
             k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
         })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-        ym(44688592, "init", {
+        ym(ymCounterNum, "init", {
             clickmap: true,
             trackLinks: true,
             accurateTrackBounce: true,
@@ -79,7 +81,7 @@
             ecommerce: "dataLayer"
         });
     } else {
-        yaCounter44688592 = undefined;
+        ym = undefined;
     }
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/44688592" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
