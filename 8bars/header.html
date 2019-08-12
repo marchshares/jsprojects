@@ -26,6 +26,7 @@
 
     //Cdek
     let cdekDeliveryWidget;
+    let cdekPvzInfoWidget;
 
     //JQuery objects
     let $cartForm;
@@ -44,7 +45,7 @@
         setAdminElements();
 
         setMetrikaGoals();
-        setCartWindowFields();
+        fixCartWindowFields();
 
         fixProductCarts();
         initInitiateCheckoutFunction();
@@ -62,7 +63,7 @@
     function setGlobalVariables() {
         let location = document.location;
         page = location.pathname;
-        
+
         fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
         if (ym === undefined) {
             ym = undefinedYmFunc;
@@ -102,16 +103,12 @@
     }
 
     function setAdminElements() {
-        let sendSmsCheckbox = $('input:checkbox[name=SendSmsAboutOrder]');
-        let sendSmsDiv = sendSmsCheckbox
-            .parent()	// class="t-checkbox__control t-text t-text_xs"
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_cb"
+        let $sendSmsCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='SendSmsAboutOrder']");
 
         if (adminMode) {
-            sendSmsDiv.show();
+            $sendSmsCbGroup.show();
         } else {
-            sendSmsDiv.hide();
+            $sendSmsCbGroup.hide();
         }
 
     }
@@ -176,7 +173,7 @@
         let mskDelivery = new DeliveryType("Москва", "");
         let cdekDelivery = new DeliveryType("", "");
 
-        function setCartWindowFields() {
+        function fixDeliveryInCart() {
             $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
                 return isRussia($(this));
             });
@@ -253,6 +250,24 @@
                 popup: true,
                 hidedress: true,
                 defaultCity: 'auto',
+                cityFrom: 'Москва',
+                path: scriptsPath,
+                servicepath: scriptsPath + 'service.php',
+                templatepath: scriptsPath + 'template.php',
+                goods: [ // установим данные о товарах из корзины
+                    { length : 10, width : 10, height : 10, weight : 0.5 }
+                ],
+                onReady : onReady,
+                onCalculate : onCalculate,
+                onChoose : onChoose,
+                onChooseProfile : onChoose
+            });
+
+            cdekPvzInfoWidget = new ISDEKWidjet({
+                hidedress: true,
+                choose: false,
+                link: 'cdek-pvz-info-widjet', // привяжем виджет к указанной ссылке
+                defaultCity: 'auto',
                 // defaultCity: 'Казань',
                 cityFrom: 'Москва',
                 path: scriptsPath,
@@ -261,20 +276,30 @@
                 goods: [ // установим данные о товарах из корзины
                     { length : 10, width : 10, height : 10, weight : 0.5 }
                 ],
-                onReady : function(){
-                    $('#linkForWidjet').css('display','inline');
-                },
-                onCalculate : function(info){
-                    //TODO: check days in the following vars and hide if it very long
-                    //info.profiles.courier.term
-                    //info.profiles.pickup.term
-                    setTimeout(function () {
-                        $(".CDEK-widget__delivery-type__item-details > p:contains('руб')").hide();
-                    }, 100);
-                },
+                onReady : onReady,
+                onCalculate : onCalculate,
                 onChoose : onChoose,
                 onChooseProfile : onChoose
             });
+
+            function onReady() {
+                //fix CDEk ids
+                $('div.CDEK-widget__sidebar-button[data-hint="#list"]').attr('data-hint','#cdek-list');
+                $('div.CDEK-widget__sidebar-button[data-hint="#delivery"]').attr('data-hint','#cdek-delivery');
+                $('div.CDEK-widget__sidebar-button[data-hint="#contacts"]').attr('data-hint','#cdek-contacts');
+                $('div.CDEK-widget__sidebar-button__hint#list').attr('id','cdek-list');
+                $('div.CDEK-widget__sidebar-button__hint#delivery').attr('id','cdek-delivery');
+                $('div.CDEK-widget__sidebar-button__hint#contacts').attr('id','cdek-contacts');
+            }
+
+            function onCalculate(info) {
+                //TODO: check days in the following vars and hide if it very long
+                //info.profiles.courier.term
+                //info.profiles.pickup.term
+                setTimeout(function () {
+                    $(".CDEK-widget__delivery-type__item-details > p:contains('руб')").hide();
+                }, 100);
+            }
 
             function onChoose(info) {
                 setDelivery(cdekDelivery);
@@ -324,6 +349,22 @@
 
     // Fix cart functions
     {
+        function fixCartWindowFields() {
+            fixDeliveryInCart();
+            fixPromoCodeInCart();
+        }
+
+        function fixPromoCodeInCart(){
+            let $promoGroup = $cartForm.find(".t-input-group_pc");
+            $promoGroup.hide();
+
+            let $hasPromoCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='hasPromo']");
+            $hasPromoCbGroup.one('change', function () {
+                $hasPromoCbGroup.hide(changeDuration);
+                $promoGroup.show(changeDuration);
+            });
+        }
+
         function fixDeliveryPriceFunc() {
             setInterval(function () {
                 if (isCartWinShowed()) {
