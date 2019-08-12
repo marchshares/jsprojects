@@ -24,6 +24,9 @@
 
     let h1Text;
 
+    //Cdek
+    let cdekDeliveryWidget;
+
     //JQuery objects
     let $cartForm;
     let $cartWindow;
@@ -32,6 +35,8 @@
     let $deliveryClientCost;
 
     let $checkedDelivery;
+    let $cdekDeliveryRadio;
+    let $cdekDeliveryTimePost;
 
     $(document).ready(function(){
         setGlobalVariables();
@@ -92,6 +97,8 @@
             .parent();	// class="t-input-group t-input-group_in"
 
         h1Text = $('h1').text();
+
+        initCdekDeliveryWidget();
     }
 
     function setAdminElements() {
@@ -157,78 +164,154 @@
         }
     }
 
-    function setCartWindowFields() {
-        $checkedDelivery = $deliveryTypeRadios.filter(function () {return isMoscow($(this));});
-        $checkedDelivery.prop("checked", true);
-        setDefaultMoscow();
+    // Delivery functions
+    {
+        function DeliveryType(city, address) {
+            this.city = city;
+            this.address = address;
+        }
 
-        $deliveryTypeRadios.change(function(){
-            $checkedDelivery = $deliveryTypeRadios.filter(":checked");
+        let currentDelivery;
+        let selfTakeDelivery = new DeliveryType("Москва", "Самовывоз");
+        let mskDelivery = new DeliveryType("Москва", "");
+        let cdekDelivery = new DeliveryType("", "");
 
-            if (isSamovivoz($checkedDelivery)) {
-                setDefaultSamovivoz();
+        function setCartWindowFields() {
+            $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
+                return isRussia($(this));
+            });
+            $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
+            $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
 
-            } else if (isMoscow($checkedDelivery)) {
-                setDefaultMoscow();
+            //default Moscow delivery
+            $checkedDelivery = $deliveryTypeRadios.filter(function () {
+                return isMoscow($(this));
+            });
+            $checkedDelivery.prop("checked", true);
+            setDefaultMoscow();
 
-            } else if (isRussia($checkedDelivery)) {
-                setDefaultRussia();
-            }
-        });
+            //event listener
+            $deliveryTypeRadios.change(function () {
+                $checkedDelivery = $deliveryTypeRadios.filter(":checked");
+
+                if (isSamovivoz($checkedDelivery)) {
+                    setDefaultSamovivoz();
+
+                } else if (isMoscow($checkedDelivery)) {
+                    setDefaultMoscow();
+
+                } else if (isRussia($checkedDelivery)) {
+                    setDefaultRussia();
+                }
+            });
+        }
 
         function setDefaultSamovivoz() {
-            cityDiv
-                .hide(changeDuration);
-            deliveryAddressDiv
-                .hide(changeDuration);
-            deliveryIntervalDiv
-                .hide(changeDuration);
+            cityDiv.hide(changeDuration);
+            deliveryAddressDiv.hide(changeDuration);
+            deliveryIntervalDiv.hide(changeDuration);
+            $cdekDeliveryTimePost.hide(changeDuration);
 
-            if (deliveryAddressInput.val() === "") {
-                deliveryAddressInput.val("Самовывоз");
-            }
-
-            if (cityInput.val() === "") {
-                cityInput.val("Москва");
-            }
+            setDelivery(selfTakeDelivery);
         }
 
         function setDefaultMoscow() {
-            cityDiv
-                .hide(changeDuration);
-            deliveryAddressDiv
-                .show(changeDuration);
-            deliveryIntervalDiv
-                .show(changeDuration);
+            cityDiv.hide(changeDuration);
+            deliveryAddressDiv.show(changeDuration);
+            deliveryIntervalDiv.show(changeDuration);
+            $cdekDeliveryTimePost.hide(changeDuration);
 
-            if (deliveryAddressInput.val() === "Самовывоз") {
-                deliveryAddressInput.val("");
-            }
-
-            if (cityInput.val() === "") {
-                cityInput.val("Москва");
-            }
+            setDelivery(mskDelivery);
         }
 
         function setDefaultRussia() {
-            cityDiv
-                .show(changeDuration);
-            deliveryAddressDiv
-                .show(changeDuration);
-            deliveryIntervalDiv
-                .hide(changeDuration);
+            cityDiv.show(changeDuration);
+            deliveryAddressDiv.show(changeDuration);
+            deliveryIntervalDiv.hide(changeDuration);
+            $cdekDeliveryTimePost.show(changeDuration);
 
-            if (deliveryAddressInput.val() === "Самовывоз") {
-                deliveryAddressInput.val("");
+            cdekDeliveryWidget.open();
+        }
+
+        function setDelivery(checkedDelivery) {
+            if (currentDelivery !== undefined) {
+                currentDelivery.city = cityInput.val();
+                currentDelivery.address = deliveryAddressInput.val();
             }
 
-            if (cityInput.val() === "Москва") {
-                cityInput.val("");
+            currentDelivery = checkedDelivery;
+
+            cityInput.val(currentDelivery.city);
+            deliveryAddressInput.val(currentDelivery.address);
+
+            console.log("Delivery: " + cityInput.val() + ", " + deliveryAddressInput.val());
+        }
+
+        function initCdekDeliveryWidget() {
+            let scriptsPath = 'https://8bars.000webhostapp.com/cdek-pvz-widget/widget/scripts/';
+            cdekDeliveryWidget = new ISDEKWidjet({
+                popup: true,
+                hidedress: true,
+                defaultCity: 'auto',
+                // defaultCity: 'Казань',
+                cityFrom: 'Москва',
+                path: scriptsPath,
+                servicepath: scriptsPath + 'service.php',
+                templatepath: scriptsPath + 'template.php',
+                goods: [ // установим данные о товарах из корзины
+                    { length : 10, width : 10, height : 10, weight : 0.5 }
+                ],
+                onReady : function(){
+                    $('#linkForWidjet').css('display','inline');
+                },
+                onCalculate : function(info){
+                    //TODO: check days in the following vars and hide if it very long
+                    //info.profiles.courier.term
+                    //info.profiles.pickup.term
+                    setTimeout(function () {
+                        $(".CDEK-widget__delivery-type__item-details > p:contains('руб')").hide();
+                    }, 100);
+                },
+                onChoose : onChoose,
+                onChooseProfile : onChoose
+            });
+
+            function onChoose(info) {
+                setDelivery(cdekDelivery);
+
+                if (info.term === undefined) {
+                    $cdekDeliveryTimePost.text("");
+                } else {
+                    $cdekDeliveryTimePost.text(" (срок ~" + info.term + " раб. дн.)");
+                }
+
+                cityInput.val(info.cityName);
+
+                if (info.PVZ !== undefined) {
+                    deliveryAddressInput.val("ПВЗ: " + info.PVZ.Address);
+                } else {
+                    if (deliveryAddressInput.val().indexOf("ПВЗ:") === 0) {
+                        deliveryAddressInput.val("");
+                    }
+                }
             }
+        }
+
+
+        function isSamovivoz(checkedDelivery) {
+            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("самовывоз") > -1;
+        }
+
+        function isMoscow(checkedDelivery) {
+            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("москв") > -1;
+        }
+
+        function isRussia(checkedDelivery) {
+            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
         }
     }
 
-    // Functions for products pages
+    // Fix products pages functions
     {
         function setLastBreadCrumbName() {
             $('.t758__link-item_active').text(h1Text);
@@ -239,53 +322,56 @@
         }
     }
 
-    function fixDeliveryPriceFunc() {
-        setInterval(function () {
-            if (isCartWinShowed()) {
-                let prodamount = window.tcart.prodamount;
-                let amount = window.tcart.amount;
+    // Fix cart functions
+    {
+        function fixDeliveryPriceFunc() {
+            setInterval(function () {
+                if (isCartWinShowed()) {
+                    let prodamount = window.tcart.prodamount;
+                    let amount = window.tcart.amount;
 
-                if (prodamount !== undefined && amount !== undefined) {
-                    let shouldPaid = !isSamovivoz($checkedDelivery) && prodamount < freeDeliveryCost && amount === prodamount;
-                    let shouldFree = (isSamovivoz($checkedDelivery) || prodamount >= freeDeliveryCost) && amount !== prodamount;
+                    if (prodamount !== undefined && amount !== undefined) {
+                        let shouldPaid = !isSamovivoz($checkedDelivery) && prodamount < freeDeliveryCost && amount === prodamount;
+                        let shouldFree = (isSamovivoz($checkedDelivery) || prodamount >= freeDeliveryCost) && amount !== prodamount;
 
-                    if (shouldPaid || shouldFree) {
+                        if (shouldPaid || shouldFree) {
 
-                        if (shouldPaid) {
-                            $checkedDelivery.attr("data-delivery-price", paidDeliveryCost);
+                            if (shouldPaid) {
+                                $checkedDelivery.attr("data-delivery-price", paidDeliveryCost);
+                            }
+
+                            if (shouldFree) {
+                                $checkedDelivery.attr("data-delivery-price", 0);
+                            }
+
+                            window.tcart.delivery = {};
+                            window.tcart.delivery.name = $checkedDelivery.val();
+                            window.tcart.delivery.price = $checkedDelivery.attr("data-delivery-price");
+
+                            tcart__updateTotalProductsinCartObj(),
+                                tcart__reDrawTotal();
                         }
 
-                        if (shouldFree) {
-                            $checkedDelivery.attr("data-delivery-price", 0);
+                        if ($checkedDelivery.attr("data-delivery-price") === "") {
+                            $deliveryClientCost.val(0);
+                        } else {
+                            $deliveryClientCost.val($checkedDelivery.attr("data-delivery-price"));
                         }
-
-                        window.tcart.delivery = {};
-                        window.tcart.delivery.name = $checkedDelivery.val();
-                        window.tcart.delivery.price = $checkedDelivery.attr("data-delivery-price");
-
-                        tcart__updateTotalProductsinCartObj(),
-                            tcart__reDrawTotal();
-                    }
-
-                    if ($checkedDelivery.attr("data-delivery-price") === "") {
-                        $deliveryClientCost.val(0);
-                    } else {
-                        $deliveryClientCost.val($checkedDelivery.attr("data-delivery-price"));
                     }
                 }
-            }
-        }, fixDeliveryPriceCheckInterval);
+            }, fixDeliveryPriceCheckInterval);
 
-        function isCartWinShowed() {
-            if ($cartWindow === undefined) {
-                $cartWindow = $(".t706__cartwin");
-            }
+            function isCartWinShowed() {
+                if ($cartWindow === undefined) {
+                    $cartWindow = $(".t706__cartwin");
+                }
 
-            return $cartWindow.hasClass("t706__cartwin_showed")
+                return $cartWindow.hasClass("t706__cartwin_showed")
+            }
         }
     }
 
-    // fixProduct functions
+    // fix product carts functions
     {
         function fixProductCarts() {
 
@@ -476,18 +562,6 @@
 
     // Utils functions
     {
-        function isSamovivoz(checkedDelivery) {
-            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("самовывоз") > -1;
-        }
-
-        function isMoscow(checkedDelivery) {
-            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("москв") > -1;
-        }
-
-        function isRussia(checkedDelivery) {
-            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
-        }
-
         function waitVar(variable, callback) {
             let maxCount = 10;
             let interval = setInterval(function () {
