@@ -38,6 +38,7 @@
     let $checkedDelivery;
     let $cdekDeliveryRadio;
     let $cdekDeliveryTimePost;
+    let $cdekDeliveryTimePostValue;
     let $deliveryRussiaTab;
 
     $(document).ready(function(){
@@ -186,6 +187,7 @@
             });
             $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
             $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
+            $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
 
             //default Moscow delivery
             $checkedDelivery = $deliveryTypeRadios.filter(function () {
@@ -298,8 +300,15 @@
 
                 if (info.term === undefined) {
                     $cdekDeliveryTimePost.text("");
+                    $cdekDeliveryTimePostValue.val("???");
+
+                } else if (info.term === info.termOriginal){
+                    $cdekDeliveryTimePost.text(" (срок ~" + info.term + ")");
+                    $cdekDeliveryTimePostValue.val(info.term);
+
                 } else {
-                    $cdekDeliveryTimePost.text(" (срок ~" + info.term + " раб. дн.)");
+                    $cdekDeliveryTimePost.text(" (" + info.term + ")");
+                    $cdekDeliveryTimePostValue.val("Original: " + info.termOriginal + " дн., shown: " + info.term);
                 }
 
                 cityInput.val(info.cityName);
@@ -531,6 +540,7 @@
 
     // Stats functions
     {
+        // Facebook
         /**
          * @param {ProductInfo} productInfo
          */
@@ -573,6 +583,7 @@
             console.log("fbq2 is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
         }
 
+        // Yandex Metrika
         function undefinedYmFunc() {
             console.log("ym is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
         }
@@ -593,6 +604,10 @@
 
             $cdekDeliveryRadio.click(function(){
                 reachMetrikaGoal("OpenDeliveryRussiaRadioInCart");
+            });
+
+            $('#rec83969919').find('div.t825__btn').one('click', function(){
+                reachMetrikaGoal("OpenMessengerWidget");
             });
         }
 
