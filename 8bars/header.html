@@ -28,6 +28,11 @@
     let cdekDeliveryWidget;
     let cdekPvzInfoWidget;
 
+    let currentDelivery;
+    let selfTakeDelivery = new DeliveryType("Москва", "Самовывоз");
+    let mskDelivery = new DeliveryType("Москва", "");
+    let cdekDelivery = new DeliveryType("", "");
+
     //JQuery objects
     let $cartForm;
     let $cartWindow;
@@ -62,6 +67,10 @@
 
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
     });
+
+    // $( window ).load(function() {
+    //     // Run code
+    // });
 
     function setGlobalVariables() {
         let location = document.location;
@@ -139,7 +148,11 @@
                     let productName = tcart.products[idx].name;
                     let productInfo = getProductInfoByProductName(productName);
 
-                    content_idsArr.push(productInfo.id);
+                    if (productInfo === undefined) {
+                        console.warn("Couldn't find info for: " + productName);
+                    } else {
+                        content_idsArr.push(productInfo.id);
+                    }
                 }
 
                 let paymentId = getPaymentId(tildaForm.orderIdForStat);
@@ -171,16 +184,6 @@
 
     // Delivery functions
     {
-        function DeliveryType(city, address) {
-            this.city = city;
-            this.address = address;
-        }
-
-        let currentDelivery;
-        let selfTakeDelivery = new DeliveryType("Москва", "Самовывоз");
-        let mskDelivery = new DeliveryType("Москва", "");
-        let cdekDelivery = new DeliveryType("", "");
-
         function fixDeliveryInCart() {
             $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
                 return isRussia($(this));
