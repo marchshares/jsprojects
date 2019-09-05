@@ -17,6 +17,7 @@
     let infoNanopresso;
     let infoNanopressoPatrol;
     let infoNanopressoTattoo;
+    let infoNanopressoElements;
     let infoNsAdapter;
     let infoBaristaKit;
     let infoCase;
@@ -33,6 +34,7 @@
         infoNanopressoPatrol = new ProductInfo(5990, 4, "/nanopresso-patrol");
 
         infoNanopressoTattoo = new ProductInfo(6500, 5, "/nanopresso-tattoo");
+        infoNanopressoElements = new ProductInfo(6990, 10, "/nanopresso-elements");
 
         infoNsAdapter        = new ProductInfo(1890, 6, "/ns-adapter-nanopresso");
         infoBaristaKit       = new ProductInfo(2490, 7, "/barista-kit-nanopresso");
@@ -48,6 +50,7 @@
             infoNanopresso.addDiscount(productDiscount);
             infoNanopressoPatrol.addDiscount(productDiscount);
             infoNanopressoTattoo.addDiscount(productDiscount);
+            infoNanopressoElements.addDiscount(productDiscount);
 
             infoTest.addDiscount(productDiscount);
         }
@@ -58,6 +61,7 @@
             infoNanopresso,
             infoNanopressoPatrol,
             infoNanopressoTattoo,
+            infoNanopressoElements,
             infoNsAdapter,
             infoBaristaKit,
             infoCase,

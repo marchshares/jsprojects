@@ -68,9 +68,9 @@
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
     });
 
-    // $( window ).load(function() {
-    //     // Run code
-    // });
+     $( window ).load(function() {
+         initCdekDeliveryWidget('order');
+     });
 
     function setGlobalVariables() {
         let location = document.location;
@@ -115,8 +115,6 @@
         $deliveryRussiaTab.click(function () {
             initCdekDeliveryWidget('info');
         });
-
-        initCdekDeliveryWidget('order');
     }
 
     function setAdminElements() {
@@ -529,6 +527,7 @@
             }
 
             if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
+            if (productName.indexOf("elements") > -1)   return infoNanopressoElements;
 
             if (productName.indexOf("patrol") > -1)     return infoNanopressoPatrol;
             if (productName.indexOf("set") > -1)        return infoSet;
@@ -622,6 +621,16 @@
 
     // Utils functions
     {
+        function jivo_onLoadCallback() {
+            if (window.jivo_config !== undefined)  {
+                window.jivo_config.logs = undefined;
+            }
+        }
+
+        function jivo_onOpen() {
+            reachMetrikaGoal("OpenJivoWidget");
+        }
+
         function waitVar(variable, callback) {
             let maxCount = 10;
             let interval = setInterval(function () {
