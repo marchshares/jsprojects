@@ -1,0 +1,11 @@
+<promos>
+    <promo id="Promo500" type="promo code">
+        <start-date>2019-08-01</start-date>
+        <end-date>2019-08-08</end-date>
+        <promo-code>MARKET500</promo-code>
+        <discount unit="currency" currency="RUR">500</discount>
+        <purchase>
+            <product category-id="1"/>
+        </purchase>
+    </promo>
+</promos>

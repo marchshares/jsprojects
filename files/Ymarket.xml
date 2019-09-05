@@ -171,7 +171,7 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="7" available="false">
+            <offer id="7" available="true">
                 <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso NS-Адаптер для капсул</name>
 
@@ -315,17 +315,111 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
+
+            <offer id="13" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso c жёстким чехлом</model>
+
+                <description>Nanopresso Elements Chill White – белая версия карманной кофемашины от Wacaco с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-elements</url>
+                <picture>https://static.tildacdn.com/tild6535-3239-4430-b963-373735323433/Nanopresso_Chill_Whi.png</picture>
+
+                <price>6990</price>
+                <!--<oldprice>6500</oldprice>-->
+
+                <param name="цвет">Elements Chill White</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="14" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso c жёстким чехлом</model>
+
+                <description>Nanopresso Elements Moss Green – зеленая версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-elements</url>
+                <picture>https://static.tildacdn.com/tild6335-3965-4630-a262-356437643862/Nanopresso_Moss_Gree.png</picture>
+
+                <price>6990</price>
+                <!--<oldprice>6500</oldprice>-->
+
+                <param name="цвет">Elements Moss Green</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="15" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso c жёстким чехлом</model>
+
+                <description>Nanopresso Elements Arctic Blue – светло-голубая версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-elements</url>
+                <picture>https://static.tildacdn.com/tild3239-6461-4539-a332-363536613830/Nanopresso_Arctic_Bl.png</picture>
+
+                <price>6990</price>
+                <!--<oldprice>6500</oldprice>-->
+
+                <param name="цвет">Elements Arctic Blue</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="16" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso c жёстким чехлом</model>
+
+                <description>Nanopresso Elements Lava Red – огненно-красная версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-elements</url>
+                <picture>https://static.tildacdn.com/tild3137-6636-4139-b230-663861616331/Nanopresso_Lava_Red.png</picture>
+
+                <price>6990</price>
+                <!--<oldprice>6500</oldprice>-->
+
+                <param name="цвет">Elements Lava Red</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
         </offers>
-        <promos>
-            <promo id="Promo500" type="promo code">
-                <start-date>2019-08-01</start-date>
-                <end-date>2019-08-08</end-date>
-                <promo-code>MARKET500</promo-code>
-                <discount unit="currency" currency="RUR">500</discount>
-                <purchase>
-                    <product category-id="1"/>
-                </purchase>
-            </promo>
-        </promos>
     </shop>
 </yml_catalog>
