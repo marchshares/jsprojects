@@ -4,6 +4,7 @@
     let productInfo = new ProductInfo();
     let isProductPage = false;
     let adminMode = false;
+    let readyTime = 0;
 
     // Wrapper for FB pixel
     let fbq2;
@@ -73,6 +74,8 @@
      });
 
     function setGlobalVariables() {
+        readyTime = new Date().getTime();
+        
         let location = document.location;
         page = location.pathname;
 
@@ -607,18 +610,6 @@
             $cdekDeliveryRadio.click(function(){
                 reachMetrikaGoal("OpenDeliveryRussiaRadioInCart");
             });
-
-            $('#rec83969919').find('div.t825__btn').one('click', function(){
-                reachMetrikaGoal("OpenMessengerWidget");
-            });
-
-            $('#rec89792456').find('a').on('click',function(){
-                reachMetrikaGoal("ClickOnNewBanner");
-            });
-
-            $('jdiv.wrap_3s._show_3w').on('click',function(){
-                reachMetrikaGoalViaParams("OpenJivoPhoneWidget");
-            })
         }
 
         function reachMetrikaGoal(goalName) {
@@ -626,12 +617,17 @@
             ym(ymCounterNum, 'reachGoal', goalName);
         }
 
-        function reachMetrikaGoalViaParams(goalName) {
-            console.log("send " + goalName + " to yaMetrika via params");
+        function reachMetrikaGoalViaParams(goalJson) {
+            console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
             ym(ymCounterNum, 'params', {
-                'customGoal' : goalName,
-                'time' : new Date()
+                'customGoal' : goalJson,
+                'time' : getTimeSinceReadyInMins()
             });
+        }
+
+        function getTimeSinceReadyInMins() {
+            let now = new Date().getTime();
+            return Math.round((now - readyTime) / 600) / 100
         }
     }
 
@@ -648,7 +644,7 @@
         }
 
         function jivo_onOpen() {
-            reachMetrikaGoal("OpenJivoWidget");
+            reachMetrikaGoalViaParams("OpenJivoWidget");
         }
 
         function waitVar(variable, callback) {
