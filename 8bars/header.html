@@ -1,10 +1,192 @@
+<!--Parameters-->
 <script type="text/javascript">
 
-    let page;
-    let productInfo = new ProductInfo();
-    let isProductPage = false;
-    let adminMode = false;
+    // set productDiscount > 0 to apply discount
+    let productDiscount = 0;
+
+    let bundleDiscountPer = 10;
+
+    let freeDeliveryCost = 3000;
+    let paidDeliveryCost = 300;
+
+    const MAIN_PAGE = "/";
+    let PRODUCTS_INFO;
+
+    // Shop parameters
+    let infoMinipressoGr;
+    let infoMinipressoNs;
+    let infoNanopresso;
+    let infoNanopressoPatrol;
+    let infoNanopressoTattoo;
+    let infoNanopressoElements;
+    let infoNsAdapter;
+    let infoBaristaKit;
+    let infoCase;
+    let infoNanovessel;
+
+    let infoSet;
+    let infoTest;
+
+    function setProductsInfo() {
+        infoMinipressoGr     = new ProductInfo(4790, 1, "/minipresso-gr");
+        infoMinipressoNs     = new ProductInfo(4790, 2, "/minipresso-ns");
+
+        infoNanopresso       = new ProductInfo(5990, 3, "/nanopresso");
+        infoNanopressoPatrol = new ProductInfo(5990, 4, "/nanopresso-patrol");
+
+        infoNanopressoTattoo = new ProductInfo(6500, 5, "/nanopresso-tattoo");
+        infoNanopressoElements = new ProductInfo(6990, 10, "/nanopresso-elements");
+
+        infoNsAdapter        = new ProductInfo(1890, 6, "/ns-adapter-nanopresso");
+        infoBaristaKit       = new ProductInfo(2490, 7, "/barista-kit-nanopresso");
+        infoCase             = new ProductInfo(1490, 8, "/nanopresso-minipresso-case");
+        infoNanovessel       = new ProductInfo(1990, 9, "/nanovessel");
+
+        infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
+        infoTest             = new ProductInfo(3000, 999, "/test-product");
+
+        if (productDiscount > 0) {
+            infoMinipressoGr.addDiscount(productDiscount);
+            infoMinipressoNs.addDiscount(productDiscount);
+            infoNanopresso.addDiscount(productDiscount);
+            infoNanopressoPatrol.addDiscount(productDiscount);
+            infoNanopressoTattoo.addDiscount(productDiscount);
+            infoNanopressoElements.addDiscount(productDiscount);
+
+            infoTest.addDiscount(productDiscount);
+        }
+
+        PRODUCTS_INFO = [
+            infoMinipressoGr,
+            infoMinipressoNs,
+            infoNanopresso,
+            infoNanopressoPatrol,
+            infoNanopressoTattoo,
+            infoNanopressoElements,
+            infoNsAdapter,
+            infoBaristaKit,
+            infoCase,
+            infoNanovessel,
+
+            infoTest
+        ];
+    }
+
+    function ProductInfo(price, id, path) {
+        this.price = price;
+        this.oldPrice = undefined;
+        this.id = id;
+        this.path = path;
+
+        this.addDiscount = function (discount) {
+            this.oldPrice = this.price;
+
+            if (discount <= 100) {
+                this.price = getDiscountPrice(this.price, discount);
+            } else {
+                this.price -= discount;
+            }
+        };
+
+        this.getPriceWithoutDiscount = function () {
+            return this.oldPrice !== undefined ? this.oldPrice : this.price;
+        }
+    }
+
+    function getDiscountPrice(oldPrice, discountPer) {
+        let res = Math.floor(oldPrice * (1 - discountPer / 100));
+        return res - (res % 10);
+    }
+
+    function DeliveryType(city, address) {
+        this.city = city;
+        this.address = address;
+    }
+
+    //fun func
+    setProductsInfo();
+</script>
+
+<!--Fix pages-->
+<script type="text/javascript">
     let readyTime = 0;
+    let adminMode = false;
+
+    let page;
+    let productInfo;
+    let isProductPage;
+
+    let h1Text;
+
+    $(document).ready(function () {
+        readyTime = new Date().getTime();
+        page = document.location.pathname;
+
+        if (page.indexOf("admin") > -1) {
+            adminMode = true;
+        }
+
+        h1Text = $('h1').text();
+
+        productInfo = getProductInfoByPagePath(page);
+        isProductPage = productInfo !== undefined;
+
+        if (isProductPage) {
+            setAltForAllProductPics();
+            setLastBreadCrumbName();
+            setPointNavigationProductName();
+        }
+    });
+
+    // Fix products pages functions
+    {
+        function setAltForAllProductPics() {
+            $('.js-product-img').each(function () {
+                $(this).attr('alt', h1Text);
+            });
+        }
+
+        function setLastBreadCrumbName() {
+            $('.t758__link-item_active').text(h1Text);
+        }
+
+        function setPointNavigationProductName() {
+            $('a[href="#product"] > .t607__tooltip').text(h1Text)
+        }
+    }
+
+    /**
+     * @param {string} pagePath The string
+     * @return {ProductInfo}
+     */
+    function getProductInfoByPagePath(pagePath) {
+        if (pagePath === undefined || pagePath === "" || pagePath === MAIN_PAGE) {
+            return undefined;
+        }
+
+        pagePath = pagePath.toLowerCase();
+
+        // replace "/page/" -> "/page"
+        if (pagePath.charAt(pagePath.length-1) === '/') {
+            pagePath = pagePath.substr(0, pagePath.length-1);
+        }
+
+        for (let idx in PRODUCTS_INFO) {
+            let productInfo = PRODUCTS_INFO[idx];
+
+            if (productInfo.hasOwnProperty("path") && productInfo.path === pagePath) {
+                return productInfo;
+            }
+        }
+
+        console.log("productInfo not found by pagePath: " + pagePath);
+        return undefined;
+    }
+
+</script>
+
+<!--Logic-->
+<script type="text/javascript">
 
     // Wrapper for FB pixel
     let fbq2;
@@ -22,8 +204,6 @@
 
     let deliveryIntervalDiv;
     let deliveryIntervalInput;
-
-    let h1Text;
 
     //Cdek
     let cdekDeliveryWidget;
@@ -59,8 +239,6 @@
         initMyAfterSendedFunction();
 
         if (isProductPage) {
-            setLastBreadCrumbName();
-            setPointNavigationProductName();
             setFbTrackViewContent(productInfo.price, productInfo.id);
         }
 
@@ -74,21 +252,9 @@
      });
 
     function setGlobalVariables() {
-        readyTime = new Date().getTime();
-        
-        let location = document.location;
-        page = location.pathname;
-
         fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
         if (ym === undefined) {
             ym = undefinedYmFunc;
-        }
-
-        productInfo = getProductInfoByPagePath(page);
-        isProductPage = productInfo !== undefined;
-
-        if (page.indexOf("admin") > -1) {
-            adminMode = true;
         }
 
         $cartForm = $('.t706 form');
@@ -111,8 +277,6 @@
         deliveryIntervalDiv = deliveryIntervalInput
             .parent()	// class="t-input-block"
             .parent();	// class="t-input-group t-input-group_in"
-
-        h1Text = $('h1').text();
 
         $deliveryRussiaTab = $('#rec42659477').find('.t397__tab:last');
         $deliveryRussiaTab.click(function () {
@@ -260,22 +424,7 @@
         function initCdekDeliveryWidget(type) {
             let cdekPvzWidgetScriptsPath = 'https://8bars.000webhostapp.com/cdek-pvz-widget/widget/scripts/';
 
-            if (type === 'order') {
-                cdekDeliveryWidget = new ISDEKWidjet({
-                    popup: true,
-                    hidedress: true,
-                    defaultCity: 'auto',
-                    cityFrom: 'Москва',
-                    path: cdekPvzWidgetScriptsPath,
-                    goods: [ // установим данные о товарах из корзины
-                        {length: 10, width: 10, height: 10, weight: 0.5}
-                    ],
-                    onReady: onReady,
-                    onCalculate: onCalculate,
-                    onChoose: onChoose,
-                    onChooseProfile: onChoose
-                });
-            } else if (type === 'info') {
+            if (type === 'info') {
                 cdekPvzInfoWidget = new ISDEKWidjet({
                     hidedress: true,
                     choose: false,
@@ -290,6 +439,21 @@
                     onCalculate : onCalculate,
                     onChoose : onChoose,
                     onChooseProfile : onChoose
+                });
+            } else { //type === 'order'
+                cdekDeliveryWidget = new ISDEKWidjet({
+                    popup: true,
+                    hidedress: true,
+                    defaultCity: 'auto',
+                    cityFrom: 'Москва',
+                    path: cdekPvzWidgetScriptsPath,
+                    goods: [ // установим данные о товарах из корзины
+                        {length: 10, width: 10, height: 10, weight: 0.5}
+                    ],
+                    onReady: onReady,
+                    onCalculate: onCalculate,
+                    onChoose: onChoose,
+                    onChooseProfile: onChoose
                 });
             }
 
@@ -338,17 +502,6 @@
 
         function isRussia(checkedDelivery) {
             return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("росси") > -1;
-        }
-    }
-
-    // Fix products pages functions
-    {
-        function setLastBreadCrumbName() {
-            $('.t758__link-item_active').text(h1Text);
-        }
-
-        function setPointNavigationProductName() {
-            $('a[href="#product"] > .t607__tooltip').text(h1Text)
         }
     }
 
@@ -478,34 +631,6 @@
         }
 
         /**
-         * @param {string} pagePath The string
-         * @return {ProductInfo}
-         */
-        function getProductInfoByPagePath(pagePath) {
-            if (pagePath === undefined || pagePath === "" || pagePath === MAIN_PAGE) {
-                return undefined;
-            }
-
-            pagePath = pagePath.toLowerCase();
-
-            // replace "/page/" -> "/page"
-            if (pagePath.charAt(pagePath.length-1) === '/') {
-                pagePath = pagePath.substr(0, pagePath.length-1);
-            }
-
-            for (let idx in PRODUCTS_INFO) {
-                let productInfo = PRODUCTS_INFO[idx];
-
-                if (productInfo.hasOwnProperty("path") && productInfo.path === pagePath) {
-                    return productInfo;
-                }
-            }
-
-            console.log("productInfo not found by pagePath: " + pagePath);
-            return undefined;
-        }
-
-        /**
          * @param {string} productName The string
          * @return {ProductInfo}
          */
@@ -626,8 +751,16 @@
         }
 
         function getTimeSinceReadyInMins() {
-            let now = new Date().getTime();
-            return Math.round((now - readyTime) / 600) / 100
+            let timeSinceReadyInSecs = Math.floor((new Date().getTime() - readyTime) / 1000);
+            let timeSinceReadyInMins = Math.floor(timeSinceReadyInSecs / 60);
+            timeSinceReadyInSecs = timeSinceReadyInSecs % 60;
+
+            let res = "";
+            if (timeSinceReadyInMins !== 0) {
+                res += timeSinceReadyInMins + "m";
+            }
+
+            return res += timeSinceReadyInSecs + "s";
         }
     }
 
