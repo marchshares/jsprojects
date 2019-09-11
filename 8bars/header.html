@@ -10,7 +10,11 @@
     let paidDeliveryCost = 300;
 
     const MAIN_PAGE = "/";
+    let CM_INFO;
+    let ACC_INFO;
     let PRODUCTS_INFO;
+
+    let ALL_PROMOS = new Set();
 
     // Shop parameters
     let infoMinipressoGr;
@@ -26,6 +30,8 @@
 
     let infoSet;
     let infoTest;
+
+    const DISABLE_PROMO = "NOT_PROMO";
 
     function setProductsInfo() {
         infoMinipressoGr     = new ProductInfo(4790, 1, "/minipresso-gr");
@@ -45,38 +51,70 @@
         infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
         infoTest             = new ProductInfo(3000, 999, "/test-product");
 
-        if (productDiscount > 0) {
-            infoMinipressoGr.addDiscount(productDiscount);
-            infoMinipressoNs.addDiscount(productDiscount);
-            infoNanopresso.addDiscount(productDiscount);
-            infoNanopressoPatrol.addDiscount(productDiscount);
-            infoNanopressoTattoo.addDiscount(productDiscount);
-            infoNanopressoElements.addDiscount(productDiscount);
+        setLists();
+        setDiscounts();
+        setPromos();
+    }
 
-            infoTest.addDiscount(productDiscount);
-        }
-
-        PRODUCTS_INFO = [
-            infoMinipressoGr,
-            infoMinipressoNs,
-            infoNanopresso,
-            infoNanopressoPatrol,
-            infoNanopressoTattoo,
-            infoNanopressoElements,
-            infoNsAdapter,
-            infoBaristaKit,
-            infoCase,
-            infoNanovessel,
-
+    function setLists() {
+        CM_INFO = [
+            infoMinipressoGr, infoMinipressoNs,
+            infoNanopresso, infoNanopressoPatrol, infoNanopressoTattoo, infoNanopressoElements,
             infoTest
         ];
+
+        ACC_INFO = [infoNsAdapter, infoBaristaKit, infoCase, infoNanovessel];
+
+        PRODUCTS_INFO = CM_INFO.concat(ACC_INFO);
     }
+
+    function setDiscounts() {
+        if (productDiscount > 0) {
+            for (let idx in CM_INFO) {
+                CM_INFO[idx].addDiscount(productDiscount);
+            }
+        }
+    }
+
+    function setPromos() {
+        infoSet.addPromo(DISABLE_PROMO);
+
+        addPromosForAll(["MARKET150", "SALE10", "ADMIN10", "SKIDKA250"]);
+
+        addPromo("SKIDKA400", CM_INFO);
+        addPromo("SKIDKA500", CM_INFO);
+        addPromo("MARKET550", CM_INFO);
+
+        function addPromo(promo, infos) {
+            promo = promo.toUpperCase();
+            ALL_PROMOS.add(promo);
+
+            for (let idx in infos) {
+                infos[idx].addPromo(promo);
+            }
+        }
+
+        function addPromosForAll(promos) {
+
+            for (let x in promos) {
+                let promo = promos[x].toUpperCase();
+                ALL_PROMOS.add(promo);
+
+                for (let idx in PRODUCTS_INFO) {
+                    PRODUCTS_INFO[idx].addPromo(promo);
+                }
+            }
+        }
+    }
+
+
 
     function ProductInfo(price, id, path) {
         this.price = price;
         this.oldPrice = undefined;
         this.id = id;
         this.path = path;
+        this.promos = new Set();
 
         this.addDiscount = function (discount) {
             this.oldPrice = this.price;
@@ -90,6 +128,24 @@
 
         this.getPriceWithoutDiscount = function () {
             return this.oldPrice !== undefined ? this.oldPrice : this.price;
+        };
+
+        this.addPromo = function (promo) {
+            this.promos.add(promo);
+        };
+
+        this.isApplicableForPromo = function (promo) {
+            promo = promo.toUpperCase();
+
+            if (this.promos.has(DISABLE_PROMO)) {
+                return false;
+            }
+
+            if (!ALL_PROMOS.has(promo)) {
+                return true;
+            }
+
+            return this.promos.has(promo);
         }
     }
 
@@ -117,6 +173,8 @@
     let isProductPage;
 
     let h1Text;
+
+    const NUM_REGEXP = /\d+/;
 
     $(document).ready(function () {
         readyTime = new Date().getTime();
@@ -521,7 +579,74 @@
                 $hasPromoCbGroup.hide(changeDuration);
                 $promoGroup.show(changeDuration);
             });
+
+            let $pcGroup = $cartForm.find('.t-input-group_pc');
+            let $pcInput = $pcGroup.find('input.t-inputpromocode');
+            let $pcDesc = $pcGroup.find('.t-descr');
+            $pcDesc.hide();
+            $pcDesc.css({"color" : "red"});
+
+            $pcGroup.find('.t-inputpromocode__wrapper').get(0).addEventListener('click', function (event) {
+                if ($(event.target).hasClass("t-inputpromocode__btn")) {
+                    let promoCode = $pcInput.val();
+
+                    let res = getNonApplicableForPromoProducts(promoCode);
+                    if (res.length === 0) {
+                        console.log("Promo " + promoCode + " allowed");
+                        $pcDesc.hide();
+                    } else {
+                        console.log("Promo " + promoCode + " denied");
+                        $pcDesc.show();
+                        $pcDesc.text("Промокод не применим для " + res);
+
+                        event.stopPropagation();
+                    }
+                }
+            }, true);
         }
+
+        function getNonApplicableForPromoProducts(promoCode) {
+            if (promoCode === "") {
+                return [];
+            }
+
+            let nonApplicable = [];
+            let hasSet = false;
+            for (let idx in tcart.products) {
+                let productName = tcart.products[idx].name;
+                let productInfo = getProductInfoByProductName(productName);
+
+                if (productInfo === infoSet) {
+                    hasSet = true;
+                }
+
+                if (productInfo === undefined) {
+                    console.warn("Couldn't find info for: " + productName);
+                } else {
+                    if (!productInfo.isApplicableForPromo(promoCode)) {
+                         nonApplicable.push(productName);
+                    }
+                }
+            }
+
+            if ( tcart.products.length > nonApplicable.length ) {
+                if (hasSet) {
+                    try {
+                        let num = parseInt(promoCode.match(NUM_REGEXP));
+                        if (!isNaN(num) && num >= 100) {
+                            return [];
+                        }
+                    } catch (e) {
+                        //ignore
+                    }
+                } else {
+                    return [];
+                }
+            }
+            
+            return nonApplicable;
+        }
+
 
         function fixDeliveryPriceFunc() {
             setInterval(function () {
