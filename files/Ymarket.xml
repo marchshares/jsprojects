@@ -171,6 +171,7 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
+
             <offer id="7" available="true">
                 <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso NS-Адаптер для капсул</name>
@@ -242,6 +243,28 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
+            <offer id="12" type="vendor.model" available="true">
+                <typePrefix>Термос</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanovessel для Nanopresso</model>
+
+                <description>Nanovessel - долгожданный стальной термос от компании Wacaco, который сохранит воду горячей на несколько часов. Он полностью совместим с кофемашиной Nanopresso (а также с Minipresso!), что позволяет вам не тратить время на переливание горячей воды в чашку от кофемашины. Nanovessel прикручивается к нижней части Nanopresso вместо стандартной чашки. Его объема (210 мл) хватит на 2-3 чашечки кофе. Также вы можете использовать Nanovessel как тумблер для горячих или холодных напитков. Он оснащен сеточкой-фильтром, что позволяет заваривать в нем чай.</description>
+                <url>https://8bars.ru/nanovessel</url>
+                <picture>https://static.tildacdn.com/tild3436-6466-4936-b566-313936306430/Nanovessel_YM.jpg</picture>
+                <price>1990</price>
+                <param name="цвет">silver</param>
+
+                <categoryId>2</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+
             <offer id="10" type="vendor.model" available="false">
                 <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
@@ -285,27 +308,6 @@
                 <param name="тип используемого кофе">молотый</param>
 
                 <categoryId>1</categoryId>
-
-                <currencyId>RUR</currencyId>
-                <store>false</store>
-                <pickup>true</pickup>
-                <delivery>true</delivery>
-                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
-                <manufacturer_warranty>true</manufacturer_warranty>
-                <country_of_origin>Китай</country_of_origin>
-            </offer>
-            <offer id="12" type="vendor.model" available="true">
-                <typePrefix>Термос</typePrefix>
-                <vendor>Wacaco</vendor>
-                <model>Nanovessel для Nanopresso</model>
-
-                <description>Nanovessel - долгожданный стальной термос от компании Wacaco, который сохранит воду горячей на несколько часов. Он полностью совместим с кофемашиной Nanopresso (а также с Minipresso!), что позволяет вам не тратить время на переливание горячей воды в чашку от кофемашины. Nanovessel прикручивается к нижней части Nanopresso вместо стандартной чашки. Его объема (210 мл) хватит на 2-3 чашечки кофе. Также вы можете использовать Nanovessel как тумблер для горячих или холодных напитков. Он оснащен сеточкой-фильтром, что позволяет заваривать в нем чай.</description>
-                <url>https://8bars.ru/nanovessel</url>
-                <picture>https://static.tildacdn.com/tild3436-6466-4936-b566-313936306430/Nanovessel_YM.jpg</picture>
-                <price>1990</price>
-                <param name="цвет">silver</param>
-
-                <categoryId>3</categoryId>
 
                 <currencyId>RUR</currencyId>
                 <store>false</store>
@@ -421,5 +423,26 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
         </offers>
+        <promos>
+            <promo id="Promo550" type="promo code">
+                <start-date>2019-09-07</start-date>
+                <end-date>2019-09-14</end-date>
+                <promo-code>MARKET550</promo-code>
+                <discount unit="currency" currency="RUR">550</discount>
+                <purchase>
+                    <product category-id="1"/>
+                </purchase>
+            </promo>
+
+            <promo id="Promo150" type="promo code">
+                <start-date>2019-09-07</start-date>
+                <end-date>2019-09-14</end-date>
+                <promo-code>MARKET150</promo-code>
+                <discount unit="currency" currency="RUR">150</discount>
+                <purchase>
+                    <product category-id="2"/>
+                </purchase>
+            </promo>
+        </promos>
     </shop>
 </yml_catalog>
