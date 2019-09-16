@@ -845,6 +845,7 @@
 
         function setMetrikaGoals() {
             $("[href='#order']").click(function() {
+                reachMetrikaGoal("AddToCart");
                 reachMetrikaGoal("OpenCartPopUp");
             });
 
@@ -854,11 +855,11 @@
 
             //Stats for CDEK widget
             $deliveryRussiaTab.click(function(){
-                reachMetrikaGoal("OpenDeliveryRussiaTab");
+                reachMetrikaGoalViaParams("OpenDeliveryRussiaTab");
             });
 
             $cdekDeliveryRadio.click(function(){
-                reachMetrikaGoal("OpenDeliveryRussiaRadioInCart");
+                reachMetrikaGoalViaParams("OpenDeliveryRussiaRadioInCart");
             });
         }
 
