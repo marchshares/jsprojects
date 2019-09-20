@@ -23,6 +23,7 @@
     let infoNanopressoPatrol;
     let infoNanopressoTattoo;
     let infoNanopressoElements;
+    let infoNanopressoElementsSale;
     let infoNsAdapter;
     let infoBaristaKit;
     let infoCase;
@@ -43,6 +44,9 @@
         infoNanopressoTattoo = new ProductInfo(6500, 5, "/nanopresso-tattoo");
         infoNanopressoElements = new ProductInfo(6990, 10, "/nanopresso-elements");
 
+        infoNanopressoElementsSale = new ProductInfo(6990, 110, "/nanopresso-elements-sale");
+        infoNanopressoElementsSale.addDiscount(500);
+
         infoNsAdapter        = new ProductInfo(1890, 6, "/ns-adapter-nanopresso");
         infoBaristaKit       = new ProductInfo(2490, 7, "/barista-kit-nanopresso");
         infoCase             = new ProductInfo(1490, 8, "/nanopresso-minipresso-case");
@@ -59,7 +63,7 @@
     function setLists() {
         CM_INFO = [
             infoMinipressoGr, infoMinipressoNs,
-            infoNanopresso, infoNanopressoPatrol, infoNanopressoTattoo, infoNanopressoElements,
+            infoNanopresso, infoNanopressoPatrol, infoNanopressoTattoo, infoNanopressoElements, infoNanopressoElementsSale,
             infoTest
         ];
 
@@ -78,8 +82,11 @@
 
     function setPromos() {
         infoSet.addPromo(DISABLE_PROMO);
+        //infoNanopressoElementsSale.addPromo(DISABLE_PROMO);
 
-        addPromosForAll(["MARKET150", "SALE10", "ADMIN10", "SKIDKA250"]);
+        addPromosForAll(["MARKET150", "SALE10", "ADMIN10", "SKIDKA250","Zalivaha","8BARS300"]);
+
+        addPromo("EMAILSEP10", ACC_INFO);
 
         addPromo("SKIDKA400", CM_INFO);
         addPromo("SKIDKA500", CM_INFO);
@@ -174,7 +181,7 @@
 
     let h1Text;
 
-    const NUM_REGEXP = /\d+/;
+    const NUM_REGEXP = /\d+$/;
 
     $(document).ready(function () {
         readyTime = new Date().getTime();
@@ -780,7 +787,11 @@
             }
 
             if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
-            if (productName.indexOf("elements") > -1)   return infoNanopressoElements;
+            if (productName.indexOf("elements") > -1) {
+                return page.indexOf("sale") > -1
+                    ? infoNanopressoElementsSale
+                    : infoNanopressoElements;
+            }
 
             if (productName.indexOf("patrol") > -1)     return infoNanopressoPatrol;
             if (productName.indexOf("set") > -1)        return infoSet;
