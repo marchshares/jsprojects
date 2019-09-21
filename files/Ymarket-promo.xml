@@ -1,11 +1,21 @@
 <promos>
-    <promo id="Promo500" type="promo code">
-        <start-date>2019-08-01</start-date>
-        <end-date>2019-08-08</end-date>
-        <promo-code>MARKET500</promo-code>
-        <discount unit="currency" currency="RUR">500</discount>
+    <promo id="Promo550" type="promo code">
+        <start-date>2019-09-16</start-date>
+        <end-date>2019-09-23</end-date>
+        <promo-code>MARKET550</promo-code>
+        <discount unit="currency" currency="RUR">550</discount>
         <purchase>
             <product category-id="1"/>
+        </purchase>
+    </promo>
+
+    <promo id="Promo150" type="promo code">
+        <start-date>2019-09-16</start-date>
+        <end-date>2019-09-23</end-date>
+        <promo-code>MARKET150</promo-code>
+        <discount unit="currency" currency="RUR">150</discount>
+        <purchase>
+            <product category-id="2"/>
         </purchase>
     </promo>
 </promos>

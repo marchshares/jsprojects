@@ -274,7 +274,7 @@
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3938-6433-4663-b632-356537636436/NanopressoTattooOran.jpg</picture>
                 
-                <price>6500</price>
+                <price>6990</price>
                 <!--<oldprice>6500</oldprice>-->
                 
                 <param name="цвет">Orange tattoo</param>
@@ -300,7 +300,7 @@
                 <url>https://8bars.ru/nanopresso-tattoo</url>
                 <picture>https://static.tildacdn.com/tild3761-3863-4635-b466-313838373863/NanopressoTattooYell.jpg</picture>
 
-                <price>6500</price>
+                <price>6990</price>
                 <!--<oldprice>6500</oldprice>-->
                 
                 <param name="цвет">Yellow tattoo</param>
@@ -423,26 +423,5 @@
                 <country_of_origin>Китай</country_of_origin>
             </offer>
         </offers>
-        <promos>
-            <promo id="Promo550" type="promo code">
-                <start-date>2019-09-16</start-date>
-                <end-date>2019-09-23</end-date>
-                <promo-code>MARKET550</promo-code>
-                <discount unit="currency" currency="RUR">550</discount>
-                <purchase>
-                    <product category-id="1"/>
-                </purchase>
-            </promo>
-
-            <promo id="Promo150" type="promo code">
-                <start-date>2019-09-16</start-date>
-                <end-date>2019-09-23</end-date>
-                <promo-code>MARKET150</promo-code>
-                <discount unit="currency" currency="RUR">150</discount>
-                <purchase>
-                    <product category-id="2"/>
-                </purchase>
-            </promo>
-        </promos>
     </shop>
 </yml_catalog>
