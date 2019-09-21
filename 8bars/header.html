@@ -1,4 +1,4 @@
-<!--Parameters-->
+<!--Shop Parameters-->
 <script type="text/javascript">
 
     // set productDiscount > 0 to apply discount
@@ -110,52 +110,86 @@
     setProductsInfo();
 </script>
 
-<!--Fix pages-->
+<!--System Parameters-->
 <script type="text/javascript">
-    let readyTime = 0;
-    let adminMode = false;
-
+    let openTime;
     let page;
+    let adminMode;
+
     let productInfo;
     let isProductPage;
 
-    let h1Text;
+    //JQuery objects
+    let $cartForm;
+    let $cartWindow;
+    let $deliveryDescription;
+    let $deliveryTypeRadios;
+    let $deliveryClientCost;
 
-    $(document).ready(function () {
-        readyTime = new Date().getTime();
+    let $deliveryAddressDiv;
+    let $deliveryAddressInput;
+
+    let $cityDiv;
+    let $cityInput;
+
+    let $deliveryIntervalDiv;
+    let $deliveryIntervalInput;
+
+    let $checkedDelivery;
+    let $cdekDeliveryRadio;
+    let $cdekDeliveryTimePost;
+    let $cdekDeliveryTimePostValue;
+    let $deliveryRussiaTab;
+
+    $(document).ready(function(){
+        console.log("STATE: readySystem");
+
+        initSystemParameters();
+        setGlobalJQ();
+
+        readyAnalytics();
+        readyFixPages();
+        readyLogic();
+    });
+
+    function initSystemParameters() {
+        openTime = new Date().getTime();
         page = document.location.pathname;
-
-        if (page.indexOf("admin") > -1) {
-            adminMode = true;
-        }
-
-        h1Text = $('h1').text();
+        adminMode = page.indexOf("admin") > -1;
 
         productInfo = getProductInfoByPagePath(page);
         isProductPage = productInfo !== undefined;
+    }
 
-        if (isProductPage) {
-            setAltForAllProductPics();
-            setLastBreadCrumbName();
-            setPointNavigationProductName();
-        }
-    });
+    function setGlobalJQ() {
+        $cartForm = $('.t706 form');
+        $cartWindow = $(".t706__cartwin");
+        $deliveryDescription = $('.t-input-subtitle.t-descr');
+        $deliveryTypeRadios = $("input:radio[name='deliveryType']");
+        $deliveryClientCost = $("input[name='deliveryClientCost']");
 
-    // Fix products pages functions
-    {
-        function setAltForAllProductPics() {
-            $('.js-product-img').each(function () {
-                $(this).attr('alt', h1Text);
-            });
-        }
+        $deliveryAddressInput = $('input:text[name=deliveryAddress]');
+        $deliveryAddressDiv = $deliveryAddressInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
 
-        function setLastBreadCrumbName() {
-            $('.t758__link-item_active').text(h1Text);
-        }
+        $cityInput = $('input:text[name=city]');
+        $cityDiv = $cityInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
 
-        function setPointNavigationProductName() {
-            $('a[href="#product"] > .t607__tooltip').text(h1Text)
-        }
+        $deliveryIntervalInput = $('input[name=deliveryInterval]');
+        $deliveryIntervalDiv = $deliveryIntervalInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        $deliveryRussiaTab = $('#rec42659477').find('.t397__tab:last');
+
+        $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
+            return isRussia($(this));
+        });
+        $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
+        $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
     }
 
     /**
@@ -185,28 +219,182 @@
         console.log("productInfo not found by pagePath: " + pagePath);
         return undefined;
     }
+</script>
+
+<!--Analytics-->
+<script type="text/javascript">
+
+    // Wrapper for FB pixel
+    let fbq2;
+
+    function readyAnalytics() {
+        console.log("STATE: readyAnalytics");
+
+        fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
+        ym = ym !== undefined ? ym : undefinedYmFunc;
+
+        if (isProductPage) {
+            setFbTrackViewContent(productInfo.price, productInfo.id);
+        }
+
+        setMetrikaGoals();
+        addGaToMetrika();
+    }
+
+    // Facebook
+    {
+        /**
+         * @param {ProductInfo} productInfo
+         */
+        function setFbTrackAddToCart(productInfo) {
+            fbq2('track', 'AddToCart', {
+                value: productInfo.price,
+                currency: 'RUB',
+                content_ids: productInfo.id,
+                content_type: 'product',
+            });
+        }
+
+        function setFbTrackViewContent(value, content_ids) {
+            fbq2('track', 'ViewContent', {
+                value: value,
+                currency: 'RUB',
+                content_ids: content_ids,
+                content_type: 'product',
+            });
+        }
+
+        function setFbTracktInitiateCheckout(value) {
+            fbq2('track', 'InitiateCheckout', {
+                value: value,
+                currency: 'RUB'
+            });
+        }
+
+        function setFbTrackPurchase(value, content_ids, paymentId) {
+            fbq2('track', 'Purchase', {
+                value: value,
+                currency: 'RUB',
+                content_ids: content_ids,
+                content_type: 'product',
+                paymentId: paymentId
+            });
+        }
+
+        function undefinedFbq2Func() {
+            console.log("fbq2 is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
+        }
+    }
+
+    // Yandex Metrika
+    {
+        function addGaToMetrika() {
+            function getCookie(name) {
+                var matches = document.cookie.match(new RegExp(
+                    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                ));
+                return matches ? decodeURIComponent(matches[1]) : undefined;
+            }
+
+            let google_client_id = getCookie('_ga') ? getCookie('_ga').slice(6) : '';
+
+            ym(ymCounterNum, 'params', {_ga: google_client_id});
+        }
+
+        function setMetrikaGoals() {
+            $("[href='#order']").click(function () {
+                reachMetrikaGoal("AddToCart");
+                reachMetrikaGoal("OpenCartPopUp");
+            });
+
+            $('.t706__carticon').click(function () {
+                reachMetrikaGoal("OpenCartPopUp");
+            });
+
+            //Stats for CDEK widget
+            $deliveryRussiaTab.click(function () {
+                reachMetrikaGoalViaParams("OpenDeliveryRussiaTab");
+            });
+
+            $cdekDeliveryRadio.click(function () {
+                reachMetrikaGoalViaParams("OpenDeliveryRussiaRadioInCart");
+            });
+        }
+
+        function reachMetrikaGoal(goalName) {
+            console.log("send " + goalName + " to yaMetrika");
+            ym(ymCounterNum, 'reachGoal', goalName);
+        }
+
+        function reachMetrikaGoalViaParams(goalJson) {
+            console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
+            ym(ymCounterNum, 'params', {
+                'customGoal': goalJson,
+                'time': getTimeSinceOpenInMins()
+            });
+        }
+
+        function getTimeSinceOpenInMins() {
+            let timeSinceReadyInSecs = Math.floor((new Date().getTime() - openTime) / 1000);
+            let timeSinceReadyInMins = Math.floor(timeSinceReadyInSecs / 60);
+            timeSinceReadyInSecs = timeSinceReadyInSecs % 60;
+
+            let res = "";
+            if (timeSinceReadyInMins !== 0) {
+                res += timeSinceReadyInMins + "m";
+            }
+
+            return res += timeSinceReadyInSecs + "s";
+        }
+
+        function undefinedYmFunc() {
+            console.log("ym is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
+        }
+    }
+
+</script>
+
+<!--Fix pages-->
+<script type="text/javascript">
+    let h1Text;
+
+    function readyFixPages() {
+        console.log("STATE: readyFixPages");
+
+        h1Text = $('h1').text();
+
+        if (isProductPage) {
+            setAltForAllProductPics();
+            setLastBreadCrumbName();
+            setPointNavigationProductName();
+        }
+    }
+
+    // Fix products pages functions
+    {
+        function setAltForAllProductPics() {
+            $('.js-product-img').each(function () {
+                $(this).attr('alt', h1Text);
+            });
+        }
+
+        function setLastBreadCrumbName() {
+            $('.t758__link-item_active').text(h1Text);
+        }
+
+        function setPointNavigationProductName() {
+            $('a[href="#product"] > .t607__tooltip').text(h1Text)
+        }
+    }
 
 </script>
 
 <!--Logic-->
 <script type="text/javascript">
 
-    // Wrapper for FB pixel
-    let fbq2;
-
     // Configuration
     const fixDeliveryPriceCheckInterval = 500;
     const changeDuration = 400;
-
-    // HTML elements
-    let deliveryAddressDiv;
-    let deliveryAddressInput;
-
-    let cityDiv;
-    let cityInput;
-
-    let deliveryIntervalDiv;
-    let deliveryIntervalInput;
 
     //Cdek
     let cdekDeliveryWidget;
@@ -217,21 +405,8 @@
     let mskDelivery = new DeliveryType("Москва", "");
     let cdekDelivery = new DeliveryType("", "");
 
-    //JQuery objects
-    let $cartForm;
-    let $cartWindow;
-    let $deliveryDescription;
-    let $deliveryTypeRadios;
-    let $deliveryClientCost;
-
-    let $checkedDelivery;
-    let $cdekDeliveryRadio;
-    let $cdekDeliveryTimePost;
-    let $cdekDeliveryTimePostValue;
-    let $deliveryRussiaTab;
-
-    $(document).ready(function(){
-        setGlobalVariables();
+    function readyLogic() {
+        console.log("STATE: readyLogic");
 
         setAdminElements();
 
@@ -241,51 +416,15 @@
         initInitiateCheckoutFunction();
         initMyAfterSendedFunction();
 
-        if (isProductPage) {
-            setFbTrackViewContent(productInfo.price, productInfo.id);
-        }
-
-        setMetrikaGoals();
-
         waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
-    });
+    }
 
      $( window ).load(function() {
          initCdekDeliveryWidget('order');
+         $deliveryRussiaTab.click(function () {
+             initCdekDeliveryWidget('info');
+         });
      });
-
-    function setGlobalVariables() {
-        fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
-        if (ym === undefined) {
-            ym = undefinedYmFunc;
-        }
-
-        $cartForm = $('.t706 form');
-        $cartWindow = $(".t706__cartwin");
-        $deliveryDescription = $('.t-input-subtitle.t-descr');
-        $deliveryTypeRadios = $("input:radio[name='deliveryType']");
-        $deliveryClientCost = $("input[name='deliveryClientCost']");
-
-        deliveryAddressInput = $('input:text[name=deliveryAddress]');
-        deliveryAddressDiv = deliveryAddressInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        cityInput = $('input:text[name=city]');
-        cityDiv = cityInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        deliveryIntervalInput = $('input[name=deliveryInterval]');
-        deliveryIntervalDiv = deliveryIntervalInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        $deliveryRussiaTab = $('#rec42659477').find('.t397__tab:last');
-        $deliveryRussiaTab.click(function () {
-            initCdekDeliveryWidget('info');
-        });
-    }
 
     function setAdminElements() {
         let $sendSmsCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='SendSmsAboutOrder']");
@@ -353,12 +492,7 @@
     // Delivery functions
     {
         function fixDeliveryInCart() {
-            $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
-                return isRussia($(this));
-            });
             $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
-            $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
-            $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
 
             //default Moscow delivery
             $checkedDelivery = $deliveryTypeRadios.filter(function () {
@@ -384,27 +518,27 @@
         }
 
         function setDefaultSamovivoz() {
-            cityDiv.hide(changeDuration);
-            deliveryAddressDiv.hide(changeDuration);
-            deliveryIntervalDiv.hide(changeDuration);
+            $cityDiv.hide(changeDuration);
+            $deliveryAddressDiv.hide(changeDuration);
+            $deliveryIntervalDiv.hide(changeDuration);
             $cdekDeliveryTimePost.hide(changeDuration);
 
             setDelivery(selfTakeDelivery);
         }
 
         function setDefaultMoscow() {
-            cityDiv.hide(changeDuration);
-            deliveryAddressDiv.show(changeDuration);
-            deliveryIntervalDiv.show(changeDuration);
+            $cityDiv.hide(changeDuration);
+            $deliveryAddressDiv.show(changeDuration);
+            $deliveryIntervalDiv.show(changeDuration);
             $cdekDeliveryTimePost.hide(changeDuration);
 
             setDelivery(mskDelivery);
         }
 
         function setDefaultRussia() {
-            cityDiv.show(changeDuration);
-            deliveryAddressDiv.show(changeDuration);
-            deliveryIntervalDiv.hide(changeDuration);
+            $cityDiv.show(changeDuration);
+            $deliveryAddressDiv.show(changeDuration);
+            $deliveryIntervalDiv.hide(changeDuration);
             $cdekDeliveryTimePost.show(changeDuration);
 
             cdekDeliveryWidget.open();
@@ -412,16 +546,16 @@
 
         function setDelivery(checkedDelivery) {
             if (currentDelivery !== undefined) {
-                currentDelivery.city = cityInput.val();
-                currentDelivery.address = deliveryAddressInput.val();
+                currentDelivery.city = $cityInput.val();
+                currentDelivery.address = $deliveryAddressInput.val();
             }
 
             currentDelivery = checkedDelivery;
 
-            cityInput.val(currentDelivery.city);
-            deliveryAddressInput.val(currentDelivery.address);
+            $cityInput.val(currentDelivery.city);
+            $deliveryAddressInput.val(currentDelivery.address);
 
-            console.log("Delivery: " + cityInput.val() + ", " + deliveryAddressInput.val());
+            console.log("Delivery: " + $cityInput.val() + ", " + $deliveryAddressInput.val());
         }
 
         function initCdekDeliveryWidget(type) {
@@ -482,13 +616,13 @@
                     $cdekDeliveryTimePostValue.val("Original: " + info.termOriginal + " дн., shown: " + info.term);
                 }
 
-                cityInput.val(info.cityName);
+                $cityInput.val(info.cityName);
 
                 if (info.PVZ !== undefined) {
-                    deliveryAddressInput.val("ПВЗ: " + info.PVZ.Address);
+                    $deliveryAddressInput.val("ПВЗ: " + info.PVZ.Address);
                 } else {
-                    if (deliveryAddressInput.val().indexOf("ПВЗ:") === 0) {
-                        deliveryAddressInput.val("");
+                    if ($deliveryAddressInput.val().indexOf("ПВЗ:") === 0) {
+                        $deliveryAddressInput.val("");
                     }
                 }
             }
@@ -672,103 +806,6 @@
 
             console.log("productInfo not found by productName");
             return undefined;
-        }
-    }
-
-    // Stats functions
-    {
-        // Facebook
-        /**
-         * @param {ProductInfo} productInfo
-         */
-        function setFbTrackAddToCart(productInfo) {
-            fbq2('track', 'AddToCart', {
-                value: productInfo.price,
-                currency: 'RUB',
-                content_ids: productInfo.id,
-                content_type: 'product',
-            });
-        }
-
-        function setFbTrackViewContent(value, content_ids) {
-            fbq2('track', 'ViewContent', {
-                value: value,
-                currency: 'RUB',
-                content_ids: content_ids,
-                content_type: 'product',
-            });
-        }
-
-        function setFbTracktInitiateCheckout(value) {
-            fbq2('track', 'InitiateCheckout', {
-                value: value,
-                currency: 'RUB'
-            });
-        }
-
-        function setFbTrackPurchase(value, content_ids, paymentId) {
-            fbq2('track', 'Purchase', {
-                value: value,
-                currency: 'RUB',
-                content_ids: content_ids,
-                content_type: 'product',
-                paymentId: paymentId
-            });
-        }
-
-        function undefinedFbq2Func() {
-            console.log("fbq2 is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
-        }
-
-        // Yandex Metrika
-        function undefinedYmFunc() {
-            console.log("ym is undefined, args: [" + arguments[0]+", " + arguments[1] + "]");
-        }
-
-        function setMetrikaGoals() {
-            $("[href='#order']").click(function() {
-                reachMetrikaGoal("AddToCart");
-                reachMetrikaGoal("OpenCartPopUp");
-            });
-
-            $('.t706__carticon').click(function(){
-                reachMetrikaGoal("OpenCartPopUp");
-            });
-
-            //Stats for CDEK widget
-            $deliveryRussiaTab.click(function(){
-                reachMetrikaGoalViaParams("OpenDeliveryRussiaTab");
-            });
-
-            $cdekDeliveryRadio.click(function(){
-                reachMetrikaGoalViaParams("OpenDeliveryRussiaRadioInCart");
-            });
-        }
-
-        function reachMetrikaGoal(goalName) {
-            console.log("send " + goalName + " to yaMetrika");
-            ym(ymCounterNum, 'reachGoal', goalName);
-        }
-
-        function reachMetrikaGoalViaParams(goalJson) {
-            console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
-            ym(ymCounterNum, 'params', {
-                'customGoal' : goalJson,
-                'time' : getTimeSinceReadyInMins()
-            });
-        }
-
-        function getTimeSinceReadyInMins() {
-            let timeSinceReadyInSecs = Math.floor((new Date().getTime() - readyTime) / 1000);
-            let timeSinceReadyInMins = Math.floor(timeSinceReadyInSecs / 60);
-            timeSinceReadyInSecs = timeSinceReadyInSecs % 60;
-
-            let res = "";
-            if (timeSinceReadyInMins !== 0) {
-                res += timeSinceReadyInMins + "m";
-            }
-
-            return res += timeSinceReadyInSecs + "s";
         }
     }
 

@@ -3,7 +3,8 @@
         "/admin",
         "/test-order",
         "/shabl",
-        "/test-product"
+        "/test-product",
+        "/dev-page"
     ];
 
     function pageNotInBlackList() {
@@ -59,6 +60,26 @@
 </script>
 <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-169603-c847n" style="position:fixed; left:-999px;" alt=""/></noscript>
 <!-- End VK Pixel Code -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100454748-1"></script>
+<script>
+    if (pageNotInBlackList()) {
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-100454748-1');
+        window.mainTracker = 'gtag';
+        window.gtagTrackerID = 'UA-100454748-1';
+    } else {
+        gtag = undefined;
+    }
+</script>
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
