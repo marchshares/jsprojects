@@ -37,16 +37,16 @@
         infoNanopresso       = new ProductInfo(5990, 3, "/nanopresso");
         infoNanopressoPatrol = new ProductInfo(5990, 4, "/nanopresso-patrol");
 
-        infoNanopressoTattoo = new ProductInfo(6990, 5, "/nanopresso-tattoo");
-        infoNanopressoElements = new ProductInfo(6990, 10, "/nanopresso-elements");
+        infoNanopressoTattoo = new ProductInfo(6990, 11, "/nanopresso-tattoo");
+        infoNanopressoElements = new ProductInfo(6990, 13, "/nanopresso-elements");
 
-        infoNanopressoElementsSale = new ProductInfo(6990, 110, "/nanopresso-elements-sale");
+        infoNanopressoElementsSale = new ProductInfo(6990, 113, "/nanopresso-elements-sale");
         infoNanopressoElementsSale.addDiscount(500);
 
-        infoNsAdapter        = new ProductInfo(1890, 6, "/ns-adapter-nanopresso");
-        infoBaristaKit       = new ProductInfo(2490, 7, "/barista-kit-nanopresso");
-        infoCase             = new ProductInfo(1490, 8, "/nanopresso-minipresso-case");
-        infoNanovessel       = new ProductInfo(1990, 9, "/nanovessel");
+        infoNsAdapter        = new ProductInfo(1890, 7, "/ns-adapter-nanopresso");
+        infoBaristaKit       = new ProductInfo(2490, 8, "/barista-kit-nanopresso");
+        infoCase             = new ProductInfo(1490, 9, "/nanopresso-minipresso-case");
+        infoNanovessel       = new ProductInfo(1990, 12, "/nanovessel");
 
         infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
         infoTest             = new ProductInfo(3000, 999, "/test-product");
@@ -326,8 +326,10 @@
             ym(ymCounterNum, 'reachGoal', goalName);
         }
 
-        function reachMetrikaGoalViaParams(goalJson) {
-            console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
+        function reachMetrikaGoalViaParams(goalJson, nonLog) {
+            if (!nonLog) {
+                console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
+            }
             ym(ymCounterNum, 'params', {
                 'customGoal': goalJson,
                 'time': getTimeSinceOpenInMins()
@@ -412,6 +414,7 @@
 
         fixCartWindowFields();
 
+        fixPageElements();
         fixProductCarts();
         initInitiateCheckoutFunction();
         initMyAfterSendedFunction();
@@ -440,12 +443,21 @@
     // Events function
     {
         function initInitiateCheckoutFunction() {
-            let $phoneInput = $('div.t-input-group.t-input-group_nm > div > input');
+            let $nameInput = $cartForm.find("input[name='Name']");
 
-            $phoneInput.one("keyup", function () {
+            $nameInput.one("keyup", function () {
                 setFbTracktInitiateCheckout(tcart.prodamount);
                 reachMetrikaGoal("InitiateCheckout");
             });
+
+            $cartForm.find("input[name='Phone']").change(getFields);
+            $cartForm.find("input[name='Email']").change(getFields);
+            function getFields() {
+                let name = $(this).attr('name');
+                let val = $(this).val();
+
+                reachMetrikaGoalViaParams({name: name, val: val}, true);
+            }
         }
 
         function initMyAfterSendedFunction() {
@@ -707,8 +719,17 @@
         }
     }
 
-    // fix product carts functions
+    // Fix pages functions
     {
+
+        function fixPageElements() {
+            // Phone
+            // let $myPhoneLinks = $('a[href="tel:+74994993105"]');
+            //
+            // $myPhoneLinks.attr("href","tel:+79858095041");
+            // $myPhoneLinks.text("+7 (985) 809-5041")
+        }
+
         function fixProductCarts() {
 
             $('div.t744, div.t778__wrapper').each(function (idx) {

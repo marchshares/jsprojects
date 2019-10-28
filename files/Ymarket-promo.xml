@@ -1,4 +1,14 @@
 <promos>
+    <promo id="Promo1000" type="promo code">
+        <start-date>2019-10-23</start-date>
+        <end-date>2019-10-25</end-date>
+        <promo-code>NANOPRESSO</promo-code>
+        <discount unit="currency" currency="RUR">1000</discount>
+        <purchase>
+            <product category-id="1"/>
+        </purchase>
+    </promo>
+
     <promo id="Promo550" type="promo code">
         <start-date>2019-09-16</start-date>
         <end-date>2019-09-23</end-date>
@@ -18,4 +28,16 @@
             <product category-id="2"/>
         </purchase>
     </promo>
+
+    <promos>
+        <promo id="Promo1000" type="promo code">
+            <start-date>2019-10-23 00:00</start-date>
+            <end-date>2019-10-24 23:00</end-date>
+            <promo-code>NANOPRESSO</promo-code>
+            <discount unit="currency" currency="RUR">1000</discount>
+            <purchase>
+                <product category-id="1"/>
+            </purchase>
+        </promo>
+    </promos>
 </promos>
