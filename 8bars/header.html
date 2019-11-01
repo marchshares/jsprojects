@@ -2,9 +2,9 @@
 <script type="text/javascript">
 
     // set productDiscount > 0 to apply discount
-    let productDiscount = 0;
+    let productDiscount = 15;
 
-    let bundleDiscountPer = 10;
+    let bundleDiscountPer = 15;
 
     let freeDeliveryCost = 3000;
     let paidDeliveryCost = 300;
@@ -52,7 +52,7 @@
         infoTest             = new ProductInfo(3000, 999, "/test-product");
 
         setLists();
-        setDiscounts();
+        setDiscounts(PRODUCTS_INFO);
     }
 
     function setLists() {
@@ -67,10 +67,10 @@
         PRODUCTS_INFO = CM_INFO.concat(ACC_INFO);
     }
 
-    function setDiscounts() {
+    function setDiscounts(infos) {
         if (productDiscount > 0) {
-            for (let idx in CM_INFO) {
-                CM_INFO[idx].addDiscount(productDiscount);
+            for (let idx in infos) {
+                infos[idx].addDiscount(productDiscount);
             }
         }
     }
@@ -188,7 +188,6 @@
         $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
             return isRussia($(this));
         });
-        $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
         $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
     }
 
@@ -505,6 +504,7 @@
     {
         function fixDeliveryInCart() {
             $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
+            $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
 
             //default Moscow delivery
             $checkedDelivery = $deliveryTypeRadios.filter(function () {
@@ -571,6 +571,7 @@
         }
 
         function initCdekDeliveryWidget(type) {
+            let apikey = 'aa735970-60bf-4090-b32d-083b360acd6f';
             let cdekPvzWidgetScriptsPath = 'https://8bars.000webhostapp.com/cdek-pvz-widget/widget/scripts/';
 
             if (type === 'info') {
@@ -584,6 +585,7 @@
                     goods: [ // установим данные о товарах из корзины
                         { length : 10, width : 10, height : 10, weight : 0.5 }
                     ],
+                    apikey: apikey,
                     onReady : onReady,
                     onCalculate : onCalculate,
                     onChoose : onChoose,
@@ -599,6 +601,7 @@
                     goods: [ // установим данные о товарах из корзины
                         {length: 10, width: 10, height: 10, weight: 0.5}
                     ],
+                    apikey: apikey,
                     onReady: onReady,
                     onCalculate: onCalculate,
                     onChoose: onChoose,
