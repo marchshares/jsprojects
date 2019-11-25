@@ -2,9 +2,9 @@
 <script type="text/javascript">
 
     // set productDiscount > 0 to apply discount
-    let productDiscount = 15;
+    let productDiscount = 0;
 
-    let bundleDiscountPer = 15;
+    let bundleDiscountPer = 10;
 
     let freeDeliveryCost = 3000;
     let paidDeliveryCost = 300;
@@ -141,6 +141,9 @@
     let $cdekDeliveryTimePostValue;
     let $deliveryRussiaTab;
 
+    let $buyOneClickBtn;
+    let $buyOneClickFormBtn;
+
     $(document).ready(function(){
         console.log("STATE: readySystem");
 
@@ -189,6 +192,9 @@
             return isRussia($(this));
         });
         $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
+
+        $buyOneClickBtn = $("#rec139769290").find("a[href='#popup:buy-one-click']");
+        $buyOneClickFormBtn = $("#rec139769178 button");
     }
 
     /**
@@ -303,7 +309,6 @@
         function setMetrikaGoals() {
             $("[href='#order']").click(function () {
                 reachMetrikaGoal("AddToCart");
-                reachMetrikaGoal("OpenCartPopUp");
             });
 
             $('.t706__carticon').click(function () {
@@ -357,17 +362,23 @@
 
 <!--Fix pages-->
 <script type="text/javascript">
+    let $h1;
     let h1Text;
+    let $mainProductRec = $();
 
     function readyFixPages() {
         console.log("STATE: readyFixPages");
 
-        h1Text = $('h1').text();
+        $h1 = $('h1');
+        h1Text = $h1.text();
 
         if (isProductPage) {
+            $mainProductRec = $h1.parents('.t-rec');
+
             setAltForAllProductPics();
             setLastBreadCrumbName();
             setPointNavigationProductName();
+            moveBuyOneClickButtonToProductCart();
         }
     }
 
@@ -385,6 +396,14 @@
 
         function setPointNavigationProductName() {
             $('a[href="#product"] > .t607__tooltip').text(h1Text)
+        }
+
+        function moveBuyOneClickButtonToProductCart() {
+            let $addToCartBtn = $mainProductRec.find("div.t744__btn-wrapper a[href='#order']");
+
+            $addToCartBtn.after($buyOneClickBtn);
+            $buyOneClickBtn.show();
+            $buyOneClickBtn.css("margin-left", "20px");
         }
     }
 
@@ -415,6 +434,7 @@
 
         fixPageElements();
         fixProductCarts();
+        setJivoChatOpenByClickInContacts();
         initInitiateCheckoutFunction();
         initMyAfterSendedFunction();
 
@@ -441,6 +461,10 @@
 
     // Events function
     {
+        function setJivoChatOpenByClickInContacts() {
+            $('a[href="#jivosite_open"]').click(function(){jivo_api.open();});
+        }
+
         function initInitiateCheckoutFunction() {
             let $nameInput = $cartForm.find("input[name='Name']");
 
