@@ -17,7 +17,7 @@
 
         setTimeout(function() {
             fixBundleBlock();
-        }, 2000);
+        }, 500);
     });
 
     function fixBundleBlock() {
@@ -40,9 +40,9 @@
     }
 
     function setDefaultSelect () {
-        selectByContains(bundleColorSelect, "Желтый");
-        selectByEquals(bundleAccessorySelect, "NS-адаптер\n");
-        selectByContains(bundleCaseSelect, "M-");
+        selectByContains(bundleColorSelect, "Черный");
+        selectByContains(bundleAccessorySelect, "NS-адаптер+Barista Kit+Nanovessel");
+        selectByContains(bundleCaseSelect, "L-");
 
         function selectByContains(bundleSelect, contains) {
             var option = bundleSelect.find($("select.t-product__option-select option:contains(\"" + contains + "\")"));
@@ -72,9 +72,9 @@
         var selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
         var selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
 
-        var selectedColorText = selectedColor.text();
-        var selectedAccessoryText = selectedAccessory.text();
-        var selectedCaseText = selectedCase.text();
+        var selectedColorText = simplifyName(selectedColor.text());
+        var selectedAccessoryText = simplifyName(selectedAccessory.text());
+        var selectedCaseText = simplifyName(selectedCase.text());
 
         var hasNsAdapter = selectedAccessoryText.indexOf("NS-адаптер") > -1;
         var hasBaristaKit = selectedAccessoryText.indexOf("Barista Kit") > -1;
@@ -112,6 +112,9 @@
 
         infoSet.price = currentPrice;
         bundlePriceValue.text(currentPrice);
+        bundlePriceValue.attr("data-product-price-def", currentPrice);
+        bundlePriceValue.attr("data-product-price-def-str", currentPrice);
+
         console.log("Result bundle price: " + currentPrice);
     };
 
@@ -149,6 +152,10 @@
         }
 
         return imageLink;
+    }
+
+    function simplifyName(name) {
+        return name.replace(/\(.*\)/g, "").trim();
     }
 
     function getLetter(hasAccessory) {

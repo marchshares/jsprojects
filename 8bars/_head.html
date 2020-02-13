@@ -80,6 +80,7 @@
         gtag = undefined;
     }
 </script>
+<meta name="google-site-verification" content="FlIk-7vJLJjSKzySji2ZlE9CTO1y8TED1ubO4IRkga0" />
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -105,13 +106,46 @@
     } else {
         ym = undefined;
     }
+
+    function reachMetrikaGoalViaParams(goalJson, nonLog) {
+        if (!nonLog) {
+            console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
+        }
+        ym(ymCounterNum, 'params', {
+            'customGoal': goalJson,
+            'time': getTimeSinceOpenInMins()
+        });
+    }
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/44688592" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
+<script>
+    let cdekPvzWidgetScriptsPath = 'https://minipressoshop.ru/cdek-pvz-widget/widget/scripts/';
+</script>
 <!-- Сdek delivery widget -->
-<script type="text/javascript" src="https://8bars.000webhostapp.com/cdek-pvz-widget/widget/widjet.js" id="ISDEKscript" charset="utf-8"></script>
+<script type="text/javascript" src="https://minipressoshop.ru/cdek-pvz-widget/widget/widjet.js" id="ISDEKscript" charset="utf-8"></script>
 
+
+<style type="text/css">
+    /*Cart field*/
+
+    /*input promocode*/
+    div.t-input-group[data-input-lid="1564064601409"] {
+        display: none;
+    }
+
+    /*checkbox SendSmsAboutOrder*/
+    div.t-input-group[data-input-lid="1548488322541"] {
+        display: none;
+    }
+
+    /*input info_theme*/
+    div.t-input-group[data-input-lid="1579612036800"] {
+        display: none;
+    }
+
+</style>
 
 <style type="text/css">
     .CDEK-widget__popup-mask {
@@ -122,6 +156,13 @@
         display: inline;
         color: #ff8562;
         margin-left: 5px;
+    }
+
+    .t778__mark {
+        font-weight: bold;
+        font-size: 13px;
+        color:#ffffff;
+        background-color:#d32300;
     }
 </style>
 

@@ -1,8 +1,10 @@
 <!--Shop Parameters-->
 <script type="text/javascript">
 
-    // set productDiscount > 0 to apply discount
-    let productDiscount = 0;
+    // set cmDiscount > 0 to apply discount
+    let cmDiscount = 0;
+    let cmCaseDiscount = 0;
+    let accDiscount = 0;
 
     let bundleDiscountPer = 10;
 
@@ -11,6 +13,7 @@
 
     const MAIN_PAGE = "/";
     let CM_INFO;
+    let CM_CASE_INFO;
     let ACC_INFO;
     let PRODUCTS_INFO;
 
@@ -18,9 +21,11 @@
     let infoMinipressoGr;
     let infoMinipressoNs;
     let infoNanopresso;
+    let infoNanopressoNsAdapter;
     let infoNanopressoPatrol;
     let infoNanopressoTattoo;
     let infoNanopressoElements;
+    let infoNanopressoJourney;
     let infoNanopressoElementsSale;
     let infoNsAdapter;
     let infoBaristaKit;
@@ -34,11 +39,14 @@
         infoMinipressoGr     = new ProductInfo(4790, 1, "/minipresso-gr");
         infoMinipressoNs     = new ProductInfo(4790, 2, "/minipresso-ns");
 
-        infoNanopresso       = new ProductInfo(5990, 3, "/nanopresso");
-        infoNanopressoPatrol = new ProductInfo(5990, 4, "/nanopresso-patrol");
+        infoNanopresso          = new ProductInfo(5990, 3, "/nanopresso");
+        infoNanopressoPatrol    = new ProductInfo(5990, 4, "/nanopresso-patrol");
+
+        infoNanopressoNsAdapter = new ProductInfo(7090, 21, "/nanopresso-and-ns-adapter");
 
         infoNanopressoTattoo = new ProductInfo(6990, 11, "/nanopresso-tattoo");
         infoNanopressoElements = new ProductInfo(6990, 13, "/nanopresso-elements");
+        infoNanopressoJourney = new ProductInfo(6990, 17, "/nanopresso-journey");
 
         infoNanopressoElementsSale = new ProductInfo(6990, 113, "/nanopresso-elements-sale");
         infoNanopressoElementsSale.addDiscount(500);
@@ -49,28 +57,40 @@
         infoNanovessel       = new ProductInfo(1990, 12, "/nanovessel");
 
         infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
+        infoSet.discount = bundleDiscountPer;
+        infoSet.discountType = "%";
+
         infoTest             = new ProductInfo(3000, 999, "/test-product");
 
         setLists();
-        setDiscounts(PRODUCTS_INFO);
+        setDiscounts(CM_INFO, cmDiscount);
+        setDiscounts(CM_CASE_INFO, cmCaseDiscount);
+        setDiscounts(ACC_INFO, accDiscount);
     }
 
     function setLists() {
         CM_INFO = [
             infoMinipressoGr, infoMinipressoNs,
-            infoNanopresso, infoNanopressoPatrol, infoNanopressoTattoo, infoNanopressoElements, infoNanopressoElementsSale,
+            infoNanopresso, infoNanopressoPatrol, infoNanopressoNsAdapter,
             infoTest
+        ];
+
+        CM_CASE_INFO = [
+            infoNanopressoTattoo,
+            infoNanopressoElements,
+            infoNanopressoElementsSale,
+            infoNanopressoJourney
         ];
 
         ACC_INFO = [infoNsAdapter, infoBaristaKit, infoCase, infoNanovessel];
 
-        PRODUCTS_INFO = CM_INFO.concat(ACC_INFO);
+        PRODUCTS_INFO = CM_INFO.concat(CM_CASE_INFO).concat(ACC_INFO);
     }
 
-    function setDiscounts(infos) {
-        if (productDiscount > 0) {
+    function setDiscounts(infos, discount) {
+        if (discount > 0) {
             for (let idx in infos) {
-                infos[idx].addDiscount(productDiscount);
+                infos[idx].addDiscount(discount);
             }
         }
     }
@@ -78,22 +98,52 @@
     function ProductInfo(price, id, path) {
         this.price = price;
         this.oldPrice = undefined;
+        this.discount = undefined;
+        this.discountType = undefined;
         this.id = id;
         this.path = path;
 
         this.addDiscount = function (discount) {
-            this.oldPrice = this.price;
+            if (this.oldPrice === undefined) {
+                this.oldPrice = this.price;
+            }
 
             if (discount <= 100) {
-                this.price = getDiscountPrice(this.price, discount);
+                this.price = getDiscountPrice(this.oldPrice, discount);
+                this.discount = discount;
+                this.discountType = "%";
             } else {
                 this.price -= discount;
+                this.discount = discount;
+                this.discountType = "rub";
             }
         };
 
         this.getPriceWithoutDiscount = function () {
             return this.oldPrice !== undefined ? this.oldPrice : this.price;
         };
+
+        this.getDiscount = function () {
+            if (this.discount === undefined) {
+                return 0;
+            }
+
+            return this.discount;
+        };
+
+        this.getDiscountStr = function () {
+            if (this.discount === undefined) {
+                return undefined;
+            }
+
+            if (this.discountType === "%") {
+                return "-"+this.discount+"%";
+            } else if (this.discountType === "rub") {
+                return "-"+this.discount+" руб.";
+            } else {
+                return "";
+            }
+        }
     }
 
     function getDiscountPrice(oldPrice, discountPer) {
@@ -110,7 +160,7 @@
     setProductsInfo();
 </script>
 
-<!--System Parameters-->
+<!--Init Parameters-->
 <script type="text/javascript">
     let openTime;
     let page;
@@ -119,82 +169,17 @@
     let productInfo;
     let isProductPage;
 
-    //JQuery objects
-    let $cartForm;
-    let $cartWindow;
-    let $deliveryDescription;
-    let $deliveryTypeRadios;
-    let $deliveryClientCost;
 
-    let $deliveryAddressDiv;
-    let $deliveryAddressInput;
+    function init() {
+        console.log("STATE: initSystem");
 
-    let $cityDiv;
-    let $cityInput;
-
-    let $deliveryIntervalDiv;
-    let $deliveryIntervalInput;
-
-    let $checkedDelivery;
-    let $cdekDeliveryRadio;
-    let $cdekDeliveryTimePost;
-    let $cdekDeliveryTimePostValue;
-    let $deliveryRussiaTab;
-
-    let $buyOneClickBtn;
-    let $buyOneClickFormBtn;
-
-    $(document).ready(function(){
-        console.log("STATE: readySystem");
-
-        initSystemParameters();
-        setGlobalJQ();
-
-        readyAnalytics();
-        readyFixPages();
-        readyLogic();
-    });
-
-    function initSystemParameters() {
         openTime = new Date().getTime();
         page = document.location.pathname;
-        adminMode = page.indexOf("admin") > -1;
+        adminMode = document.location.href.indexOf("admin") > -1;
 
         productInfo = getProductInfoByPagePath(page);
         isProductPage = productInfo !== undefined;
-    }
 
-    function setGlobalJQ() {
-        $cartForm = $('.t706 form');
-        $cartWindow = $(".t706__cartwin");
-        $deliveryDescription = $('.t-input-subtitle.t-descr');
-        $deliveryTypeRadios = $("input:radio[name='deliveryType']");
-        $deliveryClientCost = $("input[name='deliveryClientCost']");
-
-        $deliveryAddressInput = $('input:text[name=deliveryAddress]');
-        $deliveryAddressDiv = $deliveryAddressInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        $cityInput = $('input:text[name=city]');
-        $cityDiv = $cityInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        $deliveryIntervalInput = $('input[name=deliveryInterval]');
-        $deliveryIntervalDiv = $deliveryIntervalInput
-            .parent()	// class="t-input-block"
-            .parent();	// class="t-input-group t-input-group_in"
-
-        $deliveryRussiaTab = $('#rec42659477').find('.t397__tab:last');
-
-        $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
-            return isRussia($(this));
-        });
-        $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
-
-        $buyOneClickBtn = $("#rec139769290").find("a[href='#popup:buy-one-click']");
-        $buyOneClickFormBtn = $("#rec139769178 button");
     }
 
     /**
@@ -223,6 +208,86 @@
 
         console.log("productInfo not found by pagePath: " + pagePath);
         return undefined;
+    }
+
+    init();
+</script>
+
+<!--System Parameters-->
+<script type="text/javascript">
+    //JQuery objects
+    let $cartForm;
+    let $cartWindow;
+    let $deliveryDescription;
+    let $deliveryTypeRadios;
+    let $deliveryClientCost;
+
+    let $cartPhone;
+    let $cartPhoneStr;
+
+    let $deliveryAddressDiv;
+    let $deliveryAddressInput;
+
+    let $cityDiv;
+    let $cityInput;
+
+    let $deliveryIntervalDiv;
+    let $deliveryIntervalInput;
+
+    let $checkedDelivery;
+    let $cdekDeliveryRadio;
+    let $cdekDeliveryTimePost;
+    let $cdekDeliveryTimePostValue;
+    let $samovivozOrDeliveryCity;
+    let $deliveryRussiaTab;
+
+    let $buyOneClickBtn;
+    let $buyOneClickFormBtn;
+
+    $(document).ready(function(){
+        console.log("STATE: readySystem");
+
+        setGlobalJQ();
+
+        readyAnalytics();
+        readyFixPages();
+        readyLogic();
+    });
+
+    function setGlobalJQ() {
+        $cartForm = $('.t706 form');
+        $cartWindow = $(".t706__cartwin");
+        $deliveryDescription = $('.t-input-subtitle.t-descr');
+        $deliveryTypeRadios = $("input:radio[name='deliveryType']");
+        $deliveryClientCost = $("input[name='deliveryClientCost']");
+
+        $cartPhone = $cartForm.find("input[name='Phone']");
+        $cartPhoneStr = $cartForm.find("input[name='phoneStr']");
+
+        $deliveryAddressInput = $('input:text[name=deliveryAddress]');
+        $deliveryAddressDiv = $deliveryAddressInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        $cityInput = $('input:text[name=city]');
+        $cityDiv = $cityInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        $deliveryIntervalInput = $('input[name=deliveryInterval]');
+        $deliveryIntervalDiv = $deliveryIntervalInput
+            .parent()	// class="t-input-block"
+            .parent();	// class="t-input-group t-input-group_in"
+
+        $deliveryRussiaTab = $('#rec42659477').find('.t397__tab:last');
+
+        $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
+            return isRussia($(this));
+        });
+        $cdekDeliveryTimePostValue = $('input[name="cdekDeliveryTimePostValue"]');
+
+        $buyOneClickBtn = $("#rec139769290").find("a[href='#popup:buy-one-click']");
+        $buyOneClickFormBtn = $("#rec139769178 button");
     }
 </script>
 
@@ -323,21 +388,15 @@
             $cdekDeliveryRadio.click(function () {
                 reachMetrikaGoalViaParams("OpenDeliveryRussiaRadioInCart");
             });
+
+            $buyOneClickBtn.click(function () {
+                reachMetrikaGoal("ClickBuyOneClickBtn");
+            });
         }
 
         function reachMetrikaGoal(goalName) {
             console.log("send " + goalName + " to yaMetrika");
             ym(ymCounterNum, 'reachGoal', goalName);
-        }
-
-        function reachMetrikaGoalViaParams(goalJson, nonLog) {
-            if (!nonLog) {
-                console.log("send " + JSON.stringify(goalJson) + " to yaMetrika via params");
-            }
-            ym(ymCounterNum, 'params', {
-                'customGoal': goalJson,
-                'time': getTimeSinceOpenInMins()
-            });
         }
 
         function getTimeSinceOpenInMins() {
@@ -361,7 +420,8 @@
 </script>
 
 <!--Fix pages-->
-<script type="text/javascript">
+<script type="text/javascript"
+>
     let $h1;
     let h1Text;
     let $mainProductRec = $();
@@ -372,9 +432,12 @@
         $h1 = $('h1');
         h1Text = $h1.text();
 
+        fixProductCarts();
+
         if (isProductPage) {
             $mainProductRec = $h1.parents('.t-rec');
 
+            addMicrodata();
             setAltForAllProductPics();
             setLastBreadCrumbName();
             setPointNavigationProductName();
@@ -384,6 +447,113 @@
 
     // Fix products pages functions
     {
+
+        function fixProductCarts() {
+            $('div.t744, div.t778__wrapper').each(function (idx) {
+                let prod = $(this);
+
+                let oldPriceDiv, oldPriceValueDiv, productImg;
+                let productName = prod.find(".js-product-name").text();
+                let currentPriceValueDiv = prod.find('.js-product-price');
+                let buyButton = prod.find("[href='#order']");
+
+                let productFromLine = $(this).attr("class").indexOf("t778") !== -1;
+                if (productFromLine) {
+                    oldPriceDiv = prod.find('.t778__price_old');
+                    oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
+                    productImg = prod.find(".t778__imgwrapper");
+                } else {
+                    oldPriceDiv = prod.find('.t744__price_old');
+                    oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
+                    productImg = prod.find(".t-slds__imgwrapper");
+                }
+
+                let productInfo = getProductInfoByProductName(productName);
+
+                if (productInfo === undefined) {
+                    console.error("Couldn't find info for: " + productName);
+                    return;
+                }
+
+                if (productInfo.getDiscount() !== 0) {
+                    let $markOnLineCards = $('<div class="t778__markwrapper"><div class="t778__mark"></div></div>');
+
+                    $markOnLineCards.children('.t778__mark').text(productInfo.getDiscountStr());
+                    productImg.append($markOnLineCards);
+                }
+
+                if (productName.toLowerCase().indexOf("set") === -1) {
+                    setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv);
+
+                    buyButton.click(function () {
+                        setFbTrackAddToCart(productInfo);
+                    });
+                } else {
+                    buyButton.click(function () {
+                        setFbTrackAddToCart(infoSet);
+                    });
+                }
+            });
+
+        }
+
+        /**
+         * @param {ProductInfo} productInfo
+         */
+        function setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv) {
+            currentPriceValueDiv.text(productInfo.price);
+
+            if (productInfo.oldPrice === undefined) {
+                oldPriceDiv.hide();
+            } else {
+                oldPriceDiv.show();
+                oldPriceValueDiv.text(productInfo.oldPrice);
+            }
+
+            console.log(productName +": cur=" + currentPriceValueDiv.text() + ", old=" + oldPriceValueDiv.text());
+        }
+
+        function addMicrodata(){
+            let productMD = $mainProductRec.find(".js-product-single");
+
+            productMD
+                .attr("itemscope", "")
+                .attr("itemtype", "http://schema.org/Product");
+
+            let imageLink = productMD.find('div[bgimgfield="gi_img__0"]').eq(0).attr("data-img-zoom-url");
+            if (imageLink !== undefined) {
+                productMD.find(".t-slds")
+                    .attr("itemprop", "image")
+                    .attr("content", imageLink);
+            }
+
+            productMD.find("h1").attr("itemprop", "name");
+            productMD.find(".t744__descr").attr("itemprop", "description");
+
+            productMD.find(".t744__title_small")
+                .attr("itemprop", "brand")
+                .attr("content", "Wacaco");
+
+            let offerMD = productMD.find(".t744__price-wrapper");
+            offerMD
+                .attr("itemprop", "offers")
+                .attr("itemScope", "")
+                .attr("itemType", "http://schema.org/Offer");
+
+            offerMD.append("<meta itemProp=\"availability\" content=\"http://schema.org/InStock\">");
+
+            let $jsProductPrice = offerMD.find(".js-product-price");
+            $jsProductPrice
+                .attr("itemprop", "price")
+                .attr("content", $jsProductPrice.text());
+
+            offerMD.find(".t744__price-currency")
+                .attr("itemprop", "priceCurrency")
+                .attr("content", "RUB");
+
+            console.log("Microdata were added.")
+        }
+
         function setAltForAllProductPics() {
             $('.js-product-img').each(function () {
                 $(this).attr('alt', h1Text);
@@ -404,6 +574,50 @@
             $addToCartBtn.after($buyOneClickBtn);
             $buyOneClickBtn.show();
             $buyOneClickBtn.css("margin-left", "20px");
+        }
+
+        /**
+         * @param {string} productName The string
+         * @return {ProductInfo}
+         */
+        function getProductInfoByProductName(productName) {
+            if (productName === undefined) {
+                return undefined;
+            }
+
+            productName = productName.toLowerCase();
+
+            if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
+            if (productName.indexOf("elements") > -1) {
+                return page.indexOf("sale") > -1
+                    ? infoNanopressoElementsSale
+                    : infoNanopressoElements;
+            }
+            if (productName.indexOf("journey") > -1)     return infoNanopressoJourney;
+
+            if (productName.indexOf("nanopresso+ns-адаптер") > -1)     return infoNanopressoNsAdapter;
+
+            if (productName.indexOf("ns-адаптер") > -1) return infoNsAdapter;
+            if (productName.indexOf("barista") > -1)    return infoBaristaKit;
+            if (productName.indexOf("чехол") > -1)      return infoCase;
+            if (productName.indexOf("nanovessel") > -1) return infoNanovessel;
+
+            if (productName.indexOf("minipresso") > -1) {
+                if (productName.indexOf("ns") > -1) {
+                    return infoMinipressoNs;
+                } else {
+                    return infoMinipressoGr;
+                }
+            }
+
+            if (productName.indexOf("patrol") > -1)     return infoNanopressoPatrol;
+            if (productName.indexOf("set") > -1)        return infoSet;
+            if (productName.indexOf("nanopresso") > -1) return infoNanopresso;
+
+            if (productName.indexOf("тест") > -1)       return infoTest;
+
+            console.log("productInfo not found by productName");
+            return undefined;
         }
     }
 
@@ -432,13 +646,15 @@
 
         fixCartWindowFields();
 
-        fixPageElements();
-        fixProductCarts();
         setJivoChatOpenByClickInContacts();
         initInitiateCheckoutFunction();
         initMyAfterSendedFunction();
 
-        waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
+        if (isProductPage) {
+            addChangingProductPicWhenChange1Variant();
+        }
+
+        // waitVar(function(){return window.tcart_initted;}, fixDeliveryPriceFunc);
     }
 
      $( window ).load(function() {
@@ -449,12 +665,16 @@
      });
 
     function setAdminElements() {
-        let $sendSmsCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='SendSmsAboutOrder']");
+        let $sendSmsGroup = $cartForm.find(".t-input-group").has("input[name='SendSmsAboutOrder']");
+        let $infoThemeGroup = $cartForm.find(".t-input-group").has("input[name='infoTheme']");
+        $infoThemeGroup.find("input[name='infoTheme']").val(" ");
 
         if (adminMode) {
-            $sendSmsCbGroup.show();
+            $sendSmsGroup.show();
+            $infoThemeGroup.show();
         } else {
-            $sendSmsCbGroup.hide();
+            $sendSmsGroup.hide();
+            $infoThemeGroup.hide();
         }
 
     }
@@ -473,7 +693,7 @@
                 reachMetrikaGoal("InitiateCheckout");
             });
 
-            $cartForm.find("input[name='Phone']").change(getFields);
+            $cartPhone.change(getFields);
             $cartForm.find("input[name='Email']").change(getFields);
             function getFields() {
                 let name = $(this).attr('name');
@@ -522,6 +742,40 @@
                 $(this).data('formsended-callback', 'window.myAfterSendedFunction');
             });
         }
+
+        function addChangingProductPicWhenChange1Variant() {
+            let productFirstVariant = $mainProductRec.find('select.js-product-option-variants').eq(0);
+
+            if (productFirstVariant.get(0) !== undefined) {
+                //select right pic when change variant
+                productFirstVariant.change(function (event, param) {
+                    let num = $(this).prop("selectedIndex") + 1;
+
+                    if (param !== "skip-bullet-click") {
+                        $mainProductRec.find(".t-slds__bullet[data-slide-bullet-for='" + num + "']").click();
+                    }
+                });
+
+                let theFirstBullet = $mainProductRec.find('.t-slds__bullet').eq(0).get(0);
+                new MutationObserver(function (mutationsList) {
+                    let activeBullet = $mainProductRec.find('.t-slds__bullet.t-slds__bullet_active');
+                    changeVarintByBullet(activeBullet);
+                }).observe(theFirstBullet, {attributes: true, attributeOldValue:true, attributeFilter: ["class"]});
+
+                console.log("Add listeners pictures <--> variants");
+            }
+
+            function changeVarintByBullet(activeBullet){
+                let idx = activeBullet.attr("data-slide-bullet-for")-1;
+
+                if (idx !== productFirstVariant.prop("selectedIndex")) {
+                    let optionName = productFirstVariant.find("option").eq(idx).val();
+                    if (optionName !== undefined) {
+                        productFirstVariant.val(optionName).trigger('change', "skip-bullet-click");
+                    }
+                }
+            }
+        }
     }
 
     // Delivery functions
@@ -529,6 +783,7 @@
         function fixDeliveryInCart() {
             $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
             $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
+            $samovivozOrDeliveryCity = $cartForm.find('input[name="samovivozOrDeliveryCity"]');
 
             //default Moscow delivery
             $checkedDelivery = $deliveryTypeRadios.filter(function () {
@@ -591,12 +846,17 @@
             $cityInput.val(currentDelivery.city);
             $deliveryAddressInput.val(currentDelivery.address);
 
+            if (currentDelivery === selfTakeDelivery) {
+                $samovivozOrDeliveryCity.val(selfTakeDelivery.address);
+            } else {
+                $samovivozOrDeliveryCity.val(currentDelivery.city);
+            }
+
             console.log("Delivery: " + $cityInput.val() + ", " + $deliveryAddressInput.val());
         }
 
         function initCdekDeliveryWidget(type) {
             let apikey = 'aa735970-60bf-4090-b32d-083b360acd6f';
-            let cdekPvzWidgetScriptsPath = 'https://8bars.000webhostapp.com/cdek-pvz-widget/widget/scripts/';
 
             if (type === 'info') {
                 cdekPvzInfoWidget = new ISDEKWidjet({
@@ -640,7 +900,7 @@
             }
 
             function onChoose(info) {
-                setDelivery(cdekDelivery);
+                // setDelivery(cdekDelivery);
 
                 if (info.term === undefined) {
                     $cdekDeliveryTimePost.text("");
@@ -655,15 +915,20 @@
                     $cdekDeliveryTimePostValue.val("Original: " + info.termOriginal + " дн., shown: " + info.term);
                 }
 
-                $cityInput.val(info.cityName);
+                cdekDelivery.city = info.cityName;
+                // $cityInput.val(info.cityName);
 
                 if (info.PVZ !== undefined) {
-                    $deliveryAddressInput.val("ПВЗ: " + info.PVZ.Address);
+                    // $deliveryAddressInput.val("ПВЗ: " + info.PVZ.Address);
+                    cdekDelivery.address = "ПВЗ: " + info.PVZ.Address;
                 } else {
-                    if ($deliveryAddressInput.val().indexOf("ПВЗ:") === 0) {
-                        $deliveryAddressInput.val("");
-                    }
+                    cdekDelivery.address = "";
+                    // if ($deliveryAddressInput.val().indexOf("ПВЗ:") === 0) {
+                    //     $deliveryAddressInput.val("");
+                    // }
                 }
+
+                setDelivery(cdekDelivery);
             }
         }
 
@@ -686,11 +951,12 @@
         function fixCartWindowFields() {
             fixDeliveryInCart();
             fixPromoCodeInCart();
+
+            $cartPhone.change(changeCartPhoneStr);
         }
 
         function fixPromoCodeInCart() {
             let $promoGroup = $cartForm.find(".t-input-group_pc");
-            $promoGroup.hide();
 
             let $hasPromoCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='hasPromo']");
             $hasPromoCbGroup.one('change', function () {
@@ -744,116 +1010,12 @@
                 return $cartWindow.hasClass("t706__cartwin_showed")
             }
         }
-    }
 
-    // Fix pages functions
-    {
+        function changeCartPhoneStr() {
+            let phone = $cartPhone.val();
+            let phoneStr = phone.replace(/\+8/,"\+7").replace(/[\+ \(\)-]/g,"");
 
-        function fixPageElements() {
-            // Phone
-            // let $myPhoneLinks = $('a[href="tel:+74994993105"]');
-            //
-            // $myPhoneLinks.attr("href","tel:+79858095041");
-            // $myPhoneLinks.text("+7 (985) 809-5041")
-        }
-
-        function fixProductCarts() {
-
-            $('div.t744, div.t778__wrapper').each(function (idx) {
-                let prod = $(this);
-
-                let oldPriceDiv;
-                let oldPriceValueDiv;
-                let productName = prod.find(".js-product-name").text();
-                let currentPriceValueDiv = prod.find('.js-product-price');
-                let buyButton = prod.find("[href='#order']");
-
-                let prodClass = $(this).attr("class");
-                if (prodClass.indexOf("t778") !== -1) {
-                    oldPriceDiv = prod.find('.t778__price_old');
-                    oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
-                } else {
-                    oldPriceDiv = prod.find('.t744__price_old');
-                    oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
-                }
-
-                let productInfo = getProductInfoByProductName(productName);
-
-                if (productInfo === undefined) {
-                    console.error("Couldn't find info for: " + productName);
-                    return;
-                }
-
-                if (productName.toLowerCase().indexOf("set") === -1) {
-                    setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv);
-
-                    buyButton.click(function () {
-                        setFbTrackAddToCart(productInfo);
-                    });
-                } else {
-                    buyButton.click(function () {
-                        setFbTrackAddToCart(infoSet);
-                    });
-                }
-            });
-
-        }
-
-        /**
-         * @param {ProductInfo} productInfo
-         */
-        function setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv) {
-            currentPriceValueDiv.text(productInfo.price);
-
-            if (productInfo.oldPrice === undefined) {
-                oldPriceDiv.hide();
-            } else {
-                oldPriceDiv.show();
-                oldPriceValueDiv.text(productInfo.oldPrice);
-            }
-
-            console.log(productName +": cur=" + currentPriceValueDiv.text() + ", old=" + oldPriceValueDiv.text());
-        }
-
-        /**
-         * @param {string} productName The string
-         * @return {ProductInfo}
-         */
-        function getProductInfoByProductName(productName) {
-            if (productName === undefined) {
-                return undefined;
-            }
-
-            productName = productName.toLowerCase();
-
-            if (productName.indexOf("ns-адаптер") > -1) return infoNsAdapter;
-            if (productName.indexOf("barista") > -1)    return infoBaristaKit;
-            if (productName.indexOf("чехол") > -1)      return infoCase;
-            if (productName.indexOf("nanovessel") > -1) return infoNanovessel;
-
-            if (productName.indexOf("minipresso") > -1) {
-                if (productName.indexOf("ns") > -1) {
-                    return infoMinipressoNs;
-                } else {
-                    return infoMinipressoGr;
-                }
-            }
-
-            if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
-            if (productName.indexOf("elements") > -1) {
-                return page.indexOf("sale") > -1
-                    ? infoNanopressoElementsSale
-                    : infoNanopressoElements;
-            }
-
-            if (productName.indexOf("patrol") > -1)     return infoNanopressoPatrol;
-            if (productName.indexOf("set") > -1)        return infoSet;
-            if (productName.indexOf("nanopresso") > -1) return infoNanopresso;
-
-            if (productName.indexOf("тест") > -1)       return infoTest;
-
-            console.log("productInfo not found by productName");
-            return undefined;
+            $cartPhoneStr.val(phoneStr);
         }
     }
 

@@ -18,13 +18,13 @@
 				<typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
 				<model>Minipresso GR</model>
-                
+
 				<description>Minipresso GR для молотого кофе - это компактная и легкая карманная кофемашина. Просто измельчите кофе и приготовьте с его помощью идеальный шот эспрессо, который оценят даже самые придирчивые кофеманы. Вы можете использовать любые кофейные зерна и каждый раз выбирать сорт кофе по своему настроению.</description>
                 <url>https://8bars.ru/minipresso-gr/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=minipresso_gr</url>
 
                 <picture>https://static.tildacdn.com/tild6432-6134-4638-b937-343033353133/MinipressoGR.jpg</picture>
 
-                <price>4070</price><oldprice>4790</oldprice>
+                <price>4790</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -44,12 +44,12 @@
                 <typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
 				<model>Minipresso NS</model>
-				
+
                 <description>Minipresso NS удобно использовать, если вы не хотите молоть, отмерять и засыпать кофе. При приготовлении кофе в капсулах практически невозможно совершить ошибку, также такой кофемашину проще мыть и после приготовления кофе остается меньше мусора.</description>
                 <url>https://8bars.ru/minipresso-ns/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=minipresso_ns</url>
                 <picture>https://static.tildacdn.com/tild3931-3665-4037-b164-643037326430/MinipressoNS.jpg</picture>
 
-                <price>4070</price><oldprice>4790</oldprice>
+                <price>4790</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -71,13 +71,13 @@
 			    <typePrefix>Кофемашина</typePrefix>
 				<vendor>Wacaco</vendor>
                     <model>Nanopresso</model>
-				
+
                 <description>Nanopresso – новая модель карманной кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso</url>
                 <picture>https://static.tildacdn.com/tild3833-3463-4631-b533-626566613030/003_720x.jpg</picture>
 
-                <price>5090</price><oldprice>5990</oldprice>
-                
+                <price>5990</price>
+
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -92,7 +92,7 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
-            <offer id="4" type="vendor.model" available="true">
+            <offer id="4" type="vendor.model" available="false">
                 <typePrefix>Кофемашина</typePrefix>
                 <vendor>Wacaco</vendor>
                 <model>Nanopresso (Orange patrol)</model>
@@ -101,8 +101,8 @@
                 <url>https://8bars.ru/nanopresso-patrol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_patrol_orange</url>
                 <picture>https://static.tildacdn.com/tild6233-3538-4336-b331-396237663735/NanopressoOrange.jpg</picture>
 
-                <price>5090</price><oldprice>5990</oldprice>
-                
+                <price>5990</price>
+
                 <param name="цвет">Orange patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -126,8 +126,8 @@
                 <url>https://8bars.ru/nanopresso-patrol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_patrol_yellow</url>
                 <picture>https://static.tildacdn.com/tild3062-3536-4466-a364-343037643834/NanopressoYellow.jpg</picture>
 
-                <price>5090</price><oldprice>5990</oldprice>
-                
+                <price>5990</price>
+
                 <param name="цвет">Yellow patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -151,8 +151,8 @@
                 <url>https://8bars.ru/nanopresso-patrol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_patrol_red</url>
                 <picture>https://static.tildacdn.com/tild3562-3261-4236-b861-666333336632/NanopressoRed.jpg</picture>
 
-                <price>5090</price><oldprice>5990</oldprice>
-                
+                <price>5990</price>
+
                 <param name="цвет">Red patrol</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -176,7 +176,7 @@
                 <url>https://8bars.ru/ns-adapter-nanopresso/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=ns-adapter</url>
                 <picture>https://static.tildacdn.com/tild6265-6630-4766-a565-323535393865/NanopressoNSAdapter.jpg</picture>
 
-                <price>1600</price><oldprice>1890</oldprice>
+                <price>1890</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -201,7 +201,7 @@
                 <url>https://8bars.ru/barista-kit-nanopresso/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=barista_kit</url>
                 <picture>https://static.tildacdn.com/tild6366-3337-4466-b636-623337356538/NanopressoBaristaKit.jpg</picture>
 
-                <price>2110</price><oldprice>2490</oldprice>
+                <price>2490</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -225,7 +225,7 @@
                 <url>https://8bars.ru/nanopresso-minipresso-case/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=case</url>
                 <picture>https://static.tildacdn.com/tild3130-3635-4361-b564-323330326363/NanoMiniCase.jpg</picture>
 
-                <price>1260</price><oldprice>1490</oldprice>
+                <price>1490</price>
 
                 <param name="цвет">black</param>
 
@@ -248,11 +248,11 @@
                 <url>https://8bars.ru/nanovessel/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanovessel</url>
                 <picture>https://static.tildacdn.com/tild3436-6466-4936-b566-313936306430/Nanovessel_YM.jpg</picture>
 
-                <price>1690</price><oldprice>1990</oldprice>
+                <price>1990</price>
 
                 <param name="цвет">silver</param>
 
-                <categoryId>2</categoryId>
+                <categoryId>3</categoryId>
 
                 <currencyId>RUR</currencyId>
                 <store>false</store>
@@ -271,9 +271,9 @@
                 <description>Nanopresso Tattoo Orange – оранжевая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
                 <url>https://8bars.ru/nanopresso-tattoo/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_tattoo_orange</url>
                 <picture>https://static.tildacdn.com/tild3938-6433-4663-b632-356537636436/NanopressoTattooOran.jpg</picture>
-                
-                <price>5940</price><oldprice>6990</oldprice>
-                
+
+                <price>6990</price>
+
                 <param name="цвет">Orange tattoo</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -297,8 +297,8 @@
                 <url>https://8bars.ru/nanopresso-tattoo/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_tattoo_yellow</url>
                 <picture>https://static.tildacdn.com/tild3761-3863-4635-b466-313838373863/NanopressoTattooYell.jpg</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
-                
+                <price>6990</price>
+
                 <param name="цвет">Yellow tattoo</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
@@ -323,7 +323,7 @@
                 <url>https://8bars.ru/nanopresso-elements/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_elements_chill_white</url>
                 <picture>https://static.tildacdn.com/tild6535-3239-4430-b963-373735323433/Nanopresso_Chill_Whi.png</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>6990</price>
 
                 <param name="цвет">Elements Chill White</param>
                 <param name="тип">эспрессо</param>
@@ -348,7 +348,7 @@
                 <url>https://8bars.ru/nanopresso-elements/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_elements_moss_green</url>
                 <picture>https://static.tildacdn.com/tild6335-3965-4630-a262-356437643862/Nanopresso_Moss_Gree.png</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>6990</price>
 
                 <param name="цвет">Elements Moss Green</param>
                 <param name="тип">эспрессо</param>
@@ -373,7 +373,7 @@
                 <url>https://8bars.ru/nanopresso-elements/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_elements_arctic_blue</url>
                 <picture>https://static.tildacdn.com/tild3239-6461-4539-a332-363536613830/Nanopresso_Arctic_Bl.png</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>6990</price>
 
                 <param name="цвет">Elements Arctic Blue</param>
                 <param name="тип">эспрессо</param>
@@ -398,7 +398,7 @@
                 <url>https://8bars.ru/nanopresso-elements/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_elements_lava_red</url>
                 <picture>https://static.tildacdn.com/tild3137-6636-4139-b230-663861616331/Nanopresso_Lava_Red.png</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>6990</price>
 
                 <param name="цвет">Elements Lava Red</param>
                 <param name="тип">эспрессо</param>
@@ -414,6 +414,143 @@
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
             </offer>
+
+            <offer id="17" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso Journey Winter Ride c жёстким чехлом</model>
+
+                <description>Nanopresso Journey Winter Ride – зимняя версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-journey/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_journey_winter_ride</url>
+                <picture>https://static.tildacdn.com/tild3038-6562-4764-b931-616664633364/nanopresso-journey-w.png</picture>
+
+                <price>6990</price>
+
+                <param name="цвет">зима</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="18" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso Journey Spring Run c жёстким чехлом</model>
+
+                <description>Nanopresso Journey Spring Run – весенняя версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-journey/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_journey_spring_run</url>
+                <picture>https://static.tildacdn.com/tild3538-3531-4332-b038-336438626566/nanopresso-journey-s.png</picture>
+
+                <price>6990</price>
+
+                <param name="цвет">весна</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="19" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso Journey Summer Session c жёстким чехлом</model>
+
+                <description>Nanopresso Journey Summer Session – летняя версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-journey/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_journey_summer_session</url>
+                <picture>https://static.tildacdn.com/tild3630-6631-4264-b530-653862666430/nanopresso-journey-s.png</picture>
+
+                <price>6990</price>
+
+                <param name="цвет">лето</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+            <offer id="20" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso Journey Fall Break c жёстким чехлом</model>
+
+                <description>Nanopresso Journey Fall Break – осенняя версия карманной кофемашины от Wacaco в комплекте с жёстким чехлом. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/nanopresso-journey/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_journey_fall_break</url>
+                <picture>https://static.tildacdn.com/tild3039-3163-4537-b066-376434663362/nanopresso-journey-f.png</picture>
+
+                <price>6990</price>
+
+                <param name="цвет">осень</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
+
+            <offer id="21" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso + NS-adapter</model>
+
+                <description>Nanopresso + NS-adapter – новая модель карманной кофемашины для приготовления эспрессо от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Благодаря NS-адаптеру, который идет в комплекте, карманную кофемашину Nanopresso можно использовать не только для приготовления эспрессо из молотого кофе, но и из капсул Nespresso*</description>
+                <url>https://8bars.ru/#catalog#!/tproduct/75885886-1580914509534/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_and_ns_adapter</url>
+                <picture>https://static.tildacdn.com/tild3166-3262-4531-b934-666564306134/Wacaco_Nanopresso_NS.jpg</picture>
+
+                <price>7090</price>
+
+                <param name="цвет">black</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый,капсулы</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+            </offer>
         </offers>
+
+        <promos>
+            <promo id="Promo15p" type="promo code">
+                <promo-code>MARKET</promo-code>
+                <discount unit="percent" currency="RUR">15</discount>
+                <purchase>
+                    <product category-id="1"/>
+                </purchase>
+            </promo>
+        </promos>
     </shop>
 </yml_catalog>

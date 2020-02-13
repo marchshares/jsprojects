@@ -40,4 +40,18 @@
             </purchase>
         </promo>
     </promos>
+
+    <promos>
+        <promo id="Promo15p" type="promo code">
+            <start-date>2019-11-06 00:00</start-date>
+            <end-date>2019-12-31 23:00</end-date>
+            <promo-code>WACACO</promo-code>
+            <discount unit="percent" currency="RUR">15</discount>
+            <purchase>
+                <product category-id="1"/>
+                <product category-id="2"/>
+                <product category-id="3"/>
+            </purchase>
+        </promo>
+    </promos>
 </promos>
