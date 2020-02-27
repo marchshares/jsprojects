@@ -10,6 +10,7 @@
 
         <categories>
             <category id="1">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Кофеварки и кофемашины</category>
+            <category id="11">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Кофеварки и кофемашины</category>
             <category id="2">Все товары/Бытовая техника/Мелкая техника для кухни/Приготовление напитков/Аксессуары для кофемашин и кофеварок</category>
             <category id="3">Все товары/Товары для дома/Посуда и кухонные принадлежности/Термосы и термокружки</category>
         </categories>
@@ -525,13 +526,13 @@
                 <url>https://8bars.ru/#catalog#!/tproduct/75885886-1580914509534/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_and_ns_adapter</url>
                 <picture>https://static.tildacdn.com/tild3166-3262-4531-b934-666564306134/Wacaco_Nanopresso_NS.jpg</picture>
 
-                <price>7090</price>
+                <price>7190</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый,капсулы</param>
 
-                <categoryId>1</categoryId>
+                <categoryId>11</categoryId>
 
                 <currencyId>RUR</currencyId>
                 <store>false</store>

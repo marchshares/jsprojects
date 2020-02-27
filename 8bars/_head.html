@@ -126,6 +126,51 @@
 <!-- Сdek delivery widget -->
 <script type="text/javascript" src="https://minipressoshop.ru/cdek-pvz-widget/widget/widjet.js" id="ISDEKscript" charset="utf-8"></script>
 
+<!-- Polyfill -->
+<script>
+    if (!String.prototype.includes) {
+        String.prototype.includes = function(search, start) {
+            'use strict';
+            if (typeof start !== 'number') {
+                start = 0;
+            }
+
+            if (start + search.length > this.length) {
+                return false;
+            } else {
+                return this.indexOf(search, start) !== -1;
+            }
+        };
+    }
+</script>
+
+<!--Mappings-->
+<script type="text/javascript">
+    let mapOfSku = {
+        "WCCN_X:цвет:черный"    : "WCCN80",
+        "WCCN_X:цвет:желтый"    : "WCCN83",
+        "WCCN_X:цвет:оранжевый" : "WCCN84",
+        "WCCN_X:цвет:красный"   : "WCCN81",
+
+        "WCCTTT_X:цвет:желтый"    : "WCCTTTYL",
+        "WCCTTT_X:цвет:оранжевый" : "WCCTTTOR",
+
+        "WCCE_X:цвет:chill white" : "WCCCHWH",
+        "WCCE_X:цвет:moss green"  : "WCCMSGR",
+        "WCCE_X:цвет:arctic blue" : "WCCRTCBL",
+        "WCCE_X:цвет:lava red"    : "WCCLVRD",
+
+        "WCCJ_X:цвет:winter ride"    : "WCCWTRD",
+        "WCCJ_X:цвет:spring run"     : "WCCSPRN",
+        "WCCJ_X:цвет:summer session" : "WCCSMSS",
+        "WCCJ_X:цвет:fall break"     : "WCCFLBK",
+
+        "WCCC_X:размер:mp-чехол" : "WCCCS",
+        "WCCC_X:размер:s-чехол"  : "WCCNSC",
+        "WCCC_X:размер:m-чехол"  : "WCCNMC",
+        "WCCC_X:размер:l-чехол"  : "WCCNLC"
+    };
+</script>
 
 <style type="text/css">
     /*Cart field*/

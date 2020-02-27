@@ -41,8 +41,8 @@
 
     function setDefaultSelect () {
         selectByContains(bundleColorSelect, "Черный");
-        selectByContains(bundleAccessorySelect, "NS-адаптер+Barista Kit+Nanovessel");
-        selectByContains(bundleCaseSelect, "L-");
+        selectByContains(bundleAccessorySelect, "NS-адаптер+Nanovessel");
+        selectByContains(bundleCaseSelect, "M-");
 
         function selectByContains(bundleSelect, contains) {
             var option = bundleSelect.find($("select.t-product__option-select option:contains(\"" + contains + "\")"));
@@ -68,27 +68,35 @@
 
     var changeBundleSelectHandler = function () {
         console.log('changeBundleSelectHandler');
-        var selectedColor = bundleColorSelect.find($('select.t-product__option-select option:selected'));
-        var selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
-        var selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
+        let selectedColor = bundleColorSelect.find($('select.t-product__option-select option:selected'));
+        let selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
+        let selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
 
-        var selectedColorText = simplifyName(selectedColor.text());
-        var selectedAccessoryText = simplifyName(selectedAccessory.text());
-        var selectedCaseText = simplifyName(selectedCase.text());
+        let selectedColorText = simplifyName(selectedColor.text());
+        let selectedAccessoryText = simplifyName(selectedAccessory.text());
+        let selectedCaseText = simplifyName(selectedCase.text());
 
-        var hasNsAdapter = selectedAccessoryText.indexOf("NS-адаптер") > -1;
-        var hasBaristaKit = selectedAccessoryText.indexOf("Barista Kit") > -1;
-        var hasNanovessel = selectedAccessoryText.indexOf("Nanovessel") > -1;
-        var hasCase = selectedCaseText !== "Нет";
+        let isNanopressoWithCase =
+            selectedColorText.includes("elements") ||
+            selectedColorText.includes("journey") ||
+            selectedColorText.includes("tattoo");
 
-        var oldPrice = infoNanopresso.getPriceWithoutDiscount();
+        let hasAnyAccessory = false;
+        let hasNsAdapter = selectedAccessoryText.includes("ns-адаптер");
+        let hasBaristaKit = selectedAccessoryText.includes("barista kit");
+        let hasNanovessel = selectedAccessoryText.includes("nanovessel");
+        let hasCase = selectedCaseText !== "нет";
 
-        if ( hasNsAdapter)   { oldPrice += infoNsAdapter.getPriceWithoutDiscount(); }
-        if ( hasBaristaKit)  { oldPrice += infoBaristaKit.getPriceWithoutDiscount(); }
-        if ( hasCase)        { oldPrice += infoCase.getPriceWithoutDiscount(); }
-        if ( hasNanovessel)  { oldPrice += infoNanovessel.getPriceWithoutDiscount(); }
+        let oldPrice = isNanopressoWithCase
+            ? infoNanopressoElements.getPriceWithoutDiscount()
+            : infoNanopresso.getPriceWithoutDiscount();
 
-        var imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
+        if ( hasNsAdapter)   { oldPrice += infoNsAdapter.getPriceWithoutDiscount();  hasAnyAccessory = true; }
+        if ( hasBaristaKit)  { oldPrice += infoBaristaKit.getPriceWithoutDiscount(); hasAnyAccessory = true; }
+        if ( hasCase)        { oldPrice += infoCase.getPriceWithoutDiscount();       hasAnyAccessory = true; }
+        if ( hasNanovessel)  { oldPrice += infoNanovessel.getPriceWithoutDiscount(); hasAnyAccessory = true; }
+
+        let imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
 
         bundleBlock.find($('div.t-slds__bgimg')).each(function (idx) {
             $(this).attr("data-original", imgUrl);
@@ -98,10 +106,9 @@
             $(this).parent().attr("data-img-zoom-url", imgUrl);
         });
 
-        var currentPrice = infoNanopresso.price;
-        if (oldPrice !== infoNanopresso.getPriceWithoutDiscount()) {
-            currentPrice = getDiscountPrice(oldPrice, bundleDiscountPer);
-        }
+        let currentPrice = hasAnyAccessory && bundleDiscountPer > 0
+            ? getDiscountPrice(oldPrice, bundleDiscountPer)
+            : oldPrice;
 
         if (currentPrice !== oldPrice) {
             bundleOldPrice.show();
@@ -122,19 +129,19 @@
         let imageName;
         switch (color) {
             default:
-            case "Черный":
+            case "черный":
                 imageName = "Black";
                 break;
 
-            case "Оранжевый":
+            case "оранжевый":
                 imageName = "Orange";
                 break;
 
-            case "Красный":
+            case "красный":
                 imageName = "Red";
                 break;
 
-            case "Желтый":
+            case "желтый":
                 imageName = "Yellow";
                 break;
         }
@@ -155,7 +162,7 @@
     }
 
     function simplifyName(name) {
-        return name.replace(/\(.*\)/g, "").trim();
+        return name.toLowerCase().replace(/\(.*\)/g, "").trim();
     }
 
     function getLetter(hasAccessory) {

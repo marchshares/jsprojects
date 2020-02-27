@@ -38,11 +38,12 @@
     function setProductsInfo() {
         infoMinipressoGr     = new ProductInfo(4790, 1, "/minipresso-gr");
         infoMinipressoNs     = new ProductInfo(4790, 2, "/minipresso-ns");
+        infoMinipressoNs.setInStock(false);
 
         infoNanopresso          = new ProductInfo(5990, 3, "/nanopresso");
         infoNanopressoPatrol    = new ProductInfo(5990, 4, "/nanopresso-patrol");
 
-        infoNanopressoNsAdapter = new ProductInfo(7090, 21, "/nanopresso-and-ns-adapter");
+        infoNanopressoNsAdapter = new ProductInfo(7190, 21, "/nanopresso-and-ns-adapter");
 
         infoNanopressoTattoo = new ProductInfo(6990, 11, "/nanopresso-tattoo");
         infoNanopressoElements = new ProductInfo(6990, 13, "/nanopresso-elements");
@@ -53,6 +54,8 @@
 
         infoNsAdapter        = new ProductInfo(1890, 7, "/ns-adapter-nanopresso");
         infoBaristaKit       = new ProductInfo(2490, 8, "/barista-kit-nanopresso");
+        infoBaristaKit.setInStock(false);
+
         infoCase             = new ProductInfo(1490, 9, "/nanopresso-minipresso-case");
         infoNanovessel       = new ProductInfo(1990, 12, "/nanovessel");
 
@@ -60,7 +63,7 @@
         infoSet.discount = bundleDiscountPer;
         infoSet.discountType = "%";
 
-        infoTest             = new ProductInfo(3000, 999, "/test-product");
+        infoTest             = new ProductInfo(3000, 999, "/test-order");
 
         setLists();
         setDiscounts(CM_INFO, cmDiscount);
@@ -102,6 +105,7 @@
         this.discountType = undefined;
         this.id = id;
         this.path = path;
+        this.inStock = true;
 
         this.addDiscount = function (discount) {
             if (this.oldPrice === undefined) {
@@ -121,6 +125,14 @@
 
         this.getPriceWithoutDiscount = function () {
             return this.oldPrice !== undefined ? this.oldPrice : this.price;
+        };
+
+        this.setInStock = function (inStock) {
+            this.inStock = inStock;
+        };
+
+        this.isInStock = function () {
+            return this.inStock;
         };
 
         this.getDiscount = function () {
@@ -151,9 +163,11 @@
         return res - (res % 10);
     }
 
-    function DeliveryType(city, address) {
+    function DeliveryType(city, address, deliveryCompany, fullDeliveryCost) {
         this.city = city;
         this.address = address;
+        this.deliveryCompany = deliveryCompany;
+        this.fullDeliveryCost = fullDeliveryCost;
     }
 
     //fun func
@@ -233,6 +247,10 @@
 
     let $deliveryIntervalDiv;
     let $deliveryIntervalInput;
+
+    let $deliveryType;
+    let $deliveryCompany;
+    let $fullDeliveryCost;
 
     let $checkedDelivery;
     let $cdekDeliveryRadio;
@@ -425,13 +443,18 @@
     let $h1;
     let h1Text;
     let $mainProductRec = $();
+    let $allJsProducts;
+    let $productsPageSmallDesc;
+    let $setSmallDesc;
 
     function readyFixPages() {
         console.log("STATE: readyFixPages");
 
         $h1 = $('h1');
         h1Text = $h1.text();
+        $allJsProducts = $('div.js-product');
 
+        initHtmlElements();
         fixProductCarts();
 
         if (isProductPage) {
@@ -448,31 +471,81 @@
     // Fix products pages functions
     {
 
+        function initHtmlElements() {
+            $productsPageSmallDesc = $(
+                '<div class="t744__title_small t-descr t-descr_xxs" field="title3" style="font-size: 16px;">' +
+                '    <span stockType="in" style="font-size: 20px;font-weight: normal;color: green;">В наличии</span>' +
+                '    <span stockType="out" style="font-size: 20px;font-weight: lighter;color: red; display: none;">Нет в наличии</span>' +
+                '    <br>' +
+                '    <a href="#popup:lower-price">Нашли дешевле? Снизим цену!</a>' +
+                '    <br>' +
+                '</div>');
+
+            $setSmallDesc = $(
+                '<div class="t744__title_small t-descr t-descr_xxs" field="title3" style="font-size: 16px;">' +
+                'Комплект на все случаи жизни' +
+                '</div>');
+        }
+
         function fixProductCarts() {
-            $('div.t744, div.t778__wrapper').each(function (idx) {
+
+            $allJsProducts.each(function (idx) {
                 let prod = $(this);
 
-                let oldPriceDiv, oldPriceValueDiv, productImg;
                 let productName = prod.find(".js-product-name").text();
+                let isSet = productName.toLowerCase().indexOf("set") !== -1;
+
                 let currentPriceValueDiv = prod.find('.js-product-price');
                 let buyButton = prod.find("[href='#order']");
 
-                let productFromLine = $(this).attr("class").indexOf("t778") !== -1;
-                if (productFromLine) {
-                    oldPriceDiv = prod.find('.t778__price_old');
-                    oldPriceValueDiv = oldPriceDiv.find('.t778__price-value');
-                    productImg = prod.find(".t778__imgwrapper");
-                } else {
-                    oldPriceDiv = prod.find('.t744__price_old');
-                    oldPriceValueDiv = oldPriceDiv.find('.t744__price-value');
-                    productImg = prod.find(".t-slds__imgwrapper");
-                }
+                let oldPriceDiv = prod.find("div[class*='price_old']");
+                let oldPriceValueDiv = oldPriceDiv.find("div[class*='price-value']");
+
+                let productImg = prod.find("div[class*='imgwrapper']");
+
+                let isSingleProductCard = prod.hasClass("js-product-single") || prod.hasClass("t778__product-full");
+                let isLineProduct = prod.hasClass("t778__col");
 
                 let productInfo = getProductInfoByProductName(productName);
 
                 if (productInfo === undefined) {
                     console.error("Couldn't find info for: " + productName);
                     return;
+                }
+
+                if (isSingleProductCard) {
+                    let $productSku = prod.find(".js-product-sku");
+                    $productSku = prod.find('.js-product-sku');
+                    $productSku.hide();
+
+                    if (isSet) {
+                        let clone = $setSmallDesc.clone();
+                        $productSku.after(clone);
+                    } else {
+                        let clone = $productsPageSmallDesc.clone();
+                        $productSku.after(clone);
+
+                        if (!productInfo.isInStock()) {
+                            prod.find("span[stockType='in']").hide();
+                            prod.find("span[stockType='out']").show();
+
+                            buyButton.find('.js-store-prod-buy-btn-txt').text("Предзаказ");
+                        }
+                    }
+                }
+
+                if (!productInfo.isInStock()) {
+                    if (isLineProduct) {
+                        let lineDescr = prod.find('.t778__descr');
+                        lineDescr.empty();
+
+                        let clone = $productsPageSmallDesc.find("span[stockType='out']").clone();
+                        clone.show();
+                        lineDescr.append(clone);
+
+                        buyButton.find('td').text("Предзаказ");
+                    }
+
                 }
 
                 if (productInfo.getDiscount() !== 0) {
@@ -482,17 +555,19 @@
                     productImg.append($markOnLineCards);
                 }
 
-                if (productName.toLowerCase().indexOf("set") === -1) {
+                if (isSet) {
+                    buyButton.click(function () {
+                        setFbTrackAddToCart(infoSet);
+                    });
+                } else {
                     setPrices(productInfo, productName, currentPriceValueDiv, oldPriceDiv, oldPriceValueDiv);
 
                     buyButton.click(function () {
                         setFbTrackAddToCart(productInfo);
                     });
-                } else {
-                    buyButton.click(function () {
-                        setFbTrackAddToCart(infoSet);
-                    });
                 }
+
+                console.log(productName + " fixed");
             });
 
         }
@@ -635,9 +710,9 @@
     let cdekPvzInfoWidget;
 
     let currentDelivery;
-    let selfTakeDelivery = new DeliveryType("Москва", "Самовывоз");
-    let mskDelivery = new DeliveryType("Москва", "");
-    let cdekDelivery = new DeliveryType("", "");
+    let selfTakeDelivery = new DeliveryType("Москва", "Самовывоз", "Самовывоз", "0");
+    let mskDelivery = new DeliveryType("Москва", "", "Ontime", "_???");
+    let cdekDelivery = new DeliveryType("", "", "Ontime-CDEK", "_???");
 
     function readyLogic() {
         console.log("STATE: readyLogic");
@@ -646,6 +721,7 @@
 
         fixCartWindowFields();
 
+        addChangingSkuWhenChangedVariant();
         setJivoChatOpenByClickInContacts();
         initInitiateCheckoutFunction();
         initMyAfterSendedFunction();
@@ -681,6 +757,46 @@
 
     // Events function
     {
+
+        function addChangingSkuWhenChangedVariant() {
+            //$allJsProducts = $('div.js-product');
+            $allJsProducts.each(function (idx) {
+                let prod = $(this);
+                let productName = prod.find(".js-product-name").text();
+
+                let $productSku = prod.find(".js-product-sku");
+                let genericSku = $productSku.text().trim();
+                $productSku.attr('generic-sku', genericSku);
+
+                // need identify sku by options
+                if (genericSku.includes("_X")) {
+                    let productFirstOption = prod.find('div.js-product-option').eq(0);
+
+                    if (productFirstOption.get(0) !== undefined) {
+                        let optionName = simplifyJsNameLower(productFirstOption.find('.js-product-option-name').text());
+                        let variants = productFirstOption.find('select.js-product-option-variants');
+
+                        variants.change(function () {
+                            let selectedValue = $(this).val();
+                            let keySku = genericSku + ":" + optionName + ":" + simplifyJsNameLower(selectedValue);
+
+                            let realSku = mapOfSku[keySku];
+
+                            if (realSku !== undefined) {
+                                $productSku.text(realSku);
+                                console.log(productName + ": sku=" + realSku + " by " + keySku);
+                            } else {
+                                console.error(productName + ": keySku=" + keySku + " not found realSku");
+                            }
+                        });
+
+                        variants.trigger('change');
+                    }
+                }
+            });
+        }
+
+
         function setJivoChatOpenByClickInContacts() {
             $('a[href="#jivosite_open"]').click(function(){jivo_api.open();});
         }
@@ -751,6 +867,9 @@
                 productFirstVariant.change(function (event, param) {
                     let num = $(this).prop("selectedIndex") + 1;
 
+                    $mainProductRec.find('.t-slds__bgimg-contain').removeClass("js-product-img");
+                    $mainProductRec.find(".t-slds__item[data-slide-index='" + num + "']").find('.t-slds__bgimg-contain').addClass("js-product-img")
+
                     if (param !== "skip-bullet-click") {
                         $mainProductRec.find(".t-slds__bullet[data-slide-bullet-for='" + num + "']").click();
                     }
@@ -784,6 +903,15 @@
             $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
             $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
             $samovivozOrDeliveryCity = $cartForm.find('input[name="samovivozOrDeliveryCity"]');
+
+            $deliveryType = $cartForm.find('input[name="deliveryType"]');
+            $deliveryCompany = $cartForm.find('input[name="deliveryCompany"]');
+            $fullDeliveryCost = $cartForm.find('input[name="fullDeliveryCost"]');
+            $deliveryType.each(function () {
+                let val = $(this).val().replace(/=.*/,"");
+                let simplified = simplifyJsName(val);
+                $(this).val(simplified);
+            });
 
             //default Moscow delivery
             $checkedDelivery = $deliveryTypeRadios.filter(function () {
@@ -845,6 +973,8 @@
 
             $cityInput.val(currentDelivery.city);
             $deliveryAddressInput.val(currentDelivery.address);
+            $deliveryCompany.val(currentDelivery.deliveryCompany);
+            $fullDeliveryCost.val(currentDelivery.fullDeliveryCost);
 
             if (currentDelivery === selfTakeDelivery) {
                 $samovivozOrDeliveryCity.val(selfTakeDelivery.address);
@@ -938,7 +1068,7 @@
         }
 
         function isMoscow(checkedDelivery) {
-            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("москв") > -1;
+            return checkedDelivery !== undefined && checkedDelivery.val().toLowerCase().indexOf("курьер") > -1;
         }
 
         function isRussia(checkedDelivery) {
@@ -1033,6 +1163,23 @@
 
         function jivo_onOpen() {
             reachMetrikaGoalViaParams("OpenJivoWidget");
+        }
+
+        function simplifyJsName(name) {
+            return extTrim(name
+                .replace(/\(.*\)/g, "")
+            );
+        }
+
+        function simplifyJsNameLower(name) {
+            return extTrim(name
+                .replace(/\(.*\)/g, "")
+                .toLowerCase()
+            );
+        }
+
+        function extTrim(str) {
+            return str.replace(/\s{2,}/g," ").trim();
         }
 
         function waitVar(variable, callback) {
