@@ -2,11 +2,11 @@
 <script type="text/javascript">
 
     // set cmDiscount > 0 to apply discount
-    let cmDiscount = 0;
-    let cmCaseDiscount = 0;
+    let cmDiscount = 15;
+    let cmCaseDiscount = 15;
     let accDiscount = 0;
 
-    let bundleDiscountPer = 10;
+    let bundleDiscountPer = 15;
 
     let freeDeliveryCost = 3000;
     let paidDeliveryCost = 300;
@@ -31,6 +31,7 @@
     let infoBaristaKit;
     let infoCase;
     let infoNanovessel;
+    let infoPipamoka;
 
     let infoSet;
     let infoTest;
@@ -38,7 +39,6 @@
     function setProductsInfo() {
         infoMinipressoGr     = new ProductInfo(4790, 1, "/minipresso-gr");
         infoMinipressoNs     = new ProductInfo(4790, 2, "/minipresso-ns");
-        infoMinipressoNs.setInStock(false);
 
         infoNanopresso          = new ProductInfo(5990, 3, "/nanopresso");
         infoNanopressoPatrol    = new ProductInfo(5990, 4, "/nanopresso-patrol");
@@ -49,15 +49,13 @@
         infoNanopressoElements = new ProductInfo(6990, 13, "/nanopresso-elements");
         infoNanopressoJourney = new ProductInfo(6990, 17, "/nanopresso-journey");
 
-        infoNanopressoElementsSale = new ProductInfo(6990, 113, "/nanopresso-elements-sale");
-        infoNanopressoElementsSale.addDiscount(500);
-
         infoNsAdapter        = new ProductInfo(1890, 7, "/ns-adapter-nanopresso");
         infoBaristaKit       = new ProductInfo(2490, 8, "/barista-kit-nanopresso");
-        infoBaristaKit.setInStock(false);
 
         infoCase             = new ProductInfo(1490, 9, "/nanopresso-minipresso-case");
         infoNanovessel       = new ProductInfo(1990, 12, "/nanovessel");
+
+        infoPipamoka       = new ProductInfo(4790, 22, "/pipamoka");
 
         infoSet              = new ProductInfo(infoNanopresso.price, 100, "/");
         infoSet.discount = bundleDiscountPer;
@@ -69,12 +67,15 @@
         setDiscounts(CM_INFO, cmDiscount);
         setDiscounts(CM_CASE_INFO, cmCaseDiscount);
         setDiscounts(ACC_INFO, accDiscount);
+
+        setDiscounts([infoMinipressoNs], 5);
+        setDiscounts([infoNanopressoNsAdapter,], 10);
     }
 
     function setLists() {
         CM_INFO = [
             infoMinipressoGr, infoMinipressoNs,
-            infoNanopresso, infoNanopressoPatrol, infoNanopressoNsAdapter,
+            infoNanopresso, infoNanopressoPatrol,
             infoTest
         ];
 
@@ -87,7 +88,11 @@
 
         ACC_INFO = [infoNsAdapter, infoBaristaKit, infoCase, infoNanovessel];
 
-        PRODUCTS_INFO = CM_INFO.concat(CM_CASE_INFO).concat(ACC_INFO);
+        PRODUCTS_INFO =
+            CM_INFO
+                .concat(CM_CASE_INFO)
+                .concat(ACC_INFO)
+                .concat([infoNanopressoNsAdapter, infoPipamoka]);
     }
 
     function setDiscounts(infos, discount) {
@@ -276,13 +281,13 @@
         $cartForm = $('.t706 form');
         $cartWindow = $(".t706__cartwin");
         $deliveryDescription = $('.t-input-subtitle.t-descr');
-        $deliveryTypeRadios = $("input:radio[name='deliveryType']");
-        $deliveryClientCost = $("input[name='deliveryClientCost']");
+        $deliveryTypeRadios = $("input:radio[name='DeliveryType']");
+        $deliveryClientCost = $("input[name='DeliveryClientCost']");
 
         $cartPhone = $cartForm.find("input[name='Phone']");
         $cartPhoneStr = $cartForm.find("input[name='phoneStr']");
 
-        $deliveryAddressInput = $('input:text[name=deliveryAddress]');
+        $deliveryAddressInput = $('input:text[name=DeliveryAddress]');
         $deliveryAddressDiv = $deliveryAddressInput
             .parent()	// class="t-input-block"
             .parent();	// class="t-input-group t-input-group_in"
@@ -663,11 +668,7 @@
             productName = productName.toLowerCase();
 
             if (productName.indexOf("tattoo") > -1)     return infoNanopressoTattoo;
-            if (productName.indexOf("elements") > -1) {
-                return page.indexOf("sale") > -1
-                    ? infoNanopressoElementsSale
-                    : infoNanopressoElements;
-            }
+            if (productName.indexOf("elements") > -1) return infoNanopressoElements;
             if (productName.indexOf("journey") > -1)     return infoNanopressoJourney;
 
             if (productName.indexOf("nanopresso+ns-адаптер") > -1)     return infoNanopressoNsAdapter;
@@ -676,6 +677,7 @@
             if (productName.indexOf("barista") > -1)    return infoBaristaKit;
             if (productName.indexOf("чехол") > -1)      return infoCase;
             if (productName.indexOf("nanovessel") > -1) return infoNanovessel;
+            if (productName.indexOf("pipamoka") > -1) return infoPipamoka;
 
             if (productName.indexOf("minipresso") > -1) {
                 if (productName.indexOf("ns") > -1) {
@@ -904,8 +906,8 @@
             $cdekDeliveryTimePost = $cdekDeliveryRadio.parent().find('#cdekDeliveryTimePost');
             $samovivozOrDeliveryCity = $cartForm.find('input[name="samovivozOrDeliveryCity"]');
 
-            $deliveryType = $cartForm.find('input[name="deliveryType"]');
-            $deliveryCompany = $cartForm.find('input[name="deliveryCompany"]');
+            $deliveryType = $cartForm.find('input[name="DeliveryType"]');
+            $deliveryCompany = $cartForm.find('input[name="DeliveryCompany"]');
             $fullDeliveryCost = $cartForm.find('input[name="fullDeliveryCost"]');
             $deliveryType.each(function () {
                 let val = $(this).val().replace(/=.*/,"");
@@ -993,7 +995,7 @@
                     hidedress: true,
                     choose: false,
                     link: 'cdek-pvz-info-widjet',
-                    defaultCity: 'auto',
+                    defaultCity: 'Москва',
                     cityFrom: 'Москва',
                     path: cdekPvzWidgetScriptsPath,
                     goods: [ // установим данные о товарах из корзины
@@ -1009,7 +1011,7 @@
                 cdekDeliveryWidget = new ISDEKWidjet({
                     popup: true,
                     hidedress: true,
-                    defaultCity: 'auto',
+                    defaultCity: 'Москва',
                     cityFrom: 'Москва',
                     path: cdekPvzWidgetScriptsPath,
                     goods: [ // установим данные о товарах из корзины
@@ -1089,10 +1091,15 @@
             let $promoGroup = $cartForm.find(".t-input-group_pc");
 
             let $hasPromoCbGroup = $cartForm.find(".t-input-group_cb").has("input[name='hasPromo']");
-            $hasPromoCbGroup.one('change', function () {
-                $hasPromoCbGroup.hide(changeDuration);
-                $promoGroup.show(changeDuration);
-            });
+
+            if (cmDiscount === 0) {
+                $hasPromoCbGroup.one('change', function () {
+                    $hasPromoCbGroup.hide(changeDuration);
+                    $promoGroup.show(changeDuration);
+                });
+            } else {
+                $hasPromoCbGroup.hide();
+            }
         }
 
         function fixDeliveryPriceFunc() {
