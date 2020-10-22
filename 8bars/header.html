@@ -50,7 +50,6 @@
 
     $(window).load(function() {
         console.log("STATE: load");
-        add_cdek_widget();
     });
 
 
@@ -203,6 +202,7 @@
 
             fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
             ym = ym !== undefined ? ym : undefinedYmFunc;
+            _tmr = _tmr !== undefined ? _tmr : undefinedTmrFunc;
 
 
             // setMetrikaGoals();
@@ -225,6 +225,7 @@
                 let jsProduct = $(this).parents(".js-product");
                 setFbTrackAddToCart(getJsProductPrice(jsProduct),[]);
                 reachMetrikaGoal("AddToCart");
+                reachMailCounterGoal("AddToCart");
             });
         }
 
@@ -248,6 +249,7 @@
 
                 setFbTracktInitiateCheckout(tcart.prodamount);
                 reachMetrikaGoal("InitiateCheckout");
+                reachMailCounterGoal("InitiateCheckout");
             });
         }
 
@@ -266,6 +268,7 @@
 
                 setFbTrackPurchase(tcart.prodamount, content_idsArr, paymentId);
                 reachMetrikaGoal("Purchase");
+                reachMailCounterGoal("Purchase");
             });
         }
 
@@ -295,6 +298,11 @@
     }
 
     {
+        function reachMailCounterGoal(goalName) {
+            console.log("send " + goalName + " to MailCounter");
+            _tmr.push({ id: '3182282', type: 'reachGoal', goal: goalName });
+        }
+
         function reachMetrikaGoal(goalName) {
             console.log("send " + goalName + " to yaMetrika");
             ym(ymCounterNum, 'reachGoal', goalName);
@@ -339,6 +347,10 @@
     {
         function undefinedYmFunc() {
             console.log("ym is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
+        }
+
+        function undefinedTmrFunc() {
+            console.log("_tmr is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
         }
 
         function undefinedFbq2Func() {
@@ -983,42 +995,97 @@
 
         function process_fields_before_order() {
             $cartForm.find("button").click(function () {
+
+                // hidden fields
+                let $cartPhoneStr = $cartFields.find("input[name='phoneStr']");
+                let $city = $cartFields.find("input[name='city']");
+                let $deliveryType = $cartFields.find("input[name='DeliveryType']");
+                let $deliveryAddress = $cartFields.find("input[name='DeliveryAddress']");
+                let $orderPrice = $cartFields.find("input[name='orderPrice']");
+                let $deliveryClientCost = $cartFields.find("input[name='DeliveryClientCost']");
+                let $pvzOrDeliveryCity = $cartFields.find('input[name="samovivozOrDeliveryCity"]');
+                let $deliveryCompany = $cartForm.find('input[name="DeliveryCompany"]');
+                let $deliveryCost = $cartForm.find('input[name="DeliveryCost"]');
+                let $deliveryMinimum = $cartForm.find('input[name="DeliveryMinimum"]');
+                let $infoTheme = $cartFields.find("input[name='infoTheme']");
+
                 // Add phone in line format '79112223344'
                 let $cartPhone = $cartFields.find("input[name='Phone']");
-                let $cartPhoneStr = $cartFields.find("input[name='phoneStr']");
 
                 let phone = $cartPhone.val();
                 let phoneStr = phone.replace(/\+8/,"\+7").replace(/[\+ \(\)-]/g,"");
 
                 $cartPhoneStr.val(phoneStr);
 
-                // Add values to empty delivery fields
-                if ($deliveryCity.val().length === 0) {
-                    $deliveryCity.val(currentDelivery.city);
-                }
+                // set city
+                let tcartDelivery = tcart.delivery;
+                $city.val(tcartDelivery.city);
 
-                if ($deliveryAddress.val().length === 0) {
-                    $deliveryAddress.val(currentDelivery.address);
-                }
+                // set delivery type
+                let deliveryType = simplifyJsName(tcartDelivery.name);
+                let deliveryTypeLower = deliveryType.toLowerCase();
+                $deliveryType.val(deliveryType);
 
-                // Add samovivozOrDeliveryCity
-                let $pvzOrDeliveryCity = $cartFields.find('input[name="samovivozOrDeliveryCity"]');
-                if (currentDelivery === pvzDelivery) {
-                    $pvzOrDeliveryCity.val("Самовывоз");
+                // set address
+                let isOurPvz = deliveryTypeLower === "самовывоз";
+                let isToPvz = tcartDelivery["pickup-address"] !== undefined;
+
+                let address;
+                if (isToPvz) {
+                    if (isOurPvz) {
+                        address = "Самовывоз";
+                    } else {
+                        address = tcartDelivery["pickup-id"] + ", " + tcartDelivery["pickup-address"];
+                    }
                 } else {
-                    let city = $cartFields.find("input[name='city']").val();
-                    $pvzOrDeliveryCity.val(city);
+                    address = tcartDelivery.street + ", " + tcartDelivery.house + ", " + tcartDelivery.aptoffice;
                 }
 
-                // Set deliveryClientCost, DeliveryCompany, fullDeliveryCost
-                let $deliveryClientCost = $cartFields.find("input[name='DeliveryClientCost']");
+                $deliveryAddress.val(address);
+
+                // $orderPrice
+                $orderPrice.val(tcart.prodamount);
                 $deliveryClientCost.val(tcart.amount - tcart.prodamount);
 
-                $cartForm.find('input[name="DeliveryCompany"]').val(currentDelivery.deliveryCompany);
-                $cartForm.find('input[name="fullDeliveryCost"]').val(currentDelivery.fullDeliveryCost);
+                // Add samovivozOrDeliveryCity
+                if (isOurPvz) {
+                    $pvzOrDeliveryCity.val("Самовывоз");
+                } else {
+                    if (isToPvz) {
+                        $pvzOrDeliveryCity.val("ПВЗ " + tcartDelivery.city);
+                    } else {
+                        $pvzOrDeliveryCity.val(tcartDelivery.city);
+                    }
+                }
+
+                // Set DeliveryCompany, DeliveryCost
+                let deliveryCompany = "_???";
+                let deliveryCost = "";
+                if (isOurPvz) {
+                    deliveryCompany = "Самовывоз";
+                    deliveryCost = "0";
+
+                } else if (deliveryTypeLower.includes("срочн")) {
+                    deliveryCompany = "Достависта";
+                    deliveryCost = "\"_???\"";
+                    $infoTheme.val($infoTheme.val() + " | СРОЧНО");
+
+                } else if (deliveryTypeLower.includes("курьер")) {
+                    deliveryCompany = "Ontime";
+
+                } else if (deliveryTypeLower.includes("росси")) {
+                    deliveryCompany = "Ontime-CDEK";
+
+                }
+
+                $deliveryCompany.val(deliveryCompany);
+                $deliveryCost.val(deliveryCost);
+
+                // Set deliveryMinimum
+                let deliveryMinimum = $cartFields.find('#delivery-services-wrapper').find("label").has("input:radio:checked").find('.delivery-minimum').text();
+                $deliveryMinimum.val(deliveryMinimum);
 
                 // Hack to avoid unresolved infoTheme
-                let $infoTheme = $cartFields.find("input[name='infoTheme']");
                 if ($infoTheme.val() === "") {
                     $infoTheme.val(" ");
                 }
@@ -1082,102 +1149,6 @@
         }
         function isRusDelivery(checkedDelivery) {
             return checkedDelivery.val().toLowerCase().includes("росси");
-        }
-    }
-
-</script>
-
-<!--CDEK widget Section-->
-<script type="text/javascript">
-
-    let cdekDeliveryWidget;
-
-    let $deliveryRussiaTab;
-    let $cdekDeliveryTimePost;
-
-    function add_cdek_widget() {
-        console.log("STATE: add CDEK widget");
-
-        $cdekDeliveryTimePost = $cartFields.find('#cdekDeliveryTimePost');
-        $cdekDeliveryTimePostValue = $cartFields.find('input[name="cdekDeliveryTimePostValue"]');
-
-        initCdekDeliveryWidget('order');
-
-        $deliveryRussiaTab = $('#rec178268778').find('.t397__tab:last');
-        $deliveryRussiaTab.click(function () {
-            initCdekDeliveryWidget('info');
-        });
-    }
-
-    // CDEK functions
-    {
-        function initCdekDeliveryWidget(type) {
-            let apikey = 'aa735970-60bf-4090-b32d-083b360acd6f';
-
-            if (type === 'info') {
-                let cdekPvzInfoWidget = new ISDEKWidjet({
-                    hidedress: true,
-                    choose: false,
-                    link: 'cdek-pvz-info-widjet',
-                    defaultCity: 'Москва',
-                    cityFrom: 'Москва',
-                    path: cdekPvzWidgetScriptsPath,
-                    goods: [ // установим данные о товарах из корзины
-                        {length: 10, width: 10, height: 10, weight: 0.5}
-                    ],
-                    apikey: apikey,
-                    onReady: onReady,
-                    onCalculate: onCalculate,
-                    onChoose: onChoose,
-                    onChooseProfile: onChoose
-                });
-            } else { //type === 'order'
-                cdekDeliveryWidget = new ISDEKWidjet({
-                    popup: true,
-                    hidedress: true,
-                    defaultCity: 'Москва',
-                    cityFrom: 'Москва',
-                    path: cdekPvzWidgetScriptsPath,
-                    goods: [ // установим данные о товарах из корзины
-                        {length: 10, width: 10, height: 10, weight: 0.5}
-                    ],
-                    apikey: apikey,
-                    onReady: onReady,
-                    onCalculate: onCalculate,
-                    onChoose: onChoose,
-                    onChooseProfile: onChoose
-                });
-            }
-
-            function onReady() {
-            }
-
-            function onCalculate(info) {
-            }
-
-            function onChoose(info) {
-
-                if (info.term === undefined) {
-                    $cdekDeliveryTimePost.text("");
-                    $cdekDeliveryTimePostValue.val("???");
-
-                } else if (info.term === info.termOriginal) {
-                    $cdekDeliveryTimePost.text(" (" + info.cityName +", срок ~" + info.term + ")");
-                    $cdekDeliveryTimePostValue.val(info.term);
-
-                } else {
-                    $cdekDeliveryTimePost.text(" (" + info.cityName + ", " + info.term + ")");
-                    $cdekDeliveryTimePostValue.val("Original: " + info.termOriginal + " дн., shown: " + info.term);
-                }
-
-                $deliveryCity.val(info.cityName);
-
-                if (info.PVZ !== undefined) {
-                    $deliveryAddress.val("ПВЗ: " + info.PVZ.Address);
-                } else {
-                    $deliveryAddress.val("");
-                }
-            }
         }
     }
 
