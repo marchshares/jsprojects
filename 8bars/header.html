@@ -440,6 +440,7 @@
 
             move_buy1click_button_to_product_cart($mainProduct);
             add_breadcrumb_microdata($mainProduct);
+            add_stock_state_when_change_product($mainProduct);
 
             if (isSimpleProductPage) {
                 add_microdata_for_simple_product($mainProduct);
@@ -455,6 +456,7 @@
                 let $popupJsProductRelevants = $catalogPopup.find(".js-product-relevant");
                 set_discount_label_on_js_products($popupJsProduct);
                 set_discount_label_on_js_products($popupJsProductRelevants);
+                add_stock_state_when_change_product($popupJsProduct);
             });
         }
     }
@@ -572,6 +574,21 @@
             debugLog("Added listener: popup show");
         }
 
+        function add_stock_state_when_change_product(jsProduct) {
+            //jsProduct = $mainProduct
+            let priceWrapper = jsProduct.find('.js-store-price-wrapper');
+
+            let $sku = jsProduct.find(".js-product-sku");
+
+            wait_data_changes(function () {
+                debugLog("wait_data_changes for sku detected");
+
+                priceWrapper.find('._8bars-in-stock-msg').remove();
+                if (priceWrapper.find('.js-store-prod-sold-out').get(0) === undefined) {
+                    priceWrapper.append(getInStockMsg());
+                }
+            }, $sku, {forceFirstExec:true});
+        }
         function add_changing_pic_when_change_variant1(jsProduct) {
             //jsProduct = $mainProduct
             let productVariant1 = jsProduct.find('select.t-product__option-select').eq(0);
@@ -620,6 +637,10 @@
         function getDiscountLabel(discountPercent) {
             let text = "-" + discountPercent + "%";
             return $('<div class="t778__markwrapper"><div class="t778__mark">' + text + '</div></div>');
+        }
+
+        function getInStockMsg() {
+            return $('<div class="t-store__card__sold-out-msg t-name t-name_xs _8bars-in-stock-msg">В наличии</div>');
         }
     }
 
@@ -1166,6 +1187,10 @@
         wait_changes(fn, $target, opts, {childList: true});
     }
 
+    function wait_data_changes(fn, $target, opts) {
+        wait_changes(fn, $target, opts, {childList: true, characterData: true});
+    }
+
     function wait_changes(fn, $target, opts, observerConfig) {
         debugLog("Add wait_changes for '" + $target.selector + "', opts: " + JSON.stringify(opts) + ", config: " + JSON.stringify(observerConfig));
 
@@ -1176,7 +1201,7 @@
                 disconnected = true;
                 observerInner.disconnect();
             }
-            fn();
+            fn(mutations);
         });
         observer.observe($target.get(0), observerConfig);
 
@@ -1187,6 +1212,10 @@
                     observer.disconnect();
                 }
             }, opts.autoDisconnectAfter);
+        }
+
+        if (opts && opts.forceFirstExec) {
+            fn($());
         }
     }
 
