@@ -439,6 +439,7 @@
             $mainProduct = $(".js-product").first();
 
             move_buy1click_button_to_product_cart($mainProduct);
+            add_lower_price_to_product_cart($mainProduct);
             add_breadcrumb_microdata($mainProduct);
             add_stock_state_when_change_product($mainProduct);
 
@@ -451,6 +452,7 @@
         if (hasCatalog) {
             //catalog popup
             move_buy1click_button_to_product_cart($popupJsProduct);
+            add_lower_price_to_product_cart($popupJsProduct);
 
             run_after_catalog_popup_show(function () {
                 let $popupJsProductRelevants = $catalogPopup.find(".js-product-relevant");
@@ -492,6 +494,13 @@
                     }
                 }
             });
+        }
+
+        function add_lower_price_to_product_cart(jsProduct) {
+            //jsProduct = $mainProduct
+            let $priceOld = jsProduct.find(".js-store-prod-price-old");
+
+            $priceOld.after(getLowerPriceMsg());
         }
 
         function move_buy1click_button_to_product_cart(jsProduct) {
@@ -641,6 +650,10 @@
 
         function getInStockMsg() {
             return $('<div class="t-store__card__sold-out-msg t-name t-name_xs _8bars-in-stock-msg">В наличии</div>');
+        }
+
+        function getLowerPriceMsg() {
+            return $('<div class="t-descr t-descr_sm _8bars-lower-price-msg"><a href="#popup:lower-price">Нашли дешевле?</a></div>')
         }
     }
 
