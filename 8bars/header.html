@@ -202,8 +202,6 @@
 
             fbq2 = fbq !== undefined ? fbq : undefinedFbq2Func;
             ym = ym !== undefined ? ym : undefinedYmFunc;
-            _tmr = _tmr !== undefined ? _tmr : undefinedTmrFunc;
-
 
             // setMetrikaGoals();
             // addGaToMetrika();
@@ -225,7 +223,6 @@
                 let jsProduct = $(this).parents(".js-product");
                 setFbTrackAddToCart(getJsProductPrice(jsProduct),[]);
                 reachMetrikaGoal("AddToCart");
-                reachMailCounterGoal("AddToCart");
             });
         }
 
@@ -249,7 +246,6 @@
 
                 setFbTracktInitiateCheckout(tcart.prodamount);
                 reachMetrikaGoal("InitiateCheckout");
-                reachMailCounterGoal("InitiateCheckout");
             });
         }
 
@@ -268,7 +264,6 @@
 
                 setFbTrackPurchase(tcart.prodamount, content_idsArr, paymentId);
                 reachMetrikaGoal("Purchase");
-                reachMailCounterGoal("Purchase");
             });
         }
 
@@ -298,11 +293,6 @@
     }
 
     {
-        function reachMailCounterGoal(goalName) {
-            console.log("send " + goalName + " to MailCounter");
-            _tmr.push({ id: '3182282', type: 'reachGoal', goal: goalName });
-        }
-
         function reachMetrikaGoal(goalName) {
             console.log("send " + goalName + " to yaMetrika");
             ym(ymCounterNum, 'reachGoal', goalName);
@@ -347,10 +337,6 @@
     {
         function undefinedYmFunc() {
             console.log("ym is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
-        }
-
-        function undefinedTmrFunc() {
-            console.log("_tmr is undefined, args: [" + arguments[0] + ", " + arguments[1] + "]");
         }
 
         function undefinedFbq2Func() {
