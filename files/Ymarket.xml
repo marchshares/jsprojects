@@ -40,6 +40,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230016</barcode>
             </offer>
             <offer id="2" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -50,7 +51,7 @@
                 <url>https://8bars.ru/product/minipresso-ns/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=minipresso_ns</url>
                 <picture>https://static.tildacdn.com/tild3931-3665-4037-b164-643037326430/MinipressoNS.jpg</picture>
 
-                <price>4550</price><oldprice>4790</oldprice>
+                <price>4790</price>
 
                 <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
@@ -66,6 +67,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230061</barcode>
             </offer>
 
             <offer id="3" type="vendor.model" available="true">
@@ -92,31 +94,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
-            </offer>
-            <offer id="4" type="vendor.model" available="false">
-                <typePrefix>Кофемашина</typePrefix>
-                <vendor>Wacaco</vendor>
-                <model>Nanopresso (Orange patrol)</model>
-
-                <description>Nanopresso Patrol Orange – оранжевая версия карманная кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
-                <url>https://8bars.ru/product/nanopresso/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_patrol_orange</url>
-                <picture>https://static.tildacdn.com/tild6233-3538-4336-b331-396237663735/NanopressoOrange.jpg</picture>
-
-                <price>5090</price><oldprice>5990</oldprice>
-
-                <param name="цвет">Orange patrol</param>
-                <param name="тип">эспрессо</param>
-                <param name="тип используемого кофе">молотый</param>
-
-                <categoryId>1</categoryId>
-
-                <currencyId>RUR</currencyId>
-                <store>false</store>
-                <pickup>true</pickup>
-                <delivery>true</delivery>
-                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
-                <manufacturer_warranty>true</manufacturer_warranty>
-                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230122</barcode>
             </offer>
             <offer id="5" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -142,6 +120,33 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230153</barcode>
+            </offer>
+            <offer id="4" type="vendor.model" available="false">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso (Orange patrol)</model>
+
+                <description>Nanopresso Patrol Orange – оранжевая версия карманная кофемашины от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
+                <url>https://8bars.ru/product/nanopresso/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_patrol_orange</url>
+                <picture>https://static.tildacdn.com/tild6233-3538-4336-b331-396237663735/NanopressoOrange.jpg</picture>
+
+                <price>5090</price><oldprice>5990</oldprice>
+
+                <param name="цвет">Orange patrol</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>1</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230160</barcode>
             </offer>
             <offer id="6" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -167,8 +172,34 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230146</barcode>
             </offer>
 
+            <offer id="8" available="true">
+                <vendor>Wacaco</vendor>
+                <name>Wacaco Nanopresso Barista Kit</name>
+
+                <description>Nanopresso Barista Kit - набор дополнительных аксессуаров, которые помогут усовершенствовать вашу карманную кофемашину Nanopresso. Благодаря увеличенной емкости для горячей воды (на 140 мл) вы сможете приготовить лунго, а с помощью удвоенной корзинки для кофе (на 16 гр.) у вас получится приготовить двойной эспрессо.</description>
+                <url>https://8bars.ru/tproduct/179116072-230159822950-nanopresso-barista-kit/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=barista_kit</url>
+                <picture>https://static.tildacdn.com/tild6366-3337-4466-b636-623337356538/NanopressoBaristaKit.jpg</picture>
+
+                <price>2490</price>
+
+                <param name="цвет">black</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый</param>
+
+                <categoryId>2</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230139</barcode>
+            </offer>
             <offer id="7" available="true">
                 <vendor>Wacaco</vendor>
                 <name>Wacaco Nanopresso NS-Адаптер для капсул</name>
@@ -193,30 +224,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
-            </offer>
-            <offer id="8" available="true">
-                <vendor>Wacaco</vendor>
-                <name>Wacaco Nanopresso Barista Kit</name>
-
-                <description>Nanopresso Barista Kit - набор дополнительных аксессуаров, которые помогут усовершенствовать вашу карманную кофемашину Nanopresso. Благодаря увеличенной емкости для горячей воды (на 140 мл) вы сможете приготовить лунго, а с помощью удвоенной корзинки для кофе (на 16 гр.) у вас получится приготовить двойной эспрессо.</description>
-                <url>https://8bars.ru/tproduct/179116072-230159822950-nanopresso-barista-kit/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=barista_kit</url>
-                <picture>https://static.tildacdn.com/tild6366-3337-4466-b636-623337356538/NanopressoBaristaKit.jpg</picture>
-
-                <price>2490</price>
-
-                <param name="цвет">black</param>
-                <param name="тип">эспрессо</param>
-                <param name="тип используемого кофе">молотый</param>
-
-                <categoryId>2</categoryId>
-
-                <currencyId>RUR</currencyId>
-                <store>false</store>
-                <pickup>true</pickup>
-                <delivery>true</delivery>
-                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
-                <manufacturer_warranty>true</manufacturer_warranty>
-                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230092</barcode>
             </offer>
             <offer id="91" available="true">
                 <vendor>Wacaco</vendor>
@@ -239,18 +247,21 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230030</barcode>
             </offer>
-            <offer id="9" available="true">
-                <vendor>Wacaco</vendor>
-                <name>Wacaco Чехол для Nanopresso (S, M, L)</name>
 
-                <description>Жесткий чехол-кейс для вашей кофемашины Nanopresso изготовлен из твердой плотной ткани, что позволит уберечь вашу кофемашину от падений, царапин и пыли. Размеры: - S (маленький) - для Nanopresso стандартной комплектации - M (средний) - для Minipresso или Nanopresso с NS-адаптером - L (большой) - Nanopresso с Barista Kit</description>
-                <url>https://8bars.ru/tproduct/179116072-238880552995-nanopresso-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nano_case</url>
-                <picture>https://static.tildacdn.com/tild6538-3763-4162-a465-343233346163/Wacaco_Nanopresso_.jpg</picture>
+            <offer id="911" available="true">
+                <vendor>Wacaco</vendor>
+                <name>Wacaco S-Чехол для Nanopresso</name>
+
+                <description>Жесткий чехол-кейс для вашей кофемашины Nanopresso изготовлен из твердой плотной ткани, что позволит уберечь вашу кофемашину от падений, царапин и пыли. Размер: S (стандартный) - для Nanopresso стандартной комплектации</description>
+                <url>https://8bars.ru/tproduct/179116072-238880552995-nanopresso-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nano_s_case</url>
+                <picture>https://static.tildacdn.com/tild3562-6338-4265-b730-356237333461/Wacaco_Nanopresso_S-.jpg</picture>
 
                 <price>1490</price>
 
                 <param name="цвет">black</param>
+                <param name="размер">S-Чехол</param>
 
                 <categoryId>2</categoryId>
 
@@ -261,7 +272,57 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230238</barcode>
             </offer>
+            <offer id="912" available="true">
+                <vendor>Wacaco</vendor>
+                <name>Wacaco M-Чехол для Nanopresso</name>
+
+                <description>Жесткий чехол-кейс для вашей кофемашины Nanopresso изготовлен из твердой плотной ткани, что позволит уберечь вашу кофемашину от падений, царапин и пыли. Размер: M (средний) - для Minipresso или Nanopresso с NS-адаптером</description>
+                <url>https://8bars.ru/tproduct/179116072-238880552995-nanopresso-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nano_m_case</url>
+                <picture>https://static.tildacdn.com/tild3731-3838-4061-b761-383538616562/Wacaco_Nanopresso_M-.jpg</picture>
+
+                <price>1490</price>
+
+                <param name="цвет">black</param>
+                <param name="размер">M-Чехол</param>
+
+                <categoryId>2</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230245</barcode>
+            </offer>
+            <offer id="913" available="true">
+                <vendor>Wacaco</vendor>
+                <name>Wacaco L-Чехол для Nanopresso</name>
+
+                <description>Жесткий чехол-кейс для вашей кофемашины Nanopresso изготовлен из твердой плотной ткани, что позволит уберечь вашу кофемашину от падений, царапин и пыли. Размер:  L (большой) - Nanopresso с Barista Kit</description>
+                <url>https://8bars.ru/tproduct/179116072-238880552995-nanopresso-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nano_l_case</url>
+                <picture>https://static.tildacdn.com/tild3931-6164-4336-a566-666263613637/l-case_600.jpg</picture>
+
+                <price>1490</price>
+
+                <param name="цвет">black</param>
+                <param name="размер">L-Чехол</param>
+
+                <categoryId>2</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230252</barcode>
+            </offer>
+
             <offer id="12" type="vendor.model" available="true">
                 <typePrefix>Термос</typePrefix>
                 <vendor>Wacaco</vendor>
@@ -284,24 +345,24 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230276</barcode>
             </offer>
 
-            <offer id="10" type="vendor.model" available="false">
-                <typePrefix>Кофемашина</typePrefix>
+            <offer id="914" available="true">
                 <vendor>Wacaco</vendor>
-                <model>Nanopresso c жёстким чехлом</model>
+                <name>Wacaco Minipresso Tank</name>
 
-                <description>Nanopresso Tattoo Orange – оранжевая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
-                <url>https://8bars.ru/tproduct/184211145-661234974357-nanopresso-tattoo-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_tattoo_orange</url>
-                <picture>https://static.tildacdn.com/tild3938-6433-4663-b632-356537636436/NanopressoTattooOran.jpg</picture>
+                <description>Minipresso Tank - дополнительный аксессуар, увеличенная емкость для горячей воды (на 100мл), которая поможет усовершенствовать вашу карманную кофемашину Minipresso GR или Minipresso NS. Благодаря ему вы сможете приготовить кофе большего объема - лунго. Также в комплекте идет дополнительная чашечка для кофе, а это значит, что вы сможете приготовить сразу 2 чашки кофе и поделиться с другом!</description>
+                <url>https://8bars.ru/tproduct/179116072-292695369819-minipresso-tank/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=minipresso_tank</url>
+                <picture>https://static.tildacdn.com/tild6232-6436-4337-b438-636237393361/Minipresso_Tank.jpg</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>1490</price>
 
-                <param name="цвет">Orange tattoo</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <categoryId>1</categoryId>
+                <categoryId>2</categoryId>
 
                 <currencyId>RUR</currencyId>
                 <store>false</store>
@@ -310,23 +371,23 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230047</barcode>
             </offer>
-            <offer id="11" type="vendor.model" available="true">
-                <typePrefix>Кофемашина</typePrefix>
+            <offer id="915" available="true">
                 <vendor>Wacaco</vendor>
-                <model>Nanopresso Tattoo Yellow c жёстким чехлом</model>
+                <name>Wacaco Minipresso Kit</name>
 
-                <description>Nanopresso Tattoo Yellow – желтая версия карманной кофемашины от Wacaco в лимитированном Tattoo дизайне. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-пенал, который идет в комплекте, защитит кофемашину от повреждений и пыли в путешествии или в дороге. Для Nanopresso подойдет молотый кофе среднего помола, а также капсулы Nespresso (!Внимание, для приготовления кофе из капсул Nespresso необходимо приобрести специальный NS-адаптер).</description>
-                <url>https://8bars.ru/tproduct/184211145-661234974357-nanopresso-tattoo-chehol/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_tattoo_yellow</url>
-                <picture>https://static.tildacdn.com/tild3761-3863-4635-b466-313838373863/NanopressoTattooYell.jpg</picture>
+                <description>Minipresso Kit - набор дополнительных аксессуаров, которые помогут усовершенствовать вашу карманную кофемашину Minipresso GR или Minipresso NS.Благодаря увеличенной емкости для горячей воды (на 100 мл) вы сможете приготовить кофе большего объема - лунго. А с помощью 3-х дополнительных корзинок для кофе с крышечками вы сможете подготовить кофейные порции дома и взять их с собой на природу или в поездку. Так гораздо удобнее!</description>
+                <url>https://8bars.ru/tproduct/179116072-446306676151-minipresso-kit/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=minipresso_kit</url>
+                <picture>https://static.tildacdn.com/tild3534-6133-4034-b266-366566353638/Minipresso_Kit.jpg</picture>
 
-                <price>5940</price><oldprice>6990</oldprice>
+                <price>1590</price>
 
-                <param name="цвет">Yellow tattoo</param>
+                <param name="цвет">black</param>
                 <param name="тип">эспрессо</param>
                 <param name="тип используемого кофе">молотый</param>
 
-                <categoryId>1</categoryId>
+                <categoryId>2</categoryId>
 
                 <currencyId>RUR</currencyId>
                 <store>false</store>
@@ -335,6 +396,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230054</barcode>
             </offer>
 
             <offer id="13" type="vendor.model" available="true">
@@ -361,6 +423,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230337</barcode>
             </offer>
             <offer id="14" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -386,6 +449,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230320</barcode>
             </offer>
             <offer id="15" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -411,6 +475,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230344</barcode>
             </offer>
             <offer id="16" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -436,6 +501,34 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230351</barcode>
+            </offer>
+
+            <offer id="21" type="vendor.model" available="true">
+                <typePrefix>Кофемашина</typePrefix>
+                <vendor>Wacaco</vendor>
+                <model>Nanopresso + NS-adapter</model>
+
+                <description>Nanopresso + NS-adapter – новая модель карманной кофемашины для приготовления эспрессо от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Благодаря NS-адаптеру, который идет в комплекте, карманную кофемашину Nanopresso можно использовать не только для приготовления эспрессо из молотого кофе, но и из капсул Nespresso*</description>
+                <url>https://8bars.ru/tproduct/184211145-977342768717-nanopressons-adapter/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_and_ns_adapter</url>
+                <picture>https://static.tildacdn.com/tild3166-3262-4531-b934-666564306134/Wacaco_Nanopresso_NS.jpg</picture>
+
+                <price>7190</price>
+
+                <param name="цвет">black</param>
+                <param name="тип">эспрессо</param>
+                <param name="тип используемого кофе">молотый,капсулы</param>
+
+                <categoryId>11</categoryId>
+
+                <currencyId>RUR</currencyId>
+                <store>false</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>
+                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
+                <manufacturer_warranty>true</manufacturer_warranty>
+                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230108</barcode>
             </offer>
 
             <offer id="17" type="vendor.model" available="true">
@@ -462,6 +555,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230481</barcode>
             </offer>
             <offer id="18" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -487,6 +581,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230450</barcode>
             </offer>
             <offer id="19" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -512,6 +607,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230467</barcode>
             </offer>
             <offer id="20" type="vendor.model" available="true">
                 <typePrefix>Кофемашина</typePrefix>
@@ -537,32 +633,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
-            </offer>
-
-            <offer id="21" type="vendor.model" available="true">
-                <typePrefix>Кофемашина</typePrefix>
-                <vendor>Wacaco</vendor>
-                <model>Nanopresso + NS-adapter</model>
-
-                <description>Nanopresso + NS-adapter – новая модель карманной кофемашины для приготовления эспрессо от Wacaco. Мощность ее вакуумного насоса (18 бар) сравнима с давлением в профессиональных стационарных кофемашинах, позволяющих аромату кофе раскрыться полностью. А удобный чехол-мешочек, который идет в комплекте, защитит кофемашину от пыли в путешествии или в дороге. Благодаря NS-адаптеру, который идет в комплекте, карманную кофемашину Nanopresso можно использовать не только для приготовления эспрессо из молотого кофе, но и из капсул Nespresso*</description>
-                <url>https://8bars.ru/tproduct/184211145-977342768717-nanopressons-adapter/?utm_source=market&amp;utm_medium=cpc&amp;utm_campaign=market&amp;utm_content=card&amp;utm_term=nanopresso_and_ns_adapter</url>
-                <picture>https://static.tildacdn.com/tild3166-3262-4531-b934-666564306134/Wacaco_Nanopresso_NS.jpg</picture>
-
-                <price>6670</price><oldprice>7190</oldprice>
-
-                <param name="цвет">black</param>
-                <param name="тип">эспрессо</param>
-                <param name="тип используемого кофе">молотый,капсулы</param>
-
-                <categoryId>11</categoryId>
-
-                <currencyId>RUR</currencyId>
-                <store>false</store>
-                <pickup>true</pickup>
-                <delivery>true</delivery>
-                <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
-                <manufacturer_warranty>true</manufacturer_warranty>
-                <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230474</barcode>
             </offer>
 
             <offer id="22" type="vendor.model" available="true">
@@ -588,6 +659,7 @@
                 <sales_notes>Оплата: наличные, Visa/Mastercard, б/н расчет</sales_notes>
                 <manufacturer_warranty>true</manufacturer_warranty>
                 <country_of_origin>Китай</country_of_origin>
+                <barcode>4897066230504</barcode>
             </offer>
             <offer id="916" available="true">
                 <vendor>Wacaco</vendor>
