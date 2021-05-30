@@ -11,8 +11,16 @@
     let isTldProductPage;
     let isSimpleProductPage;
 
-    let showPromoCode = false;
-    let bundleDiscountPer = 15;
+    let showPromoCode = true;
+
+    let nanopressoPrice         = 5990;
+    let nanopressoPlusCasePrice = 6990;
+    let nsAdapterPrice          = 1890;
+    let baristaKitPrice         = 2490;
+    let nanovesselPrice         = 1990;
+    let nanopressoCasePrice     = 1690;
+
+    let bundleDiscountPer = 10;
 
     function init() {
         console.log("STATE: init");
@@ -380,6 +388,14 @@
 
         connect_jivoOpenLink_with_jivoApi();
         change_instagram_icon();
+        force_update_dynamic_text_t803();
+
+        if (hasCatalog) {
+            run_after_catalog_popup_show(function () {
+                force_update_dynamic_text_t803();
+            });
+        }
+
     }
 
 
@@ -411,6 +427,12 @@
                 $(this).css("background-image", "url(https://static.tildacdn.com/tild3064-6631-4332-b462-386335313162/telegram.svg)");
             });
         }
+
+        function force_update_dynamic_text_t803() {
+            debugLog("force_update_dynamic_text_t803");
+            //TODO: need find all t803
+            t803_init('267621048');
+        }
     }
 
 </script>
@@ -438,6 +460,7 @@
         if (isProductPage) {
             $mainProduct = $(".js-product").first();
 
+            force_trigger_change_variant($mainProduct);
             move_buy1click_button_to_product_cart($mainProduct);
             add_lower_price_to_product_cart($mainProduct);
             add_breadcrumb_microdata($mainProduct);
@@ -501,6 +524,11 @@
             let $priceOld = jsProduct.find(".js-store-prod-price-old");
 
             $priceOld.after(getLowerPriceMsg());
+        }
+
+        function force_trigger_change_variant(jsProduct) {
+            let productVariant1 = jsProduct.find('select.t-product__option-select').eq(0);
+            productVariant1.trigger('change');
         }
 
         function move_buy1click_button_to_product_cart(jsProduct) {
@@ -676,13 +704,6 @@
 <!--Set Section-->
 <script type="text/javascript">
 
-    let nanopressoPrice         = 5990;
-    let nanopressoPlusCasePrice = 6990;
-    let nsAdapterPrice          = 1890;
-    let baristaKitPrice         = 2490;
-    let nanovesselPrice         = 1990;
-    let nanopressoCasePrice     = 1490;
-
     let $setJsProduct;
     let bundleColorSelect;
     let bundleAccessorySelect;
@@ -695,13 +716,13 @@
         $setJsProduct = $allJsProducts.has(".js-product-sku:contains('WCCSET')");
 
         if ($setJsProduct.get(0) !== undefined) {
-            bundleColorSelect = $setJsProduct.find($('select.t-product__option-select')).eq(0);
-            bundleAccessorySelect = $setJsProduct.find($('select.t-product__option-select')).eq(1);
-            bundleCaseSelect = $setJsProduct.find($('select.t-product__option-select')).eq(2);
+            bundleColorSelect = $setJsProduct.find('select.t-product__option-select').eq(0);
+            bundleAccessorySelect = $setJsProduct.find('select.t-product__option-select').eq(1);
+            bundleCaseSelect = $setJsProduct.find('select.t-product__option-select').eq(2);
 
-            bundleOldPrice = $setJsProduct.find($('div.t744__price_old'));
-            bundleOldPriceValue = $setJsProduct.find($('div.t744__price-value[field="price_old"]'));
-            bundlePriceValue = $setJsProduct.find($('div.t744__price-value[field="price"]'));
+            bundleOldPrice = $setJsProduct.find('div.t744__price_old');
+            bundleOldPriceValue = $setJsProduct.find('div.t744__price-value[field="price_old"]');
+            bundlePriceValue = $setJsProduct.find('div.t744__price-value[field="price"]');
 
             set_default_select();
 
@@ -714,26 +735,53 @@
     }
 
     function set_default_select () {
-        selectByContains(bundleColorSelect, "Черный");
-        selectByContains(bundleAccessorySelect, "NS-адаптер+Barista Kit+Nanovessel");
-        selectByContains(bundleCaseSelect, "L-");
+        select_first_option(bundleColorSelect);
+        select_last_option(bundleAccessorySelect);
 
-        function selectByContains(bundleSelect, contains) {
-            var option = bundleSelect.find($("select.t-product__option-select option:contains(\"" + contains + "\")"));
-            option.prop('selected', true);
+        let selectedAccessory = bundleAccessorySelect.find('option:selected');
+        let selectedAccessoryText = simplifyJsNameLower(selectedAccessory.text());
+        let hasNsAdapter = selectedAccessoryText.includes("ns-адаптер");
+        let hasBaristaKit = selectedAccessoryText.includes("barista kit");
+
+        if (hasNsAdapter || hasBaristaKit) {
+            if (hasBaristaKit)
+                select_by_contains(bundleCaseSelect, "L-Чехол");
+            else
+                select_by_contains(bundleCaseSelect, "M-Чехол");
+
+        } else {
+            select_by_contains(bundleCaseSelect, "S-Чехол");
         }
 
-        function selectByEquals(bundleSelect, equals) {
-            var option = bundleSelect.find($("select.t-product__option-select option[value=\"" + equals + "\"]"));
-            option.prop('selected', true);
+
+        function select_first_option(select) {
+            select.find('option').first().prop('selected', true);
+        }
+
+        function select_last_option(select) {
+            select.find('option').last().prop('selected', true);
+        }
+
+        function select_by_contains(select, contains) {
+            let simplifiedContains = simplifyJsNameLower(contains);
+
+            select.find("option").each(function () {
+                let text = simplifyJsNameLower($(this).text());
+
+                if (text.includes(simplifiedContains)) {
+                    $(this).prop('selected', true);
+                }
+            });
+
         }
     }
 
     function change_set_price_handler () {
         debugLog("Found change in Set");
-        let selectedColor = bundleColorSelect.find($('select.t-product__option-select option:selected'));
-        let selectedAccessory = bundleAccessorySelect.find($('select.t-product__option-select option:selected'));
-        let selectedCase = bundleCaseSelect.find($('select.t-product__option-select option:selected'));
+
+        let selectedColor = bundleColorSelect.find('option:selected');
+        let selectedAccessory = bundleAccessorySelect.find('option:selected');
+        let selectedCase = bundleCaseSelect.find('option:selected');
 
         let selectedColorText = simplifyJsNameLower(selectedColor.text());
         let selectedAccessoryText = simplifyJsNameLower(selectedAccessory.text());
@@ -759,16 +807,6 @@
         if (hasCase) {          oldPrice += nanopressoCasePrice;    hasAnyAccessory = true; }
         if (hasNanovessel) {    oldPrice += nanovesselPrice;    hasAnyAccessory = true; }
 
-        let imgUrl = getBundleImage(selectedColorText, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase);
-
-        $setJsProduct.find($('div.t-slds__bgimg')).each(function (idx) {
-            $(this).attr("data-original", imgUrl);
-            $(this).css({"background-image" : to_background_image_prop(imgUrl) });
-            $(this).css({"transition": "background 0.5s ease"});
-
-            $(this).parent().attr("data-img-zoom-url", imgUrl);
-        });
-
         let currentPrice = hasAnyAccessory && bundleDiscountPer > 0
             ? getDiscountPrice(oldPrice, bundleDiscountPer)
             : oldPrice;
@@ -785,124 +823,6 @@
         bundlePriceValue.attr("data-product-price-def-str", currentPrice);
 
         debugLog("Set price: " + currentPrice);
-    };
-
-    function getBundleImage(color, hasNsAdapter, hasBaristaKit, hasNanovessel, hasCase) {
-        let imageName;
-        switch (color) {
-            default:
-            case "черный":
-                imageName = "Black";
-                break;
-
-            case "оранжевый":
-                imageName = "Orange";
-                break;
-
-            case "красный":
-                imageName = "Red";
-                break;
-
-            case "желтый":
-                imageName = "Yellow";
-                break;
-        }
-
-        imageName += "_";
-        imageName += getLetter(hasNsAdapter);
-        imageName += getLetter(hasBaristaKit);
-        imageName += getLetter(hasNanovessel);
-        imageName += getLetter(hasCase);
-
-        let imageLink = mapOfSetImages[imageName];
-
-        if (imageLink === undefined) {
-            imageLink = mapOfSetImages["Black_OOOO"];
-        }
-
-        return imageLink;
-    }
-
-    function getLetter(hasAccessory) {
-        if (hasAccessory) {
-            return "O";
-        } else {
-            return "X";
-        }
-    }
-
-    function to_background_image_prop(imgUrl) {
-        return "url(\"" + imgUrl + "\")";
-    }
-
-    let mapOfSetImages = {
-        "Black_OOOO" : "https://static.tildacdn.com/tild6232-3536-4839-b131-373066653734/Black_OOOO.jpg",
-        "Black_OOOX" : "https://static.tildacdn.com/tild6230-6531-4537-a231-393336323935/Black_OOOX.jpg",
-        "Black_OOXO" : "https://static.tildacdn.com/tild3666-3565-4936-b931-626466303539/Black_OOXO.jpg",
-        "Black_OOXX" : "https://static.tildacdn.com/tild6136-3862-4962-b135-653162616337/Black_OOXX.jpg",
-        "Black_OXOO" : "https://static.tildacdn.com/tild3432-3339-4763-b865-363462343436/Black_OXOO.jpg",
-        "Black_OXOX" : "https://static.tildacdn.com/tild3330-3832-4461-a533-653465653464/Black_OXOX.jpg",
-        "Black_OXXO" : "https://static.tildacdn.com/tild3665-6232-4466-b861-613731363630/Black_OXXO.jpg",
-        "Black_OXXX" : "https://static.tildacdn.com/tild6236-3662-4636-b866-376532613037/Black_OXXX.jpg",
-        "Black_XOOO" : "https://static.tildacdn.com/tild3534-3035-4232-b562-313461393564/Black_XOOO.jpg",
-        "Black_XOOX" : "https://static.tildacdn.com/tild3036-3531-4532-b638-636463353834/Black_XOOX.jpg",
-        "Black_XOXO" : "https://static.tildacdn.com/tild6132-3562-4465-a265-666132383662/Black_XOXO.jpg",
-        "Black_XOXX" : "https://static.tildacdn.com/tild3630-3065-4433-a439-356638366333/Black_XOXX.jpg",
-        "Black_XXOO" : "https://static.tildacdn.com/tild3165-6639-4662-b666-613739313735/Black_XXOO.jpg",
-        "Black_XXOX" : "https://static.tildacdn.com/tild3336-6130-4261-b166-643866643762/Black_XXOX.jpg",
-        "Black_XXXO" : "https://static.tildacdn.com/tild6565-3633-4366-b832-663833313563/Black_XXXO.jpg",
-        "Black_XXXX" : "https://static.tildacdn.com/tild3134-6236-4265-a434-333731616339/Black_XXXX.jpg",
-
-        "Orange_OOOO" : "https://static.tildacdn.com/tild3230-3835-4137-b834-323234313761/Orange_OOOO.jpg",
-        "Orange_OOOX" : "https://static.tildacdn.com/tild3061-3334-4135-a137-633632303537/Orange_OOOX.jpg",
-        "Orange_OOXO" : "https://static.tildacdn.com/tild3034-3237-4638-a632-666463633830/Orange_OOXO.jpg",
-        "Orange_OOXX" : "https://static.tildacdn.com/tild3432-3661-4431-a133-363336373430/Orange_OOXX.jpg",
-        "Orange_OXOO" : "https://static.tildacdn.com/tild3661-6633-4533-b561-663030666132/Orange_OXOO.jpg",
-        "Orange_OXOX" : "https://static.tildacdn.com/tild3332-3733-4964-b132-363732393064/Orange_OXOX.jpg",
-        "Orange_OXXO" : "https://static.tildacdn.com/tild3132-6337-4561-b831-393937633961/Orange_OXXO.jpg",
-        "Orange_OXXX" : "https://static.tildacdn.com/tild3539-3139-4465-b730-386563626634/Orange_OXXX.jpg",
-        "Orange_XOOO" : "https://static.tildacdn.com/tild3162-6461-4563-b330-646533396236/Orange_XOOO.jpg",
-        "Orange_XOOX" : "https://static.tildacdn.com/tild3734-6436-4564-b939-313136333739/Orange_XOOX.jpg",
-        "Orange_XOXO" : "https://static.tildacdn.com/tild6332-3063-4137-b766-643632373465/Orange_XOXO.jpg",
-        "Orange_XOXX" : "https://static.tildacdn.com/tild3361-6163-4661-b632-633438373434/Orange_XOXX.jpg",
-        "Orange_XXOO" : "https://static.tildacdn.com/tild6130-6162-4430-a434-616365396138/Orange_XXOO.jpg",
-        "Orange_XXOX" : "https://static.tildacdn.com/tild3132-3637-4163-a534-613332306137/Orange_XXOX.jpg",
-        "Orange_XXXO" : "https://static.tildacdn.com/tild3865-3161-4430-b831-663161376161/Orange_XXXO.jpg",
-        "Orange_XXXX" : "https://static.tildacdn.com/tild3339-3163-4563-b130-356138636133/Orange_XXXX.jpg",
-
-        "Red_OOOO" : "https://static.tildacdn.com/tild3566-3638-4165-b762-383737353666/Red_OOOO.jpg",
-        "Red_OOOX" : "https://static.tildacdn.com/tild3536-3930-4637-b536-626136366537/Red_OOOX.jpg",
-        "Red_OOXO" : "https://static.tildacdn.com/tild3438-3166-4239-a539-386664636465/Red_OOXO.jpg",
-        "Red_OOXX" : "https://static.tildacdn.com/tild3066-6236-4637-b138-623738613265/Red_OOXX.jpg",
-        "Red_OXOO" : "https://static.tildacdn.com/tild3364-3264-4131-a530-303337353236/Red_OXOO.jpg",
-        "Red_OXOX" : "https://static.tildacdn.com/tild6362-6662-4561-a134-343634666665/Red_OXOX.jpg",
-        "Red_OXXO" : "https://static.tildacdn.com/tild3235-3636-4866-b865-333732386661/Red_OXXO.jpg",
-        "Red_OXXX" : "https://static.tildacdn.com/tild6337-3832-4539-a236-356163663430/Red_OXXX.jpg",
-        "Red_XOOO" : "https://static.tildacdn.com/tild3337-6161-4565-b162-303839626531/Red_XOOO.jpg",
-        "Red_XOOX" : "https://static.tildacdn.com/tild3932-3938-4234-a233-613731363036/Red_XOOX.jpg",
-        "Red_XOXO" : "https://static.tildacdn.com/tild6130-6564-4031-b231-336338323739/Red_XOXO.jpg",
-        "Red_XOXX" : "https://static.tildacdn.com/tild3261-3662-4037-a563-633431646538/Red_XOXX.jpg",
-        "Red_XXOO" : "https://static.tildacdn.com/tild3030-3332-4738-a464-653164653638/Red_XXOO.jpg",
-        "Red_XXOX" : "https://static.tildacdn.com/tild3331-3263-4135-b737-303364613836/Red_XXOX.jpg",
-        "Red_XXXO" : "https://static.tildacdn.com/tild3864-6137-4639-a630-313838353766/Red_XXXO.jpg",
-        "Red_XXXX" : "https://static.tildacdn.com/tild6231-6437-4630-a433-323731663739/Red_XXXX.jpg",
-
-        "Yellow_OOOO" : "https://static.tildacdn.com/tild6337-3734-4533-b162-323665356230/Yellow_OOOO.jpg",
-        "Yellow_OOOX" : "https://static.tildacdn.com/tild3631-3736-4134-b134-366436666235/Yellow_OOOX.jpg",
-        "Yellow_OOXO" : "https://static.tildacdn.com/tild3038-6264-4464-a561-633364313761/Yellow_OOXO.jpg",
-        "Yellow_OOXX" : "https://static.tildacdn.com/tild3565-6566-4431-b838-353364373662/Yellow_OOXX.jpg",
-        "Yellow_OXOO" : "https://static.tildacdn.com/tild3262-3739-4765-a335-376133653438/Yellow_OXOO.jpg",
-        "Yellow_OXOX" : "https://static.tildacdn.com/tild6662-3736-4632-b836-376433653836/Yellow_OXOX.jpg",
-        "Yellow_OXXO" : "https://static.tildacdn.com/tild3436-3334-4230-a633-656439623139/Yellow_OXXO.jpg",
-        "Yellow_OXXX" : "https://static.tildacdn.com/tild3664-3034-4238-a138-306563326538/Yellow_OXXX.jpg",
-        "Yellow_XOOO" : "https://static.tildacdn.com/tild6439-3064-4533-b039-366137646539/Yellow_XOOO.jpg",
-        "Yellow_XOOX" : "https://static.tildacdn.com/tild6566-3431-4537-b161-323965643334/Yellow_XOOX.jpg",
-        "Yellow_XOXO" : "https://static.tildacdn.com/tild6433-3839-4039-b331-396438343163/Yellow_XOXO.jpg",
-        "Yellow_XOXX" : "https://static.tildacdn.com/tild6432-3537-4763-b731-396538643462/Yellow_XOXX.jpg",
-        "Yellow_XXOO" : "https://static.tildacdn.com/tild3661-3235-4663-b034-623762363630/Yellow_XXOO.jpg",
-        "Yellow_XXOX" : "https://static.tildacdn.com/tild3730-6537-4465-b663-353932653064/Yellow_XXOX.jpg",
-        "Yellow_XXXO" : "https://static.tildacdn.com/tild3964-3134-4732-b161-393661626236/Yellow_XXXO.jpg",
-        "Yellow_XXXX" : "https://static.tildacdn.com/tild3461-3930-4938-b035-353936363261/Yellow_XXXX.jpg",
     }
 </script>
 
@@ -910,40 +830,11 @@
 <script type="text/javascript">
     let changeDuration = 400;
 
-    let currentDelivery;
-    let pvzDelivery;
-    let mskDelivery;
-    let rusDelivery;
-
-    let $deliveryTypeRadios;
-
-    let $deliveryCityGroup;
-    let $deliveryCity;
-
-    let $deliveryAddressGroup;
-    let $deliveryAddress;
-
     function fix_cart() {
         console.log("STATE: fix cart");
 
-        $deliveryTypeRadios = $cartFields.find("input:radio[name='DeliveryType']");
-
-        $deliveryCityGroup = $cartFields.find(".t-input-group").has("input[name='city']");
-        $deliveryCity = $deliveryCityGroup.find("input");
-
-        $deliveryAddressGroup = $cartFields.find(".t-input-group").has("input[name='DeliveryAddress']");
-        $deliveryAddress = $deliveryAddressGroup.find("input");
-
-        pvzDelivery = new DeliveryType("Москва", "Самовывоз", "Самовывоз", "0");
-        mskDelivery = new DeliveryType("Москва", "", "Ontime", "_???");
-        rusDelivery = new DeliveryType("", "", "Ontime-CDEK", "_???");
-
         show_admin_cart_fields();
         show_promo_input_when_click_has_promo();
-        show_hide_delivery_fields();
-        add_cdek_delivery_time_post();
-
-        simplify_delivery_type_val();
 
         process_fields_before_order();
     }
@@ -981,38 +872,6 @@
             });
         }
 
-        function show_hide_delivery_fields() {
-            $deliveryTypeRadios.change(function () {
-                let $checkedDelivery = $deliveryTypeRadios.filter(":checked");
-
-                currentDelivery = mapToDeliveryType($checkedDelivery);
-                if (currentDelivery === undefined) {
-                    console.log("Unknown delivery: " + $checkedDelivery.val());
-                    show_all_delivery_fields();
-                    return;
-                }
-
-                currentDelivery.show_hide_fields();
-            });
-            $deliveryTypeRadios.eq(0).trigger("change");
-        }
-
-        function add_cdek_delivery_time_post() {
-            let $cdekDeliveryRadio = $deliveryTypeRadios.filter(function () {
-                return isRusDelivery($(this));
-            });
-
-            $cdekDeliveryRadio.parent().append("<span id=\"cdekDeliveryTimePost\"></span>");
-        }
-
-        function simplify_delivery_type_val() {
-            $deliveryTypeRadios.each(function () {
-                let val = $(this).val().replace(/=.*/,"");
-                let simplified = simplifyJsName(val);
-                $(this).val(simplified);
-            });
-        }
-
         function process_fields_before_order() {
             $cartForm.find("button").click(function () {
 
@@ -1027,6 +886,7 @@
                 let $deliveryCompany = $cartForm.find('input[name="DeliveryCompany"]');
                 let $deliveryCost = $cartForm.find('input[name="DeliveryCost"]');
                 let $deliveryMinimum = $cartForm.find('input[name="DeliveryMinimum"]');
+                let $warehouse = $cartForm.find('input[name="warehouse"]');
                 let $infoTheme = $cartFields.find("input[name='infoTheme']");
 
                 // Add phone in line format '79112223344'
@@ -1064,8 +924,14 @@
                 $deliveryAddress.val(address);
 
                 // $orderPrice
-                $orderPrice.val(tcart.prodamount);
-                $deliveryClientCost.val(tcart.amount - tcart.prodamount);
+                let discountsum = tcart.prodamount_discountsum;
+                if (discountsum) {
+                    $orderPrice.val(tcart.prodamount - discountsum);
+                } else {
+                    $orderPrice.val(tcart.prodamount);
+                }
+
+                $deliveryClientCost.val(tcart.delivery.price);
 
                 // Add samovivozOrDeliveryCity
                 if (isOurPvz) {
@@ -1078,27 +944,34 @@
                     }
                 }
 
-                // Set DeliveryCompany, DeliveryCost
+                // Set DeliveryCompany, warehouse, DeliveryCost
                 let deliveryCompany = "_???";
-                let deliveryCost = "";
+                let warehouse = "Склад:Imsklad";
+                let deliveryCost = "_???";
+
                 if (isOurPvz) {
                     deliveryCompany = "Самовывоз";
+                    warehouse = "Склад:Белорусская";
                     deliveryCost = "0";
 
                 } else if (deliveryTypeLower.includes("срочн")) {
                     deliveryCompany = "Достависта";
-                    deliveryCost = "\"_???\"";
-                    $infoTheme.val($infoTheme.val() + " | СРОЧНО");
+                    warehouse = "Склад:Белорусская";
+
+                    if (!$infoTheme.val().includes("СРОЧНО")) {
+                        $infoTheme.val($infoTheme.val() + " | СРОЧНО");
+                    }
 
                 } else if (deliveryTypeLower.includes("курьер")) {
-                    deliveryCompany = "Ontime";
+                    deliveryCompany = "Грастин";
 
                 } else if (deliveryTypeLower.includes("росси")) {
-                    deliveryCompany = "Ontime-CDEK";
+                    deliveryCompany = "CDEK";
 
                 }
 
                 $deliveryCompany.val(deliveryCompany);
+                $warehouse.val(warehouse);
                 $deliveryCost.val(deliveryCost);
 
                 // Set deliveryMinimum
@@ -1110,65 +983,6 @@
                     $infoTheme.val(" ");
                 }
             });
-        }
-    }
-
-    // Delivery types
-    {
-        function DeliveryType(city, address, deliveryCompany, fullDeliveryCost) {
-            this.city = city;
-            this.address = address;
-            this.deliveryCompany = deliveryCompany;
-            this.fullDeliveryCost = fullDeliveryCost;
-
-            this.show_hide_fields = function () {
-                if (this.city === "") {
-                    $deliveryCityGroup.show(changeDuration);
-                } else {
-                    $deliveryCityGroup.hide(changeDuration);
-                }
-
-                if (this.address === "") {
-                    $deliveryAddressGroup.show(changeDuration);
-                } else {
-                    $deliveryAddressGroup.hide(changeDuration);
-                }
-
-                if (this === rusDelivery) {
-                    cdekDeliveryWidget.open();
-                }
-            };
-        }
-
-        function mapToDeliveryType($checkedDelivery){
-            if (isPvzDelivery($checkedDelivery)) {
-                return pvzDelivery;
-            }
-
-            if (isMskDelivery($checkedDelivery)) {
-                return mskDelivery;
-            }
-
-            if (isRusDelivery($checkedDelivery)) {
-                return rusDelivery;
-            }
-
-            return undefined;
-        }
-
-        function show_all_delivery_fields() {
-            $deliveryCityGroup.show(changeDuration);
-            $deliveryAddressGroup.show(changeDuration);
-        }
-
-        function isPvzDelivery(checkedDelivery) {
-            return checkedDelivery.val().toLowerCase().includes("самовывоз");
-        }
-        function isMskDelivery(checkedDelivery) {
-            return  checkedDelivery.val().toLowerCase().includes("курьер");
-        }
-        function isRusDelivery(checkedDelivery) {
-            return checkedDelivery.val().toLowerCase().includes("росси");
         }
     }
 
